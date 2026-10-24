@@ -33,6 +33,9 @@ table v_bi_events
 	measure 'US share of known-country %' = ROUND(DIVIDE(CALCULATE([Events], v_bi_events[country] = "United States"), CALCULATE([Events], v_bi_events[country] <> "Unknown")) * 100, 1)
 		formatString: 0.0
 
+	measure 'Share of selected events %' = ROUND(DIVIDE([Events], CALCULATE([Events], ALLSELECTED(v_bi_events[industry_group]))) * 100, 1)
+		formatString: 0.0
+
 	column 'event_key'
 		dataType: string
 		summarizeBy: none

@@ -2,15 +2,15 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v080b68add613135f",
   "position": {
-    "x": 920,
-    "y": 218,
+    "x": 428,
+    "y": 462,
     "z": 8000,
-    "height": 482,
-    "width": 344,
+    "height": 238,
+    "width": 130,
     "tabOrder": 8000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "slicer",
     "query": {
       "queryState": {
         "Values": {
@@ -23,45 +23,45 @@
                       "Entity": "v_bi_events"
                     }
                   },
-                  "Property": "region"
+                  "Property": "event_year"
                 }
               },
-              "queryRef": "v_bi_events.region",
-              "nativeQueryRef": "region"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "country"
-                }
-              },
-              "queryRef": "v_bi_events.country",
-              "nativeQueryRef": "country"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "Events"
-                }
-              },
-              "queryRef": "v_bi_events.Events",
-              "nativeQueryRef": "Events"
+              "queryRef": "v_bi_events.event_year",
+              "nativeQueryRef": "event_year"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "selection": [
+        {
+          "properties": {
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -76,7 +76,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Events by region and country (9% have no country)'"
+                  "Value": "'Year for the pie'"
                 }
               }
             }

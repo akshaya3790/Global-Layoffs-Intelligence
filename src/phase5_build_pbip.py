@@ -93,6 +93,8 @@ MEASURES = {
         ("US share of known-country %",
          "ROUND(DIVIDE(CALCULATE([Events], v_bi_events[country] = \"United States\"), "
          "CALCULATE([Events], v_bi_events[country] <> \"Unknown\")) * 100, 1)", "0.0"),
+        ("Share of selected events %",
+         "ROUND(DIVIDE([Events], CALCULATE([Events], ALLSELECTED(v_bi_events[industry_group]))) * 100, 1)", "0.0"),
     ],
     "v_bi_company_summary": [
         ("Repeat companies", "CALCULATE(COUNTROWS(v_bi_company_summary), v_bi_company_summary[is_repeat_company] = TRUE())", "#,0"),
@@ -215,7 +217,7 @@ def literal(value: str) -> dict:
 
 class Page:
     def __init__(self, title, question):
-        self.title, self.visuals, self.z = title, [], 0
+        self.title, self.visuals, self.z, self.interactions = title, [], 0, []
         self.text(0, 0, 1280, 64, BANNER, size="9pt", bold=True, color="#FFFFFF", background="#8a5a00")
         self.text(16, 66, 1248, 40, f"{title}: {question}", size="13pt", bold=True, color="#1b2330")
 
@@ -226,6 +228,7 @@ class Page:
                              "position": {"x": x, "y": y, "z": self.z * 1000, "height": h, "width": w,
                                           "tabOrder": self.z * 1000},
                              "visual": visual})
+        return name
 
     def text(self, x, y, w, h, value, size="10pt", bold=False, color="#1b2330", background=None):
         style = {"fontSize": size, "color": color}
@@ -238,9 +241,9 @@ class Page:
                 "show": literal("true"),
                 "color": {"solid": {"color": literal(f"'{background}'")}},
                 "transparency": literal("0D")}}]}
-        self._add(x, y, w, h, visual)
+        return self._add(x, y, w, h, visual)
 
-    def visual(self, vtype, x, y, w, h, roles: dict, title: str | None = None):
+    def visual(self, vtype, x, y, w, h, roles: dict, title: str | None = None, objects: dict | None = None):
         """roles: {projection role: [("m"|"c"|"sum", table, field), ...]}"""
         state = {}
         for role, fields in roles.items():
@@ -257,14 +260,24 @@ class Page:
                 projections.append({"field": expr, "queryRef": ref, "nativeQueryRef": native})
             state[role] = {"projections": projections}
         visual = {"visualType": vtype, "query": {"queryState": state}, "drillFilterOtherVisuals": True}
+        if objects:
+            visual["objects"] = objects
         if title:
             visual["visualContainerObjects"] = {"title": [{"properties": {
                 "show": literal("true"), "text": literal("'" + title.replace("'", "''") + "'")}}]}
-        self._add(x, y, w, h, visual)
+        return self._add(x, y, w, h, visual)
+
+    def only_filters(self, source, target):
+        """Make `source` (a slicer) filter `target` only: every other visual on the page ignores it."""
+        self.interactions += [{"source": source, "target": v["name"], "type": "NoFilter"}
+                              for v in self.visuals if v["name"] not in (source, target)]
 
     def page_json(self, name):
-        return {"$schema": f"{SCHEMA}/page/{V_PAGE}/schema.json", "name": name, "displayName": self.title,
+        page = {"$schema": f"{SCHEMA}/page/{V_PAGE}/schema.json", "name": name, "displayName": self.title,
                 "displayOption": "FitToPage", "height": 720, "width": 1280}
+        if self.interactions:
+            page["visualInteractions"] = self.interactions
+        return page
 
 
 def cards(page, items, y=110):
@@ -291,11 +304,24 @@ def build_pages():
     cards(p2, [(E, "Events"), (E, "Unknown sector %"), (E, "US share of known-country %")])
     p2.visual("clusteredBarChart", 16, 218, 400, 482, {"Category": [("c", E, "industry_group")], "Y": [("m", E, "Events")]},
               "Events by industry group (Unknown = no sector, 31%)")
-    p2.visual("hundredPercentStackedColumnChart", 428, 218, 480, 482,
+    p2.visual("hundredPercentStackedColumnChart", 428, 218, 480, 236,
               {"Category": [("c", E, "event_year")], "Series": [("c", E, "industry_group")], "Y": [("m", E, "Events")]},
               "Industry share of events by year")
+    # Pie for one year at a time, beside (not instead of) the stacked chart: 17 groups, 6-9 under 3% per year,
+    # so comparing years needs the stacked chart. All 17 groups are kept; nothing is merged into "Other".
+    year = p2.visual("slicer", 428, 462, 130, 238, {"Values": [("c", E, "event_year")]}, "Year for the pie",
+                     objects={"data": [{"properties": {"mode": literal("'Dropdown'")}}],
+                              "selection": [{"properties": {"singleSelect": literal("true")}}]})
+    pie = p2.visual("pieChart", 566, 462, 342, 238,
+                    {"Category": [("c", E, "industry_group")], "Y": [("m", E, "Events")],
+                     "Tooltips": [("m", E, "Share of selected events %")]},
+                    "Industry share of layoff events, selected year (all years if none picked)",
+                    objects={"labels": [{"properties": {"show": literal("true"),
+                                                        "labelStyle": literal("'Category, percent of total'")}}],
+                             "legend": [{"properties": {"show": literal("false")}}]})
     p2.visual("tableEx", 920, 218, 344, 482, {"Values": [("c", E, "region"), ("c", E, "country"), ("m", E, "Events")]},
               "Events by region and country (9% have no country)")
+    p2.only_filters(year, pie)
 
     p3 = Page("3 Companies and repeat layoffs", "which employers cut repeatedly, and how soon?")
     cards(p3, [(C, "Repeat companies"), (C, "Median days to next round"), ("repeat_overall", "12-month repeat probability %")])

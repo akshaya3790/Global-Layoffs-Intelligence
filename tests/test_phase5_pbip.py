@@ -113,3 +113,20 @@ def test_no_credentials_in_project():
     text = " ".join(f.read_text(encoding="utf-8", errors="ignore")
                     for f in (ROOT / "powerbi").rglob("*") if f.is_file() and f.suffix in {".json", ".tmdl", ".pbir", ".pbism", ".pbip"})
     assert not re.search(r"(?i)password\s*[=:]", text)
+
+
+def test_pie_counts_events_and_year_slicer_filters_only_the_pie():
+    page = json.loads((DEFINITION / "pages" / "page2" / "page.json").read_text(encoding="utf-8"))
+    visuals = {v["name"]: v for v in (json.loads(f.read_text(encoding="utf-8"))
+                                      for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json"))}
+    pie = [v for v in visuals.values() if v["visual"]["visualType"] == "pieChart"]
+    stacked = [v for v in visuals.values() if v["visual"]["visualType"] == "hundredPercentStackedColumnChart"]
+    assert len(pie) == 1 and len(stacked) == 1                       # added beside, not instead of
+    assert set(_fields(pie[0]["visual"]["query"])) == {("Column", "v_bi_events", "industry_group"),
+                                                      ("Measure", "v_bi_events", "Events"),
+                                                      ("Measure", "v_bi_events", "Share of selected events %")}
+    year = [n for n, v in visuals.items() if v["visual"]["visualType"] == "slicer"
+            and ("Column", "v_bi_events", "event_year") in set(_fields(v["visual"]))]
+    assert len(year) == 1
+    ignored = {i["target"] for i in page["visualInteractions"] if i["source"] == year[0] and i["type"] == "NoFilter"}
+    assert ignored == set(visuals) - {year[0], pie[0]["name"]}       # every other visual ignores the year slicer
