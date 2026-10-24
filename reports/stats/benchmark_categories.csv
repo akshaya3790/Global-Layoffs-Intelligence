@@ -1,0 +1,10 @@
+dimension,value,sample,full,ratio,dev_pp
+country,United States,1915,7501,0.255,-0.5
+country,United Kingdom,562,2198,0.256,-0.4
+country,India,241,971,0.248,-1.2
+country,Germany,226,834,0.271,1.1
+country,Canada,199,768,0.259,-0.1
+sector,Retail,271,1008,0.269,0.9
+sector,Food and Agriculture,196,795,0.247,-1.3
+sector,Consumer Goods,206,773,0.266,0.6
+companies,Companies with 2+ rounds (raw name),677,2768,0.245,-1.5

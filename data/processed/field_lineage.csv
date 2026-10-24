@@ -1,0 +1,55 @@
+canonical_field,source_dataset,source_field
+source_event_id,fliar_global_sample,layoff_id
+company_name_raw,fliar_global_sample,company_name
+company_domain,fliar_global_sample,company_domain
+event_date_raw,fliar_global_sample,date
+industry_raw,fliar_global_sample,sector
+country_raw,fliar_global_sample,country
+hq_country_raw,fliar_global_sample,company_country
+location_raw,fliar_global_sample,(none: missing)
+city,fliar_global_sample,company_city
+state,fliar_global_sample,company_state
+employees_laid_off,fliar_global_sample,headcount_cut
+headcount_status,fliar_global_sample,headcount_status
+workforce_pct,fliar_global_sample,pct_workforce
+total_employees,fliar_global_sample,(none: missing)
+reason,fliar_global_sample,(none: missing)
+department,fliar_global_sample,(none: missing)
+severance_weeks,fliar_global_sample,(none: missing)
+ai_related,fliar_global_sample,(none: missing)
+is_furlough,fliar_global_sample,is_furlough
+news_source,fliar_global_sample,news_source
+news_url_raw,fliar_global_sample,news_url
+news_excerpt,fliar_global_sample,news_excerpt
+news_mentions,fliar_global_sample,news_mentions
+source_profile_url,fliar_global_sample,fliar_profile_url
+source_event_id,tech_layoffs_2025_2026,(none: missing)
+company_name_raw,tech_layoffs_2025_2026,Company
+company_domain,tech_layoffs_2025_2026,(none: missing)
+event_date_raw,tech_layoffs_2025_2026,Date
+industry_raw,tech_layoffs_2025_2026,Industry
+country_raw,tech_layoffs_2025_2026,Country
+hq_country_raw,tech_layoffs_2025_2026,(none: missing)
+location_raw,tech_layoffs_2025_2026,Location
+city,tech_layoffs_2025_2026,(none: missing)
+state,tech_layoffs_2025_2026,(none: missing)
+employees_laid_off,tech_layoffs_2025_2026,Employees_Laid_Off
+headcount_status,tech_layoffs_2025_2026,(none: missing)
+workforce_pct,tech_layoffs_2025_2026,Percentage_Workforce
+total_employees,tech_layoffs_2025_2026,Total_Employees
+reason,tech_layoffs_2025_2026,Reason
+department,tech_layoffs_2025_2026,Department
+severance_weeks,tech_layoffs_2025_2026,Severance_Weeks
+ai_related,tech_layoffs_2025_2026,AI_Related
+is_furlough,tech_layoffs_2025_2026,(none: missing)
+news_source,tech_layoffs_2025_2026,(none: missing)
+news_url_raw,tech_layoffs_2025_2026,(none: missing)
+news_excerpt,tech_layoffs_2025_2026,(none: missing)
+news_mentions,tech_layoffs_2025_2026,(none: missing)
+source_profile_url,tech_layoffs_2025_2026,(none: missing)
+(dropped),fliar_global_sample,year
+(dropped),fliar_global_sample,month
+(dropped),tech_layoffs_2025_2026,Year
+(dropped),tech_layoffs_2025_2026,Month
+(dropped),tech_layoffs_2025_2026,Month_Name
+(dropped),tech_layoffs_2025_2026,Quarter

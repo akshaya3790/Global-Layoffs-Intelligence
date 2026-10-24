@@ -1,0 +1,62 @@
+canonical_field,source_dataset,source_field,transformation,approval_id
+event_key,fliar_global_sample,(Phase 1 record_id),carry over,none
+event_key,tech_layoffs_2025_2026,(Phase 1 record_id),carry over,none
+source_event_id,fliar_global_sample,layoff_id,copy,none
+source_event_id,tech_layoffs_2025_2026,(none),NULL,A-01
+company_name_raw,fliar_global_sample,company_name,copy,none
+company_name_raw,tech_layoffs_2025_2026,Company,copy,none
+company_name,fliar_global_sample,company_name,trim + suffix removal + reviewed mapping,A-02
+company_name,tech_layoffs_2025_2026,Company,trim + alias mapping,A-02
+company_domain,fliar_global_sample,company_domain,copy,none
+company_domain,tech_layoffs_2025_2026,(none),NULL,none
+event_date,fliar_global_sample,date,parse yyyy-mm-dd,none
+event_date,tech_layoffs_2025_2026,Date,parse yyyy-mm-dd,none
+event_year/quarter/month,fliar_global_sample,"year, month",recompute from event_date (source agreed 100%),none
+event_year/quarter/month,tech_layoffs_2025_2026,"Year, Quarter, Month, Month_Name",recompute from event_date (source agreed 100%),none
+date_reliability,fliar_global_sample,(derived),as_reported,none
+date_reliability,tech_layoffs_2025_2026,(derived),as_reported or suspect_date,A-07
+industry_raw,fliar_global_sample,sector,copy,none
+industry_raw,tech_layoffs_2025_2026,Industry,copy,none
+industry_group,fliar_global_sample,sector,taxonomy mapping,A-04
+industry_group,tech_layoffs_2025_2026,Industry,taxonomy mapping,A-04
+country_raw,fliar_global_sample,country,copy,none
+country_raw,tech_layoffs_2025_2026,Country,copy,none
+country,fliar_global_sample,country,standardise labels,"A-03, A-05"
+country,tech_layoffs_2025_2026,Country,standardise labels (USA -> United States),"A-03, A-05b"
+hq_country,fliar_global_sample,company_country,standardise labels,A-05
+hq_country,tech_layoffs_2025_2026,(none),NULL,A-05b
+region,fliar_global_sample,(derived from country),lookup,A-03
+region,tech_layoffs_2025_2026,(derived from country),lookup,A-03
+city,fliar_global_sample,company_city,copy,none
+city,tech_layoffs_2025_2026,Location,split before comma,A-06
+state,fliar_global_sample,company_state,copy,none
+state,tech_layoffs_2025_2026,Location,after comma if 2-letter US code,A-06
+employees_laid_off,fliar_global_sample,headcount_cut,copy; NULL kept,A-08
+employees_laid_off,tech_layoffs_2025_2026,Employees_Laid_Off,copy,A-08
+headcount_status,fliar_global_sample,headcount_status,copy,none
+headcount_status,tech_layoffs_2025_2026,(none),constant reported_unverified,A-08
+workforce_pct,fliar_global_sample,pct_workforce,copy; NULL kept,none
+workforce_pct,tech_layoffs_2025_2026,Percentage_Workforce,copy,none
+total_employees,fliar_global_sample,(none),NULL (do not derive),A-09
+total_employees,tech_layoffs_2025_2026,Total_Employees,copy,none
+reason,fliar_global_sample,(none),NULL,A-10
+reason,tech_layoffs_2025_2026,Reason,copy,none
+reason_category_derived,fliar_global_sample,news_excerpt,keyword rules,A-10
+reason_category_derived,tech_layoffs_2025_2026,Reason,keyword rules,A-10
+department,fliar_global_sample,(none),NULL,none
+department,tech_layoffs_2025_2026,Department,copy + bridge table,A-11
+severance_weeks,fliar_global_sample,(none),NULL,none
+severance_weeks,tech_layoffs_2025_2026,Severance_Weeks,copy,none
+ai_related,fliar_global_sample,(none),NULL,A-12
+ai_related,tech_layoffs_2025_2026,AI_Related,copy,none
+ai_mentioned_in_news_derived,fliar_global_sample,news_excerpt,keyword flag,A-12
+ai_mentioned_in_news_derived,tech_layoffs_2025_2026,(none),NULL,A-12
+is_furlough,fliar_global_sample,is_furlough,copy,A-16
+is_furlough,tech_layoffs_2025_2026,(none),NULL (unknown),none
+news_source,fliar_global_sample,news_source,copy,none
+news_url,fliar_global_sample,news_url,strip whitespace,A-14
+news_excerpt,fliar_global_sample,news_excerpt,copy,none
+news_mentions,fliar_global_sample,news_mentions,copy (not an ML feature),none
+source_profile_url,fliar_global_sample,fliar_profile_url,copy,none
+duplicate_group_id,fliar_global_sample,(review),from duplicate_review,A-13
+duplicate_group_id,tech_layoffs_2025_2026,(review),from duplicate_review,A-13

@@ -1,0 +1,9 @@
+event_year,events,events_with_headcount,verified_jobs_cut,median_cut,headcount_coverage_pct,share_of_events_pct,permanent_events,furlough_events,partial_year
+2019,476,238,247634,200.0,50.0,9.5,472,4,False
+2020,968,473,751961,300.0,48.9,19.4,863,105,False
+2021,265,111,152748,210.0,41.9,5.3,258,7,False
+2022,525,240,193251,142.0,45.7,10.5,523,2,False
+2023,885,448,423496,169.0,50.6,17.7,882,3,False
+2024,791,405,434305,175.0,51.2,15.8,787,4,False
+2025,762,407,416695,200.0,53.4,15.2,754,8,False
+2026,328,167,168818,153.0,50.9,6.6,328,0,True

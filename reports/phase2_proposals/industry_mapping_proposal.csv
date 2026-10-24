@@ -1,0 +1,78 @@
+industry_raw,rows,source_dataset,industry_group_proposed,note,review_status
+Auto,178,global,Automotive,,auto
+Auto Tech,7,global,Automotive,,auto
+Business Services,180,global,Business Services,,auto
+Generic Company Lists,4,global,Business Services,,auto
+Edtech,37,global,Education & Public Sector,,auto
+Education,14,global,Education & Public Sector,,auto
+Nonprofits,10,global,Education & Public Sector,,auto
+Public Administration,4,global,Education & Public Sector,,auto
+Energy,97,global,Energy & Resources,,auto
+Energy Tech,50,global,Energy & Resources,,auto
+Mining,37,global,Energy & Resources,,auto
+Environment,5,global,Energy & Resources,,auto
+Environment Tech,2,global,Energy & Resources,,auto
+Financial Services,169,global,Finance & Fintech,,auto
+Fintech,166,global,Finance & Fintech,,auto
+Investment Industry,38,global,Finance & Fintech,"needs review: also used for Accenture, Autodesk, Dell; mapping follows the label, not the company",needs_review
+Blockchain Technology,1,global,Finance & Fintech,,auto
+Unbundling of Bank,1,global,Finance & Fintech,,auto
+Food and Agriculture,196,global,Food & Agriculture,,auto
+Food and Agriculture Tech,71,global,Food & Agriculture,,auto
+Trending Themes In Food Tech,1,global,Food & Agriculture,,auto
+Semiconductors,49,global,Hardware & Semiconductors,,auto
+Healthcare,153,global,Healthcare & Life Sciences,,auto
+Life Sciences,87,global,Healthcare & Life Sciences,,auto
+Healthtech,58,global,Healthcare & Life Sciences,,auto
+"Aerospace, Maritime and Defense",64,global,Industrial & Manufacturing,,auto
+Industrial Goods and Manufacturing,52,global,Industrial & Manufacturing,,auto
+Conglomerates,43,global,Industrial & Manufacturing,needs review: e.g. Bosch; placed in Industrial & Manufacturing,needs_review
+Chemicals and Materials,33,global,Industrial & Manufacturing,,auto
+"Aerospace, Maritime and Defense Tech",14,global,Industrial & Manufacturing,,auto
+Chemicals and Materials Tech,2,global,Industrial & Manufacturing,,auto
+Media & Entertainment,156,global,Media & Gaming,,auto
+Gaming,61,global,Media & Gaming,,auto
+Trending Themes In Media and Entertainment Tech,6,global,Media & Gaming,,auto
+Real Estate and Construction,75,global,Real Estate & Construction,,auto
+Real Estate and Construction Tech,19,global,Real Estate & Construction,,auto
+Retail,271,global,Retail & Consumer,,auto
+Consumer Goods,206,global,Retail & Consumer,,auto
+Consumer,203,global,Retail & Consumer,,auto
+Enterprise Applications,142,global,Software & IT,,auto
+Enterprise Infrastructure,110,global,Software & IT,,auto
+Mobile,17,global,Software & IT,,auto
+AI-native,11,global,Software & IT,,auto
+Trending Themes In Enterprise Collaboration,1,global,Software & IT,,auto
+High Tech,70,global,Technology (mixed),"P1 approved: own group 'Technology (mixed)' (OpenAI, Meta, Google, iRobot, DJI...)",auto
+Telecom,83,global,Telecom,,auto
+Travel and Hospitality,121,global,Travel & Transport,,auto
+Transportation and Logistics,60,global,Travel & Transport,,auto
+Travel and Hospitality Tech,1,global,Travel & Transport,,auto
+(missing),1564,global,Unknown,,auto
+Automotive/EV,2,tech,Automotive,first part 'Automotive',auto
+Consulting,1,tech,Business Services,,auto
+EdTech,1,tech,Education & Public Sector,,auto
+Fintech,2,tech,Finance & Fintech,,auto
+Cryptocurrency,1,tech,Finance & Fintech,,auto
+Hardware,2,tech,Hardware & Semiconductors,,auto
+Semiconductors,1,tech,Hardware & Semiconductors,,auto
+Semiconductors/AI,1,tech,Hardware & Semiconductors,first part 'Semiconductors',auto
+Live Streaming,1,tech,Media & Gaming,,auto
+Streaming,1,tech,Media & Gaming,,auto
+Gaming/Software,1,tech,Media & Gaming,first part 'Gaming',auto
+Music Streaming,1,tech,Media & Gaming,,auto
+E-commerce,2,tech,Retail & Consumer,P5 limitation: label-level mapping also puts Shopify (software) here; no company override,auto
+Fitness Tech,1,tech,Retail & Consumer,Peloton: consumer hardware/subscriptions,auto
+E-commerce/Cloud,1,tech,Retail & Consumer,first part 'E-commerce' (Amazon),auto
+Social Media,4,tech,Software & IT,,auto
+Enterprise Software,2,tech,Software & IT,,auto
+Communication,1,tech,Software & IT,Discord: chat software,auto
+Video Conferencing,1,tech,Software & IT,,auto
+Networking,1,tech,Software & IT,matches global 'Enterprise Infrastructure' for Cisco,auto
+Cloud Storage,1,tech,Software & IT,,auto
+SaaS/CRM,1,tech,Software & IT,first part 'SaaS',auto
+Software/Cloud,1,tech,Software & IT,first part 'Software',auto
+Software,1,tech,Software & IT,,auto
+Search/AI,1,tech,Software & IT,first part 'Search',auto
+Ridesharing,1,tech,Travel & Transport,,auto
+Travel Tech,1,tech,Travel & Transport,,auto

@@ -1,0 +1,71 @@
+event_key,source_dataset,source_row_number,department_raw,department,department_position,departments_in_event,allocation_weight
+T-00001,tech_layoffs_2025_2026,2,"Content, Marketing",Content,1,2,0.5
+T-00001,tech_layoffs_2025_2026,2,"Content, Marketing",Marketing,2,2,0.5
+T-00002,tech_layoffs_2025_2026,3,"Engineering, Marketing",Engineering,1,2,0.5
+T-00002,tech_layoffs_2025_2026,3,"Engineering, Marketing",Marketing,2,2,0.5
+T-00003,tech_layoffs_2025_2026,4,"Engineering, Marketing",Engineering,1,2,0.5
+T-00003,tech_layoffs_2025_2026,4,"Engineering, Marketing",Marketing,2,2,0.5
+T-00004,tech_layoffs_2025_2026,5,"Support, Marketing",Support,1,2,0.5
+T-00004,tech_layoffs_2025_2026,5,"Support, Marketing",Marketing,2,2,0.5
+T-00005,tech_layoffs_2025_2026,6,"Operations, Support",Operations,1,2,0.5
+T-00005,tech_layoffs_2025_2026,6,"Operations, Support",Support,2,2,0.5
+T-00006,tech_layoffs_2025_2026,7,"Operations, Engineering",Operations,1,2,0.5
+T-00006,tech_layoffs_2025_2026,7,"Operations, Engineering",Engineering,2,2,0.5
+T-00007,tech_layoffs_2025_2026,8,"Sales, Marketing",Sales,1,2,0.5
+T-00007,tech_layoffs_2025_2026,8,"Sales, Marketing",Marketing,2,2,0.5
+T-00008,tech_layoffs_2025_2026,9,"Engineering, Sales",Engineering,1,2,0.5
+T-00008,tech_layoffs_2025_2026,9,"Engineering, Sales",Sales,2,2,0.5
+T-00009,tech_layoffs_2025_2026,10,"Sales, Support",Sales,1,2,0.5
+T-00009,tech_layoffs_2025_2026,10,"Sales, Support",Support,2,2,0.5
+T-00010,tech_layoffs_2025_2026,11,"Manufacturing, Engineering",Manufacturing,1,2,0.5
+T-00010,tech_layoffs_2025_2026,11,"Manufacturing, Engineering",Engineering,2,2,0.5
+T-00011,tech_layoffs_2025_2026,12,"Engineering, Operations",Engineering,1,2,0.5
+T-00011,tech_layoffs_2025_2026,12,"Engineering, Operations",Operations,2,2,0.5
+T-00012,tech_layoffs_2025_2026,13,"IT Services, Consulting",IT Services,1,2,0.5
+T-00012,tech_layoffs_2025_2026,13,"IT Services, Consulting",Consulting,2,2,0.5
+T-00013,tech_layoffs_2025_2026,14,"Engineering, Sales",Engineering,1,2,0.5
+T-00013,tech_layoffs_2025_2026,14,"Engineering, Sales",Sales,2,2,0.5
+T-00014,tech_layoffs_2025_2026,15,"Consulting, Operations",Consulting,1,2,0.5
+T-00014,tech_layoffs_2025_2026,15,"Consulting, Operations",Operations,2,2,0.5
+T-00015,tech_layoffs_2025_2026,16,"Engineering, Support",Engineering,1,2,0.5
+T-00015,tech_layoffs_2025_2026,16,"Engineering, Support",Support,2,2,0.5
+T-00016,tech_layoffs_2025_2026,17,"Operations, Support",Operations,1,2,0.5
+T-00016,tech_layoffs_2025_2026,17,"Operations, Support",Support,2,2,0.5
+T-00017,tech_layoffs_2025_2026,18,"Support, Logistics",Support,1,2,0.5
+T-00017,tech_layoffs_2025_2026,18,"Support, Logistics",Logistics,2,2,0.5
+T-00018,tech_layoffs_2025_2026,19,"Engineering, Sales",Engineering,1,2,0.5
+T-00018,tech_layoffs_2025_2026,19,"Engineering, Sales",Sales,2,2,0.5
+T-00019,tech_layoffs_2025_2026,20,"Manufacturing, Marketing",Manufacturing,1,2,0.5
+T-00019,tech_layoffs_2025_2026,20,"Manufacturing, Marketing",Marketing,2,2,0.5
+T-00020,tech_layoffs_2025_2026,21,"Manufacturing, R&D",Manufacturing,1,2,0.5
+T-00020,tech_layoffs_2025_2026,21,"Manufacturing, R&D",R&D,2,2,0.5
+T-00021,tech_layoffs_2025_2026,22,"Customer Support, Sales",Customer Support,1,2,0.5
+T-00021,tech_layoffs_2025_2026,22,"Customer Support, Sales",Sales,2,2,0.5
+T-00022,tech_layoffs_2025_2026,23,"Sales, Support",Sales,1,2,0.5
+T-00022,tech_layoffs_2025_2026,23,"Sales, Support",Support,2,2,0.5
+T-00023,tech_layoffs_2025_2026,24,"Engineering, Consulting",Engineering,1,2,0.5
+T-00023,tech_layoffs_2025_2026,24,"Engineering, Consulting",Consulting,2,2,0.5
+T-00024,tech_layoffs_2025_2026,25,"Marketing, Engineering",Marketing,1,2,0.5
+T-00024,tech_layoffs_2025_2026,25,"Marketing, Engineering",Engineering,2,2,0.5
+T-00025,tech_layoffs_2025_2026,26,"Engineering, Marketing",Engineering,1,2,0.5
+T-00025,tech_layoffs_2025_2026,26,"Engineering, Marketing",Marketing,2,2,0.5
+T-00026,tech_layoffs_2025_2026,27,"Operations, Content Moderation",Operations,1,2,0.5
+T-00026,tech_layoffs_2025_2026,27,"Operations, Content Moderation",Content Moderation,2,2,0.5
+T-00027,tech_layoffs_2025_2026,28,"AWS, Retail",AWS,1,2,0.5
+T-00027,tech_layoffs_2025_2026,28,"AWS, Retail",Retail,2,2,0.5
+T-00028,tech_layoffs_2025_2026,29,"Engineering, Sales",Engineering,1,2,0.5
+T-00028,tech_layoffs_2025_2026,29,"Engineering, Sales",Sales,2,2,0.5
+T-00029,tech_layoffs_2025_2026,30,"Azure, Sales",Azure,1,2,0.5
+T-00029,tech_layoffs_2025_2026,30,"Azure, Sales",Sales,2,2,0.5
+T-00030,tech_layoffs_2025_2026,31,"Manufacturing, Engineering",Manufacturing,1,2,0.5
+T-00030,tech_layoffs_2025_2026,31,"Manufacturing, Engineering",Engineering,2,2,0.5
+T-00031,tech_layoffs_2025_2026,32,"Sales, Support",Sales,1,2,0.5
+T-00031,tech_layoffs_2025_2026,32,"Sales, Support",Support,2,2,0.5
+T-00032,tech_layoffs_2025_2026,33,"Reality Labs, Engineering",Reality Labs,1,2,0.5
+T-00032,tech_layoffs_2025_2026,33,"Reality Labs, Engineering",Engineering,2,2,0.5
+T-00033,tech_layoffs_2025_2026,34,"Sales, Marketing",Sales,1,2,0.5
+T-00033,tech_layoffs_2025_2026,34,"Sales, Marketing",Marketing,2,2,0.5
+T-00034,tech_layoffs_2025_2026,35,"Cloud, Hardware",Cloud,1,2,0.5
+T-00034,tech_layoffs_2025_2026,35,"Cloud, Hardware",Hardware,2,2,0.5
+T-00035,tech_layoffs_2025_2026,36,"Customer Support, Operations",Customer Support,1,2,0.5
+T-00035,tech_layoffs_2025_2026,36,"Customer Support, Operations",Operations,2,2,0.5

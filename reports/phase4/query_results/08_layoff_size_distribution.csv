@@ -1,0 +1,6 @@
+size_band,events,share_of_verified_pct,denominator_rows_with_headcount,rows_without_headcount
+1-99,775,31.1,2489,2511
+100-499,957,38.4,2489,2511
+500-999,262,10.5,2489,2511
+"1,000-4,999",347,13.9,2489,2511
+"5,000+",148,5.9,2489,2511

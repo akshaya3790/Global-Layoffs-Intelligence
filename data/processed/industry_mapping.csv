@@ -1,0 +1,78 @@
+source_dataset,industry_raw,industry_group,rows
+fliar_global_sample,(missing),Unknown,1564
+fliar_global_sample,AI-native,Software & IT,11
+fliar_global_sample,"Aerospace, Maritime and Defense",Industrial & Manufacturing,64
+fliar_global_sample,"Aerospace, Maritime and Defense Tech",Industrial & Manufacturing,14
+fliar_global_sample,Auto,Automotive,178
+fliar_global_sample,Auto Tech,Automotive,7
+fliar_global_sample,Blockchain Technology,Finance & Fintech,1
+fliar_global_sample,Business Services,Business Services,180
+fliar_global_sample,Chemicals and Materials,Industrial & Manufacturing,33
+fliar_global_sample,Chemicals and Materials Tech,Industrial & Manufacturing,2
+fliar_global_sample,Conglomerates,Industrial & Manufacturing,43
+fliar_global_sample,Consumer,Retail & Consumer,203
+fliar_global_sample,Consumer Goods,Retail & Consumer,206
+fliar_global_sample,Edtech,Education & Public Sector,37
+fliar_global_sample,Education,Education & Public Sector,14
+fliar_global_sample,Energy,Energy & Resources,97
+fliar_global_sample,Energy Tech,Energy & Resources,50
+fliar_global_sample,Enterprise Applications,Software & IT,142
+fliar_global_sample,Enterprise Infrastructure,Software & IT,110
+fliar_global_sample,Environment,Energy & Resources,5
+fliar_global_sample,Environment Tech,Energy & Resources,2
+fliar_global_sample,Financial Services,Finance & Fintech,169
+fliar_global_sample,Fintech,Finance & Fintech,166
+fliar_global_sample,Food and Agriculture,Food & Agriculture,196
+fliar_global_sample,Food and Agriculture Tech,Food & Agriculture,71
+fliar_global_sample,Gaming,Media & Gaming,61
+fliar_global_sample,Generic Company Lists,Business Services,4
+fliar_global_sample,Healthcare,Healthcare & Life Sciences,153
+fliar_global_sample,Healthtech,Healthcare & Life Sciences,58
+fliar_global_sample,High Tech,Technology (mixed),70
+fliar_global_sample,Industrial Goods and Manufacturing,Industrial & Manufacturing,52
+fliar_global_sample,Investment Industry,Finance & Fintech,38
+fliar_global_sample,Life Sciences,Healthcare & Life Sciences,87
+fliar_global_sample,Media & Entertainment,Media & Gaming,156
+fliar_global_sample,Mining,Energy & Resources,37
+fliar_global_sample,Mobile,Software & IT,17
+fliar_global_sample,Nonprofits,Education & Public Sector,10
+fliar_global_sample,Public Administration,Education & Public Sector,4
+fliar_global_sample,Real Estate and Construction,Real Estate & Construction,75
+fliar_global_sample,Real Estate and Construction Tech,Real Estate & Construction,19
+fliar_global_sample,Retail,Retail & Consumer,271
+fliar_global_sample,Semiconductors,Hardware & Semiconductors,49
+fliar_global_sample,Telecom,Telecom,83
+fliar_global_sample,Transportation and Logistics,Travel & Transport,60
+fliar_global_sample,Travel and Hospitality,Travel & Transport,121
+fliar_global_sample,Travel and Hospitality Tech,Travel & Transport,1
+fliar_global_sample,Trending Themes In Enterprise Collaboration,Software & IT,1
+fliar_global_sample,Trending Themes In Food Tech,Food & Agriculture,1
+fliar_global_sample,Trending Themes In Media and Entertainment Tech,Media & Gaming,6
+fliar_global_sample,Unbundling of Bank,Finance & Fintech,1
+tech_layoffs_2025_2026,Automotive/EV,Automotive,2
+tech_layoffs_2025_2026,Cloud Storage,Software & IT,1
+tech_layoffs_2025_2026,Communication,Software & IT,1
+tech_layoffs_2025_2026,Consulting,Business Services,1
+tech_layoffs_2025_2026,Cryptocurrency,Finance & Fintech,1
+tech_layoffs_2025_2026,E-commerce,Retail & Consumer,2
+tech_layoffs_2025_2026,E-commerce/Cloud,Retail & Consumer,1
+tech_layoffs_2025_2026,EdTech,Education & Public Sector,1
+tech_layoffs_2025_2026,Enterprise Software,Software & IT,2
+tech_layoffs_2025_2026,Fintech,Finance & Fintech,2
+tech_layoffs_2025_2026,Fitness Tech,Retail & Consumer,1
+tech_layoffs_2025_2026,Gaming/Software,Media & Gaming,1
+tech_layoffs_2025_2026,Hardware,Hardware & Semiconductors,2
+tech_layoffs_2025_2026,Live Streaming,Media & Gaming,1
+tech_layoffs_2025_2026,Music Streaming,Media & Gaming,1
+tech_layoffs_2025_2026,Networking,Software & IT,1
+tech_layoffs_2025_2026,Ridesharing,Travel & Transport,1
+tech_layoffs_2025_2026,SaaS/CRM,Software & IT,1
+tech_layoffs_2025_2026,Search/AI,Software & IT,1
+tech_layoffs_2025_2026,Semiconductors,Hardware & Semiconductors,1
+tech_layoffs_2025_2026,Semiconductors/AI,Hardware & Semiconductors,1
+tech_layoffs_2025_2026,Social Media,Software & IT,4
+tech_layoffs_2025_2026,Software,Software & IT,1
+tech_layoffs_2025_2026,Software/Cloud,Software & IT,1
+tech_layoffs_2025_2026,Streaming,Media & Gaming,1
+tech_layoffs_2025_2026,Travel Tech,Travel & Transport,1
+tech_layoffs_2025_2026,Video Conferencing,Software & IT,1

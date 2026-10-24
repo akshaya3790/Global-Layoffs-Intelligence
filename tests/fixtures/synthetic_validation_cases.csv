@@ -1,0 +1,13 @@
+case_id,description,date,headcount_cut,headcount_status,pct_workforce,news_mentions
+S01,impossible calendar date,2025-02-30,250,verified,10,1
+S02,text that is not a date,not-a-date,250,verified,10,1
+S03,future date (after audit date),2027-03-15,250,verified,10,1
+S04,negative layoff count,2024-05-01,-50,verified,10,1
+S05,percentage above 100,2024-05-01,250,verified,140,1
+S06,text in numeric headcount field,2024-05-01,twelve hundred,verified,10,1
+S07,text in numeric percentage field,2024-05-01,250,verified,15%,1
+S08,missing headcount (not disclosed),2024-05-01,,not_disclosed,,1
+S09,headcount present but status not verified,2024-05-01,300,failed_check,10,1
+S10,valid control row,2024-05-01,250,verified,10,1
+S11,date before expected range,2015-06-01,250,verified,10,1
+S12,zero layoff count,2024-05-01,0,verified,10,1

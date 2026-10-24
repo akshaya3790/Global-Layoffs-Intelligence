@@ -1,0 +1,16 @@
+country,region,events,events_with_headcount,verified_jobs_cut,median_cut,headcount_coverage_pct,share_of_events_pct,country_status
+United Kingdom,Europe,564,289,301470,280.0,51.2,11.3,ok
+India,Asia Pacific,241,135,178414,200.0,56.0,4.8,ok
+Germany,Europe,226,107,214475,290.0,47.3,4.5,ok
+Canada,North America,199,96,31084,138.0,48.2,4.0,ok
+Australia,Asia Pacific,131,53,31587,130.0,40.5,2.6,ok
+France,Europe,131,57,38187,237.0,43.5,2.6,ok
+Switzerland,Europe,114,53,44621,104.0,46.5,2.3,ok
+Spain,Europe,81,49,80398,500.0,60.5,1.6,ok
+China,Asia Pacific,72,23,26856,500.0,31.9,1.4,ok
+Japan,Asia Pacific,57,30,91528,1000.0,52.6,1.1,ok
+Brazil,Latin America & Caribbean,56,24,38262,180.0,42.9,1.1,ok
+Ireland,Europe,49,22,11117,287.5,44.9,1.0,ok
+Sweden,Europe,45,27,36718,340.0,60.0,0.9,ok
+South Africa,Middle East & Africa,34,15,17182,490.0,44.1,0.7,ok
+Singapore,Asia Pacific,34,16,6017,205.0,47.1,0.7,ok

@@ -1,0 +1,15 @@
+quality_flag,global,tech
+qc_date_unparseable,0,0
+qc_date_outside_expected_range,0,0
+qc_date_after_audit_date,0,0
+qc_non_numeric_value,0,0
+qc_headcount_not_positive,0,0
+qc_pct_out_of_range,0,0
+qc_headcount_status_conflict,0,
+qc_headcount_not_verified,2511,
+qc_missing_sector,1564,
+qc_missing_country,470,
+qc_noisy_company_name,198,
+qc_same_company_same_url,42,
+qc_possible_cross_source_dup,18,11
+qc_headcount_math_gap_gt10pct,,0

@@ -1,0 +1,20 @@
+department,events_involving,weighted_events
+Engineering,15,7.5
+Sales,11,5.5
+Marketing,9,4.5
+Support,8,4.0
+Operations,7,3.5
+Manufacturing,4,2.0
+Consulting,3,1.5
+Customer Support,2,1.0
+AWS,1,0.5
+Azure,1,0.5
+Cloud,1,0.5
+Content,1,0.5
+Content Moderation,1,0.5
+Hardware,1,0.5
+IT Services,1,0.5
+Logistics,1,0.5
+R&D,1,0.5
+Reality Labs,1,0.5
+Retail,1,0.5

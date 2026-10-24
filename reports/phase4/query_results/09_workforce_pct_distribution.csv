@@ -1,0 +1,7 @@
+workforce_pct_band,events,share_of_known_pct,denominator_rows_with_pct,rows_without_pct_excluded
+0-5%,94,8.4,1121,3879
+5-10%,190,16.9,1121,3879
+10-20%,360,32.1,1121,3879
+20-30%,177,15.8,1121,3879
+30-50%,158,14.1,1121,3879
+50-100%,142,12.7,1121,3879

@@ -1,0 +1,28 @@
+# Credentials and local configuration
+.env
+*.env
+!.env.example
+.pgpass
+
+# Local database files (if a local PostgreSQL data directory or dump is ever created inside the project)
+pgdata/
+*.dump
+*.backup
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Local-only folders (recovery copies and backups made before replacing files)
+_recovery/
+_backups/
+
+# Raw tech file: source and licence unknown, so it is not published (see README "Data and licence")
+data/raw/tech_layoffs_2025_2026.csv
+
+# Power BI local caches
+*.pbix.bak

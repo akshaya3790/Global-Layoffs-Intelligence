@@ -1,0 +1,17 @@
+rule_id,decision,column,description,rows_changed,examples
+T01,A-02/P2,company_name,legal-suffix/spacing rule + confident manual mappings; uncertain names kept raw,224,G-00021: 'Electric-car maker Tesla Inc. TSLA' -> 'Tesla' | G-00037: 'Nigerian Bottling Company Limited' -> 'Nigerian Bottling Company' | G-00038: 'Stedfasts Inc' -> 'Stedfasts'
+T01b,A-02,company_name,"spellings differing only by capital letters: prefer not-all-caps, then most rows",7,G-02008: 'SNAP' -> 'Snap' | G-02062: 'Cargologic Germany' -> 'CargoLogic Germany' | G-02085: 'SNAP' -> 'Snap'
+T02,mechanical,event_date,text parsed to date (format unchanged),0,
+T03,A-07,date_reliability,flag only: tech rows matching a global event's size >120 days away; dates unchanged,6,T-00002 | T-00007 | T-00013 | T-00014 | T-00018 | T-00031
+T04,A-04/P1,industry_group,label-level mapping to 16 groups + Unknown (missing sector -> Unknown),4772,G-00001: nan -> 'Unknown' | G-00002: 'Life Sciences' -> 'Healthcare & Life Sciences' | G-00003: 'Travel and Hospitality' -> 'Travel & Transport'
+T05,A-03,country,4 approved relabels + trim,36,G-00047: 'United States (usa)' -> 'United States' | G-01637: 'United Kingdom (uk)' -> 'United Kingdom' | G-02642: 'United States (usa)' -> 'United States'
+T05b,A-03/A-05,hq_country,4 approved relabels + trim; never filled from country,6,G-00047: 'United States (usa)' -> 'United States' | G-01147: 'United States (usa)' -> 'United States' | G-01637: 'United Kingdom (uk)' -> 'United Kingdom'
+T06,A-06,city,tech: text before the comma,35,T-00001: <NA> -> 'Pittsburgh' | T-00002: <NA> -> 'San Francisco' | T-00003: <NA> -> 'San Francisco'
+T06b,A-06,state,tech: after the comma only if a US state code,31,T-00001: <NA> -> 'PA' | T-00002: <NA> -> 'CA' | T-00003: <NA> -> 'CA'
+T07,A-08,headcount_status,tech rows labelled reported_unverified,35,T-00001: <NA> -> 'reported_unverified' | T-00002: <NA> -> 'reported_unverified' | T-00003: <NA> -> 'reported_unverified'
+T08,A-10,reason_category_derived,new derived column from keyword rules; source 'reason' unchanged,1524,
+T09,A-12,ai_mentioned_in_news_derived,new derived flag (global only); ai_related unchanged,41,
+T10,A-16,is_permanent_layoff,NOT is_furlough; missing for tech,5000,
+T11,A-14,news_url,leading/trailing whitespace removed,6,G-02219: '\n    https://endpts.com/mental-health-tech-unicorn-sondermind-lays-off-17-of-its-employees' -> 'https://endpts.com/mental-health-tech-unicorn-sondermind-lays-off-17-of-its-employees' | G-03168: '\n    https://endpts.com/mental-health-tech-unicorn-sondermind-lays-off-17-of-its-employees' -> 'https://endpts.com/mental-health-tech-unicorn-sondermind-lays-off-17-of-its-employees' | G-03470: '\n    https://endpts.com/ai-biotech-exscientia-to-trim-nearly-a-quarter-of-workforce-following-pipeline-cut-and-ceo-firing' -> 'https://endpts.com/ai-biotech-exscientia-to-trim-nearly-a-quarter-of-workforce-following-pipeline-cut-and-ceo-firing'
+T12,A-13,possible_duplicate_group,link records in the 18 kept pairs (connected groups); nothing merged,29,
+T13,A-15,possible_internal_duplicate,Phase 1 same-company shared-URL flag carried over,42,

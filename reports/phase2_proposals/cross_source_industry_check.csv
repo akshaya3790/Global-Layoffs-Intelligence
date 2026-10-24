@@ -1,0 +1,17 @@
+company,tech_industry,tech_group,global_sector,global_group,groups_agree
+Twitch,Live Streaming,Media & Gaming,Consumer,Retail & Consumer,False
+Coinbase,Cryptocurrency,Finance & Fintech,Fintech,Finance & Fintech,True
+Dell,Hardware,Hardware & Semiconductors,Investment Industry,Finance & Fintech,False
+Cisco,Networking,Software & IT,Enterprise Infrastructure,Software & IT,True
+Rivian,Automotive/EV,Automotive,Energy Tech,Energy & Resources,False
+Roku,Streaming,Media & Gaming,Media & Entertainment,Media & Gaming,True
+Accenture,Consulting,Business Services,Investment Industry,Finance & Fintech,False
+Lyft,Ridesharing,Travel & Transport,Consumer,Retail & Consumer,False
+Unity,Gaming/Software,Media & Gaming,Financial Services,Finance & Fintech,False
+Intel,Semiconductors,Hardware & Semiconductors,Semiconductors,Hardware & Semiconductors,True
+Snap,Social Media,Software & IT,Consumer,Retail & Consumer,False
+Amazon,E-commerce/Cloud,Retail & Consumer,Retail,Retail & Consumer,True
+Microsoft,Software/Cloud,Software & IT,Enterprise Infrastructure,Software & IT,True
+Adobe,Software,Software & IT,Enterprise Applications,Software & IT,True
+Meta,Social Media,Software & IT,High Tech,Technology (mixed),False
+Google,Search/AI,Software & IT,High Tech,Technology (mixed),False

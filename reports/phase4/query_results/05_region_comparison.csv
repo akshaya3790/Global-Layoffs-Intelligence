@@ -1,0 +1,8 @@
+region,events,events_with_headcount,verified_jobs_cut,median_cut,headcount_coverage_pct,share_of_events_pct
+North America,2129,1177,1188509,152.0,55.3,42.6
+Europe,1443,718,852983,279.5,49.8,28.9
+Asia Pacific,680,314,374759,228.0,46.2,13.6
+Unknown,470,161,265700,150.0,34.3,9.4
+Middle East & Africa,168,74,53274,225.5,44.0,3.4
+Latin America & Caribbean,104,43,53458,190.0,41.3,2.1
+Unresolved,6,2,225,112.5,33.3,0.1

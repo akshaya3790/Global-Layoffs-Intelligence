@@ -1,0 +1,76 @@
+checked_at_utc,check,passed,detail,run_id
+2026-10-23 10:17:34,raw files match Phase 1 SHA-256,True,"SOURCE_DATA_CARD.md=8e93c93c, layoffs_2019_2026_sample.csv=a181c6ce, tech_layoffs_2025_2026.csv=f011a4d0",phase2_run_20261023T101736Z
+2026-10-23 10:17:34,"raw row counts are 5,000 + 35",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,staged files hold the same rows as raw,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,staged raw columns equal raw values,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,duplicate-review files have 18 + 97 pairs,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,event_key matches Phase 1 record_id (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,event_key matches Phase 1 record_id (tech),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,every source column is mapped or listed as dropped,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,dropped global year/month agree with date,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,dropped tech Year/Month/Month_Name/Quarter agree with Date,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,company_name_raw is unchanged,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,P2: every needs_review name equals its raw name,True,13 rows,phase2_run_20261023T101736Z
+2026-10-23 10:17:34,no empty company names,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,all dates parse,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-07: exactly 6 suspect dates,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"A-07: the 6 are Twitch, Dell, Roku, Accenture, Unity, Adobe",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-07: suspect dates keep their original value,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,every row has a known industry group,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,P1: High Tech rows -> Technology (mixed),True,70 rows,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,P3: industry_raw unchanged (no company override),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-05: missing event country not filled from HQ,True,470 missing,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-05: hq_country missing count unchanged,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,no country left in an unapproved bracket form,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,region is never 'Other' (every real country mapped),True,"{'North America': 2161, 'Europe': 1446, 'Asia Pacific': 680, 'Unknown': 470, 'Middle East & Africa': 168, 'Latin America & Caribbean': 104, 'Unresolved': 6}",phase2_run_20261023T101736Z
+2026-10-23 10:17:35,employees_laid_off: all filled values are whole numbers,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,total_employees: all filled values are whole numbers,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,severance_weeks: all filled values are whole numbers,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,news_mentions: all filled values are whole numbers,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"A-08: missing headcounts stay missing (2,511 global, 0 tech)",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,no zero headcount was created,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-09: global total_employees all missing,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"workforce_pct missing count unchanged (3,879)",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-10: global reason stays missing,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"A-12: ai_related missing for global, unchanged for tech",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-12: AI flag missing where the excerpt is missing,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-16: furlough rows kept (133) and permanent flag missing for tech,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-14: exactly the 6 padded URLs changed,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,possible_duplicate_pairs.csv copied unchanged,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,excluded_candidate_pairs.csv copied unchanged,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-13: 11 groups covering 29 records (11 tech + 18 global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-15: 42 internal-duplicate rows; not computed (NA) for tech,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_date_unparseable (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_date_outside_expected_range (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_date_after_audit_date (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_non_numeric_value (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_headcount_not_positive (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_pct_out_of_range (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_headcount_status_conflict (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_headcount_not_verified (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_missing_sector (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_missing_country (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_noisy_company_name (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_same_company_same_url (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,Phase 1 flag carried unchanged: qc_possible_cross_source_dup (global),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,quality_issues rows = total True flags,True,4886 issues,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,bridge: every event_key exists in layoff_events,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"bridge: (event_key, department) is unique",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,bridge: weights add to 1 per event,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,bridge: covers all 35 tech events and only them,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,bridge: no headcount column (cannot double count),True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,bridge: source_row_number matches layoff_events,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,schema: exact column list,True,51 named + 18 qc = 69 columns,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"row count = 5,000 global + 35 tech",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,primary key event_key unique and never missing,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"(source_dataset, source_row_number) unique",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"global source_event_id = layoff_id, unique",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,A-01: tech source_event_id missing,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,"TECH: confidence high for global, low for tech",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,lineage: raw-preserving columns equal raw values at source line (global),True,[],phase2_run_20261023T101736Z
+2026-10-23 10:17:35,lineage: raw-preserving columns equal raw values at source line (tech),True,[],phase2_run_20261023T101736Z
+2026-10-23 10:17:35,lineage: numeric headcounts equal raw values after type change,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:35,missingness preserved for every compared field,True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:36,"saved layoff_events reloads with 5,035 rows and same columns",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:36,"saved file keeps 2,511 missing global headcounts (no zeros)",True,,phase2_run_20261023T101736Z
+2026-10-23 10:17:36,raw files still unchanged at the end,True,,phase2_run_20261023T101736Z

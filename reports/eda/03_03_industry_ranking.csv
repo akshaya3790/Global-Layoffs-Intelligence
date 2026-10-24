@@ -1,0 +1,18 @@
+industry_group,events,events_with_headcount,verified_jobs_cut,median_cut,headcount_coverage_pct,share_of_events_pct,rank_by_events
+Unknown,1564,680,655977,171.0,43.5,31.3,1
+Retail & Consumer,680,363,338206,200.0,53.4,13.6,2
+Finance & Fintech,375,208,274074,200.0,55.5,7.5,3
+Healthcare & Life Sciences,298,158,84066,103.0,53.0,6.0,4
+Software & IT,281,152,196299,200.0,54.1,5.6,5
+Food & Agriculture,268,135,61373,127.0,50.4,5.4,6
+Media & Gaming,223,106,89068,150.0,47.5,4.5,7
+Industrial & Manufacturing,208,119,230279,450.0,57.2,4.2,8
+Energy & Resources,191,99,114731,300.0,51.8,3.8,9
+Automotive,185,104,228895,425.0,56.2,3.7,10
+Business Services,184,76,97681,164.0,41.3,3.7,11
+Travel & Transport,182,95,157215,325.0,52.2,3.6,12
+Real Estate & Construction,94,48,29635,200.0,51.1,1.9,13
+Telecom,83,44,92739,550.0,53.0,1.7,14
+Technology (mixed),70,33,15032,90.0,47.1,1.4,15
+Education & Public Sector,65,32,16658,100.0,49.2,1.3,16
+Hardware & Semiconductors,49,37,106980,500.0,75.5,1.0,17

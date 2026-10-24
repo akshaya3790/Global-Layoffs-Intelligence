@@ -1,0 +1,5 @@
+comparison,groups,chi2,df,p_value
+industry group (incl. Unknown),17,144.27,16,1.048126362998556e-22
+industry group (known only),16,21.37,15,0.12553946924726275
+era of first event,2,0.0,1,0.9683755472806492
+size of first cut,3,44.6,2,2.0615795795677235e-10

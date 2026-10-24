@@ -1,0 +1,26 @@
+reason_category_derived,events,reported_laid_off,chart,department,events_involving,weighted_events
+Cost Cutting,11.0,48302,reason,,,
+AI / Automation,9.0,21720,reason,,,
+Demand / Market,7.0,26450,reason,,,
+Restructuring,5.0,51250,reason,,,
+Not stated,2.0,4500,reason,,,
+Pandemic,1.0,1300,reason,,,
+,,,department,Engineering,15.0,7.5
+,,,department,Sales,11.0,5.5
+,,,department,Marketing,9.0,4.5
+,,,department,Support,8.0,4.0
+,,,department,Operations,7.0,3.5
+,,,department,Manufacturing,4.0,2.0
+,,,department,Consulting,3.0,1.5
+,,,department,Customer Support,2.0,1.0
+,,,department,Cloud,1.0,0.5
+,,,department,AWS,1.0,0.5
+,,,department,Azure,1.0,0.5
+,,,department,Logistics,1.0,0.5
+,,,department,IT Services,1.0,0.5
+,,,department,Hardware,1.0,0.5
+,,,department,Content Moderation,1.0,0.5
+,,,department,Content,1.0,0.5
+,,,department,R&D,1.0,0.5
+,,,department,Retail,1.0,0.5
+,,,department,Reality Labs,1.0,0.5

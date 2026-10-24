@@ -1,0 +1,17 @@
+concept,global_column,tech_column,note
+company,company_name,Company,"Name styles differ, e.g. 'X (Twitter)' vs 'Twitter'"
+layoff date,date,Date,Both ISO yyyy-mm-dd text
+people laid off,headcount_cut,Employees_Laid_Off,Global: only filled when verified
+% of workforce,pct_workforce,Percentage_Workforce,
+country,country / company_country,Country,Global has 2 country columns; tech uses 'USA'
+city / location,"company_city, company_state",Location,Tech combines city and state in one text
+industry,sector,Industry,Different category lists
+year / month,"year, month","Year, Month, Month_Name, Quarter",Derived from the date in both
+reason,(news_excerpt text only),Reason,Global has no reason column
+AI-related flag,-,AI_Related,Tech only
+company size,-,Total_Employees,Tech only
+severance,-,Severance_Weeks,Tech only
+department,-,Department,Tech only
+furlough flag,is_furlough,-,Global only
+headcount quality,headcount_status,-,Global only
+news source,"news_source, news_url, news_excerpt, news_mentions",-,Global only

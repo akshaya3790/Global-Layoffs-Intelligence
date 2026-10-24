@@ -1,0 +1,20 @@
+query,status,result_rows,seconds,phase3_file,rows_compared,cells_compared,mismatches,mismatch_examples,reconciliation
+sql/analytics/01_monthly_events.sql,ok,90,0.009,reports/eda/03_01_monthly_events.csv,90,180,0,,MATCH
+sql/analytics/02_yearly_events_and_known_job_cuts.sql,ok,8,0.006,reports/eda/03_02_yearly_events_and_jobs.csv,8,72,0,,MATCH
+sql/analytics/03_industry_ranking.sql,ok,17,0.005,reports/eda/03_03_industry_ranking.csv,17,119,0,,MATCH
+sql/analytics/04_industry_share_by_year.sql,ok,135,0.004,reports/eda/03_04_industry_share_by_year.csv,136,136,0,,MATCH
+sql/analytics/05_region_comparison.sql,ok,7,0.005,reports/eda/03_05_region_events.csv,7,42,0,,MATCH
+sql/analytics/06_country_comparison.sql,ok,111,0.006,reports/eda/03_06_top_countries_outside_us.csv,15,120,0,,MATCH
+sql/analytics/07_us_share_by_year.sql,ok,8,0.003,reports/eda/03_07_us_share_by_year.csv,8,32,0,,MATCH
+sql/analytics/08_layoff_size_distribution.sql,ok,5,0.007,reports/eda/03_08_size_and_pct_distribution.csv,5,10,0,,MATCH
+sql/analytics/09_workforce_pct_distribution.sql,ok,6,0.007,reports/eda/03_08_size_and_pct_distribution.csv,6,6,0,,MATCH
+sql/analytics/10_workforce_pct_by_year.sql,ok,9,0.004,,0,0,0,,not applicable (checked in tests)
+sql/analytics/11_tech_reason_summary.sql,ok,6,0.002,reports/eda/03_T1_tech_reasons_and_departments.csv,6,12,0,,MATCH
+sql/analytics/12_tech_ai_related_summary.sql,ok,3,0.002,reports/eda/03_T2_tech_ai_and_severance.csv,3,15,0,,MATCH
+sql/analytics/13_tech_department_summary.sql,ok,19,0.002,reports/eda/03_T1_tech_reasons_and_departments.csv,19,38,0,,MATCH
+sql/analytics/14_tech_severance_summary.sql,ok,7,0.001,reports/eda/03_T2_tech_ai_and_severance.csv,7,7,0,,MATCH
+sql/analytics/15_repeat_layoff_companies.sql,ok,688,0.015,,0,0,0,,not applicable (checked in tests)
+sql/analytics/16_repeat_layoff_distribution.sql,ok,5,0.008,,0,0,0,,not applicable (checked in tests)
+sql/analytics/17_quality_flag_summary.sql,ok,36,0.038,reports/eda/03_10_quality_flags_global.csv,36,72,0,,MATCH
+sql/analytics/18_missingness_summary.sql,ok,30,0.028,reports/eda/03_09_missingness_global.csv,26,78,0,,MATCH
+sql/analytics/19_sensitivity_by_year.sql,ok,8,0.006,reports/eda/03_11_sensitivity_by_year.csv,8,40,0,,MATCH

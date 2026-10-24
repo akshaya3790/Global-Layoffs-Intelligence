@@ -1,0 +1,12 @@
+size_band,events,share_of_verified_pct,chart,workforce_pct_band
+1-99,775,31.1,size_band,
+100-499,957,38.4,size_band,
+500-999,262,10.5,size_band,
+"1,000-4,999",347,13.9,size_band,
+"5,000+",148,5.9,size_band,
+,94,,pct_band,0-5%
+,190,,pct_band,5-10%
+,360,,pct_band,10-20%
+,177,,pct_band,20-30%
+,158,,pct_band,30-50%
+,142,,pct_band,50-100%

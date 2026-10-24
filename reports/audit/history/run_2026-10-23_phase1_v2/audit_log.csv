@@ -1,0 +1,42 @@
+checked_at_utc,check,dataset,records_checked,issues_found,action_taken,notes
+2026-10-23 07:27:40,source record count,layoffs_2019_2026_sample.csv,5000,0,none (baseline recorded),
+2026-10-23 07:27:40,source record count,tech_layoffs_2025_2026.csv,35,0,none (baseline recorded),
+2026-10-23 07:27:41,missing values (all columns),global,5000,12,measured only; nothing filled,count = columns with at least one missing value
+2026-10-23 07:27:41,missing values (all columns),tech,35,0,measured only; nothing filled,
+2026-10-23 07:27:41,text with leading/trailing spaces,global,5000,6,flagged only; strip in Phase 2,news_url
+2026-10-23 07:27:41,headcount vs headcount_status consistency,global,5000,0,flagged only,
+2026-10-23 07:27:41,date parse,global,5000,0,flagged only (original text kept),
+2026-10-23 07:27:41,date within expected range,global,5000,0,flagged only,expected 2019-01-01 to 2026-06-30
+2026-10-23 07:27:41,date after audit date (future),global,5000,0,flagged only,audit date 2026-10-23
+2026-10-23 07:27:41,date parse,tech,35,0,flagged only (original text kept),
+2026-10-23 07:27:41,date within expected range,tech,35,0,flagged only,expected 2025-01-01 to 2026-12-31
+2026-10-23 07:27:41,date after audit date (future),tech,35,0,flagged only,audit date 2026-10-23
+2026-10-23 07:27:41,derived year/month agree with date,global,5000,0,none needed if 0,
+2026-10-23 07:27:41,derived year/month/quarter/name agree with date,tech,35,0,none needed if 0,
+2026-10-23 07:27:41,range rule: headcount_cut <= 0,global,5000,0,flagged only,
+2026-10-23 07:27:41,range rule: pct_workforce <= 0 or > 100,global,5000,0,flagged only,
+2026-10-23 07:27:41,range rule: news_mentions < 1,global,5000,0,flagged only,
+2026-10-23 07:27:41,range rule: Employees_Laid_Off <= 0,tech,35,0,flagged only,
+2026-10-23 07:27:41,range rule: Percentage_Workforce <= 0 or > 100,tech,35,0,flagged only,
+2026-10-23 07:27:41,range rule: Laid off > Total_Employees,tech,35,0,flagged only,
+2026-10-23 07:27:41,range rule: Severance_Weeks < 0,tech,35,0,flagged only,
+2026-10-23 07:27:41,non-numeric value in headcount_cut,global,5000,0,flagged only,
+2026-10-23 07:27:41,non-numeric value in pct_workforce,global,5000,0,flagged only,
+2026-10-23 07:27:41,non-numeric value in news_mentions,global,5000,0,flagged only,
+2026-10-23 07:27:41,non-numeric value in Employees_Laid_Off,tech,35,0,flagged only,
+2026-10-23 07:27:41,non-numeric value in Percentage_Workforce,tech,35,0,flagged only,
+2026-10-23 07:27:41,non-numeric value in Total_Employees,tech,35,0,flagged only,
+2026-10-23 07:27:41,non-numeric value in Severance_Weeks,tech,35,0,flagged only,
+2026-10-23 07:27:41,laid off ~= pct x total employees (within 10%),tech,35,0,flagged only,
+2026-10-23 07:27:42,company name has legal suffix / odd spacing,global,5000,127,flagged only,
+2026-10-23 07:27:42,company name looks like a sentence (5+ words),global,5000,84,flagged only,
+2026-10-23 07:27:42,duplicates: exact duplicate rows,global,5000,0,flagged only,
+2026-10-23 07:27:42,duplicates: duplicate layoff_id,global,5000,0,flagged only,
+2026-10-23 07:27:42,duplicates: same company + same date,global,5000,0,flagged only,
+2026-10-23 07:27:42,duplicates: same news_url used by 2+ rows,global,5000,350,flagged only,
+2026-10-23 07:27:42,duplicates: exact duplicate rows,tech,35,0,flagged only,
+2026-10-23 07:27:42,duplicates: same company appears 2+ times,tech,35,0,flagged only,
+2026-10-23 07:27:42,duplicates: same company within 45 days,global,5000,0,flagged only,data card says these were merged upstream
+2026-10-23 07:27:42,duplicates: same company + same news_url,global,5000,42,flagged only,
+2026-10-23 07:27:42,cross-source possible duplicate pairs,tech vs global,35,18,saved to data/interim/possible_duplicate_pairs.csv for human review; nothing merged,11 tech rows involved
+2026-10-23 07:27:42,cross-source candidates excluded by filter rule,tech vs global,115,97,saved to data/interim/excluded_candidate_pairs.csv; nothing merged or deleted,rule: date gap > 120 days and headcount not within 5%

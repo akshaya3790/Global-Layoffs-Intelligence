@@ -1,0 +1,3 @@
+group,companies,repeats_observed,p_repeat_182d,p_repeat_182d_lo,p_repeat_182d_hi,p_repeat_365d,p_repeat_365d_lo,p_repeat_365d_hi,p_repeat_730d,p_repeat_730d_lo,p_repeat_730d_hi
+2019-2021 (incl. COVID),1359,359,0.082,0.068,0.098,0.127,0.111,0.146,0.16,0.141,0.18
+2022 onwards,2108,329,0.072,0.061,0.084,0.125,0.111,0.141,0.164,0.147,0.182

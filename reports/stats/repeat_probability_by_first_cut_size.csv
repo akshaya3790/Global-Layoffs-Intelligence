@@ -1,0 +1,4 @@
+group,companies,repeats_observed,p_repeat_182d,p_repeat_182d_lo,p_repeat_182d_hi,p_repeat_365d,p_repeat_365d_lo,p_repeat_365d_hi,p_repeat_730d,p_repeat_730d_lo,p_repeat_730d_hi
+500 or more,378,107,0.124,0.095,0.162,0.179,0.143,0.223,0.215,0.175,0.262
+Under 500,1174,277,0.088,0.073,0.106,0.143,0.124,0.165,0.195,0.172,0.22
+Undisclosed,1915,304,0.059,0.049,0.071,0.105,0.091,0.12,0.13,0.115,0.147

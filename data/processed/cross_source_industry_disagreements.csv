@@ -1,0 +1,10 @@
+company_name,event_key_tech,industry_raw_tech,industry_group_tech,industry_raw_global,industry_group_global,global_event_keys,global_rows
+Accenture,T-00014,Consulting,Business Services,Investment Industry,Finance & Fintech,G-01047;G-01223;G-01749;G-02252;G-02494;G-02626;G-02815;G-02959;G-03364;G-03937;G-04481,11
+Dell,T-00007,Hardware,Hardware & Semiconductors,Investment Industry,Finance & Fintech,G-00214;G-02557,2
+Google,T-00034,Search/AI,Software & IT,High Tech,Technology (mixed),G-02154,1
+Lyft,T-00016,Ridesharing,Travel & Transport,Consumer,Retail & Consumer,G-00281;G-00530;G-01932;G-02115;G-03673;G-04654,6
+Meta,T-00032,Social Media,Software & IT,High Tech,Technology (mixed),G-04665,1
+Rivian,T-00010,Automotive/EV,Automotive,Energy Tech,Energy & Resources,G-02299;G-04546,2
+Snap,T-00025,Social Media,Software & IT,Consumer,Retail & Consumer,G-02008;G-02085;G-02300;G-03216;G-04903,5
+Twitch,T-00002,Live Streaming,Media & Gaming,Consumer,Retail & Consumer,G-02156;G-02482;G-03089,3
+Unity,T-00018,Gaming/Software,Media & Gaming,Financial Services,Finance & Fintech,G-01891;G-02584;G-03044;G-03142;G-04039;G-04700,6
