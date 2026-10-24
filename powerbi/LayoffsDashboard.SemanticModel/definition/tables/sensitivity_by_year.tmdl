@@ -1,0 +1,47 @@
+table sensitivity_by_year
+
+	column 'event_year'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: event_year
+
+	column 'all_events'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: all_events
+
+	column 'excl_furloughs'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: excl_furloughs
+
+	column 'excl_internal_duplicates'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: excl_internal_duplicates
+
+	column 'excl_cross_source_duplicate_candidates'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: excl_cross_source_duplicate_candidates
+
+	column 'period_note'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: period_note
+
+	partition sensitivity_by_year = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectFolder & "\reports\phase4\query_results\19_sensitivity_by_year.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Kept = Table.SelectColumns(Headers, {"event_year", "all_events", "excl_furloughs", "excl_internal_duplicates", "excl_cross_source_duplicate_candidates", "period_note"}),
+				    Typed = Table.TransformColumnTypes(Kept, {{"event_year", Int64.Type}, {"all_events", Int64.Type}, {"excl_furloughs", Int64.Type}, {"excl_internal_duplicates", Int64.Type}, {"excl_cross_source_duplicate_candidates", Int64.Type}, {"period_note", type text}}, "en-US")
+				in
+				    Typed

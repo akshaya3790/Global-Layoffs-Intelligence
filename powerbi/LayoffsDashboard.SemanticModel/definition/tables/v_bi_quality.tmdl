@@ -1,0 +1,79 @@
+table v_bi_quality
+
+	column 'dimension'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: dimension
+
+	column 'value'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: value
+
+	column 'events'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events
+
+	column 'events_with_headcount'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events_with_headcount
+
+	column 'disclosure_rate_pct'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: disclosure_rate_pct
+
+	column 'events_with_workforce_pct'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events_with_workforce_pct
+
+	column 'events_unknown_sector'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events_unknown_sector
+
+	column 'unknown_sector_pct'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: unknown_sector_pct
+
+	column 'events_no_country'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events_no_country
+
+	column 'events_unresolved_country'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events_unresolved_country
+
+	column 'furlough_events'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: furlough_events
+
+	column 'possible_internal_duplicates'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: possible_internal_duplicates
+
+	partition v_bi_quality = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(PgServer, PgDatabase),
+				    View = Source{[Schema = "core", Item = "v_bi_quality"]}[Data],
+				    Kept = Table.SelectColumns(View, {"dimension", "value", "events", "events_with_headcount", "disclosure_rate_pct", "events_with_workforce_pct", "events_unknown_sector", "unknown_sector_pct", "events_no_country", "events_unresolved_country", "furlough_events", "possible_internal_duplicates"})
+				in
+				    Kept

@@ -1,0 +1,55 @@
+table km_curve
+
+	measure 'Repeat probability %' = ROUND((1 - MAX(km_curve[survival])) * 100, 1)
+		formatString: 0.0
+
+	column 't'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: t
+
+	column 'at_risk'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: at_risk
+
+	column 'events'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events
+
+	column 'survival'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: survival
+
+	column 'lo'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: lo
+
+	column 'hi'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: hi
+
+	column 'months' = km_curve[t] / 30.44
+		dataType: double
+		summarizeBy: none
+
+	column 'p_repeat' = 1 - km_curve[survival]
+		dataType: double
+		summarizeBy: none
+
+	partition km_curve = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(ProjectFolder & "\reports\stats\km_curve_overall.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Kept = Table.SelectColumns(Headers, {"t", "at_risk", "events", "survival", "lo", "hi"}),
+				    Typed = Table.TransformColumnTypes(Kept, {{"t", type number}, {"at_risk", Int64.Type}, {"events", Int64.Type}, {"survival", type number}, {"lo", type number}, {"hi", type number}}, "en-US")
+				in
+				    Typed

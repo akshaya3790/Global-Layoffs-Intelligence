@@ -1,0 +1,90 @@
+table v_bi_company_summary
+
+	measure 'Repeat companies' = CALCULATE(COUNTROWS(v_bi_company_summary), v_bi_company_summary[is_repeat_company] = TRUE())
+		formatString: #,0
+
+	measure 'Median days to next round' = MEDIAN(v_bi_company_summary[days_to_second_event])
+		formatString: #,0
+
+	column 'company_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: company_name
+
+	column 'events'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events
+
+	column 'is_repeat_company'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_repeat_company
+
+	column 'first_event_date'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: first_event_date
+
+	column 'last_event_date'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: last_event_date
+
+	column 'days_to_second_event'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: days_to_second_event
+
+	column 'days_observed'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: days_observed
+
+	column 'distinct_years'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: distinct_years
+
+	column 'events_with_headcount'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: events_with_headcount
+
+	column 'disclosed_jobs_cut'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: disclosed_jobs_cut
+
+	column 'first_industry_group'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: first_industry_group
+
+	column 'industry_groups'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: industry_groups
+
+	column 'name_needs_review'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: name_needs_review
+
+	partition v_bi_company_summary = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(PgServer, PgDatabase),
+				    View = Source{[Schema = "core", Item = "v_bi_company_summary"]}[Data],
+				    Kept = Table.SelectColumns(View, {"company_name", "events", "is_repeat_company", "first_event_date", "last_event_date", "days_to_second_event", "days_observed", "distinct_years", "events_with_headcount", "disclosed_jobs_cut", "first_industry_group", "industry_groups", "name_needs_review"})
+				in
+				    Kept

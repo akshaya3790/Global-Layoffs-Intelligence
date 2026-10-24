@@ -1,0 +1,3 @@
+relationship ecc7ff6e-e6b6-5128-a337-f9ac098b0320
+	fromColumn: v_bi_events.company_name
+	toColumn: v_bi_company_summary.company_name

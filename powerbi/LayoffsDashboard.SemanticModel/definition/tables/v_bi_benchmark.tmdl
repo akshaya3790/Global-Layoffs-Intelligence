@@ -1,0 +1,61 @@
+table v_bi_benchmark
+
+	column 'event_year'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: event_year
+
+	column 'sample_events'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: sample_events
+
+	column 'full_events'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: full_events
+
+	column 'events_ratio'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: events_ratio
+
+	column 'sample_disclosed_jobs'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: sample_disclosed_jobs
+
+	column 'full_disclosed_jobs'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: full_disclosed_jobs
+
+	column 'jobs_ratio'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: jobs_ratio
+
+	column 'nominal_ratio'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: nominal_ratio
+
+	column 'is_partial_period'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_partial_period
+
+	partition v_bi_benchmark = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(PgServer, PgDatabase),
+				    View = Source{[Schema = "core", Item = "v_bi_benchmark"]}[Data],
+				    Kept = Table.SelectColumns(View, {"event_year", "sample_events", "full_events", "events_ratio", "sample_disclosed_jobs", "full_disclosed_jobs", "jobs_ratio", "nominal_ratio", "is_partial_period"})
+				in
+				    Kept

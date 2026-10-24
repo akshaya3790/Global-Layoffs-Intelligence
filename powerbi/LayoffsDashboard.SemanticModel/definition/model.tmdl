@@ -1,0 +1,18 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+ref table v_bi_events
+ref table v_bi_company_summary
+ref table v_bi_quality
+ref table v_bi_benchmark
+ref table v_tech_events
+ref table km_curve
+ref table repeat_by_first_cut
+ref table repeat_overall
+ref table bootstrap_yearly
+ref table sensitivity_by_year

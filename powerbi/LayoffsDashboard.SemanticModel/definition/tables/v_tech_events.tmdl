@@ -1,0 +1,56 @@
+table v_tech_events
+
+	measure 'Tech case-study rows' = COUNTROWS(v_tech_events)
+		formatString: #,0
+
+	column 'event_key'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: event_key
+
+	column 'company_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: company_name
+
+	column 'event_date'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: event_date
+
+	column 'employees_laid_off'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: employees_laid_off
+
+	column 'workforce_pct'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: workforce_pct
+
+	column 'reason_category_derived'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: reason_category_derived
+
+	column 'ai_related'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ai_related
+
+	column 'qc_suspect_date'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: qc_suspect_date
+
+	partition v_tech_events = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(PgServer, PgDatabase),
+				    View = Source{[Schema = "core", Item = "v_tech_events"]}[Data],
+				    Kept = Table.SelectColumns(View, {"event_key", "company_name", "event_date", "employees_laid_off", "workforce_pct", "reason_category_derived", "ai_related", "qc_suspect_date"})
+				in
+				    Kept

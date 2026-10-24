@@ -1,0 +1,186 @@
+table v_bi_events
+
+	measure 'Events' = COUNTROWS(v_bi_events)
+		formatString: #,0
+
+	measure 'Companies' = DISTINCTCOUNT(v_bi_events[company_name])
+		formatString: #,0
+
+	measure 'Events with headcount' = CALCULATE([Events], v_bi_events[has_disclosed_headcount] = TRUE())
+		formatString: #,0
+
+	measure 'Events headcount unknown' = [Events] - [Events with headcount]
+		formatString: #,0
+
+	measure 'Disclosed jobs cut (lower bound)' = SUM(v_bi_events[employees_laid_off])
+		formatString: #,0
+
+	measure 'Median disclosed cut' = MEDIAN(v_bi_events[employees_laid_off])
+		formatString: #,0
+
+	measure 'Disclosure rate %' = ROUND(DIVIDE([Events with headcount], [Events]) * 100, 1)
+		formatString: 0.0
+
+	measure 'Events 2019 baseline' = CALCULATE([Events], REMOVEFILTERS(v_bi_events[event_year]), v_bi_events[event_year] = 2019)
+		formatString: #,0
+
+	measure 'Events vs 2019 %' = ROUND(DIVIDE([Events], [Events 2019 baseline]) * 100, 1)
+		formatString: 0.0
+
+	measure 'Unknown sector %' = ROUND(DIVIDE(CALCULATE([Events], v_bi_events[industry_group] = "Unknown"), [Events]) * 100, 1)
+		formatString: 0.0
+
+	measure 'US share of known-country %' = ROUND(DIVIDE(CALCULATE([Events], v_bi_events[country] = "United States"), CALCULATE([Events], v_bi_events[country] <> "Unknown")) * 100, 1)
+		formatString: 0.0
+
+	column 'event_key'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: event_key
+
+	column 'company_name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: company_name
+
+	column 'company_domain'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: company_domain
+
+	column 'event_date'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: event_date
+
+	column 'month_start'
+		dataType: dateTime
+		formatString: Short Date
+		summarizeBy: none
+		sourceColumn: month_start
+
+	column 'event_year'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: event_year
+
+	column 'event_quarter'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: event_quarter
+
+	column 'event_month'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: event_month
+
+	column 'industry_group'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: industry_group
+
+	column 'industry_raw'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: industry_raw
+
+	column 'country'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: country
+
+	column 'region'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: region
+
+	column 'employees_laid_off'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: employees_laid_off
+
+	column 'has_disclosed_headcount'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: has_disclosed_headcount
+
+	column 'size_band'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: size_band
+
+	column 'workforce_pct'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: workforce_pct
+
+	column 'is_furlough'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_furlough
+
+	column 'is_permanent_layoff'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_permanent_layoff
+
+	column 'possible_internal_duplicate'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: possible_internal_duplicate
+
+	column 'has_cross_source_candidate'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: has_cross_source_candidate
+
+	column 'company_name_review_status'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: company_name_review_status
+
+	column 'reason_category_derived'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: reason_category_derived
+
+	column 'news_source'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: news_source
+
+	column 'news_url'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: news_url
+
+	column 'qc_issue_count'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: qc_issue_count
+
+	column 'is_partial_period'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_partial_period
+
+	column 'period_note'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: period_note
+
+	partition v_bi_events = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database(PgServer, PgDatabase),
+				    View = Source{[Schema = "core", Item = "v_bi_events"]}[Data],
+				    Kept = Table.SelectColumns(View, {"event_key", "company_name", "company_domain", "event_date", "month_start", "event_year", "event_quarter", "event_month", "industry_group", "industry_raw", "country", "region", "employees_laid_off", "has_disclosed_headcount", "size_band", "workforce_pct", "is_furlough", "is_permanent_layoff", "possible_internal_duplicate", "has_cross_source_candidate", "company_name_review_status", "reason_category_derived", "news_source", "news_url", "qc_issue_count", "is_partial_period", "period_note"})
+				in
+				    Kept

@@ -1,0 +1,5 @@
+expression PgServer = "localhost:5432" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+
+expression PgDatabase = "layoffs_db" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+
+expression ProjectFolder = "C:\Users\prama\OneDrive\Desktop\Global- Layoffs- Intelligence" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
