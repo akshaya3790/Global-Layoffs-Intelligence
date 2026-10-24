@@ -96,6 +96,10 @@ MEASURES = {
          "CALCULATE([Events], v_bi_events[country] <> \"Unknown\")) * 100, 1)", "0.0"),
         ("Share of selected events %",
          "ROUND(DIVIDE([Events], CALCULATE([Events], ALLSELECTED(v_bi_events[industry_group]))) * 100, 1)", "0.0"),
+        # Added 25 Oct 2026 for the page 2 top-5 column chart only: the denominator ignores every industry filter,
+        # so it is always ALL events in that year (Unknown and the other industries included).
+        ("Share of all events in year %",
+         "DIVIDE([Events], CALCULATE([Events], REMOVEFILTERS(v_bi_events[industry_group])))", "0.0%"),
     ],
     "v_bi_company_summary": [
         ("Repeat companies", "CALCULATE(COUNTROWS(v_bi_company_summary), v_bi_company_summary[is_repeat_company] = TRUE())", "#,0"),
@@ -271,25 +275,18 @@ class Page:
         return self._add(x, y, w, h, visual)
 
     def visual(self, vtype, x, y, w, h, roles: dict, title: str | None = None, objects: dict | None = None,
-               subtitle: str | None = None, sort_by: tuple | None = None):
+               subtitle: str | None = None, sort_by: tuple | None = None, keep_only: tuple | None = None):
         """roles: {projection role: [(kind, table, field[, display name[, format]]), ...]}, kind "m"|"c"|"sum".
         Display names and formats change only how a field is labelled in this visual, never its calculation."""
         state = {}
         for role, fields in roles.items():
             projections = []
             for kind, table, field, *extra in fields:
-                src = {"Expression": {"SourceRef": {"Entity": table}}, "Property": field if isinstance(field, str) else field[0]}
+                src = {"Expression": {"SourceRef": {"Entity": table}}, "Property": field}
                 if kind == "m":
                     ref, expr, native = f"{table}.{field}", {"Measure": src}, field
                 elif kind == "c":
                     ref, expr, native = f"{table}.{field}", {"Column": src}, field
-                elif kind == "pct_of_col":          # field = (measure, column that defines the column total)
-                    measure, col = field
-                    m = {"Measure": {"Expression": {"SourceRef": {"Entity": table}}, "Property": measure}}
-                    scope = [{"Column": {"Expression": {"SourceRef": {"Entity": table}}, "Property": col}}]
-                    expr = {"Arithmetic": {"Left": m, "Right": {"ScopedEval": {"Expression": m, "Scope": scope}},
-                                           "Operator": 3}}
-                    ref, native = f"Divide({table}.{measure}, ScopedEval({table}.{measure}, [{table}.{col}]))", f"%CT {measure}"
                 else:
                     ref, expr = f"Sum({table}.{field})", {"Aggregation": {"Expression": {"Column": src}, "Function": 0}}
                     native = f"Sum of {field}"
@@ -301,6 +298,14 @@ class Page:
                 projections.append(proj)
             state[role] = {"projections": projections}
         visual = {"visualType": vtype, "query": {"queryState": state}, "drillFilterOtherVisuals": True}
+        if keep_only:                                  # (table, column, [values]): visual-level filter
+            t, c, values = keep_only
+            col = {"Column": {"Expression": {"SourceRef": {"Source": "f"}}, "Property": c}}
+            self._filter = {"filters": [{"name": f"keep_{c}", "type": "Categorical",
+                                         "field": {"Column": {"Expression": {"SourceRef": {"Entity": t}}, "Property": c}},
+                                         "filter": {"Version": 2, "From": [{"Name": "f", "Entity": t, "Type": 0}],
+                                                    "Where": [{"Condition": {"In": {"Expressions": [col],
+                                                               "Values": [[{"Literal": {"Value": f"'{v}'"}}] for v in values]}}}]}}]}
         if sort_by:                                    # (role, index) of the projection to sort descending
             role, i = sort_by
             visual["query"]["sortDefinition"] = {"sort": [{"field": state[role]["projections"][i]["field"],
@@ -315,7 +320,10 @@ class Page:
                                                "fontColor": {"solid": {"color": literal(f"'{MUTED}'")}},
                                                "fontSize": literal("9D")}}]
         visual["visualContainerObjects"] = vco
-        return self._add(x, y, w, h, visual)
+        name = self._add(x, y, w, h, visual)
+        if keep_only:
+            self.visuals[-1]["filterConfig"] = self._filter
+        return name
 
     def only_filters(self, source, target):
         """Make `source` (a slicer) filter `target` only: every other visual on the page ignores it."""
@@ -364,23 +372,8 @@ INTERVAL_LINES = {"lineStyles": [{"properties": {"strokeWidth": literal("0D"), "
                   "dataPoint": [{"properties": {"fill": {"solid": {"color": literal(f"'{BLUE}'")}}}}]}
 
 
-def heatmap_objects(table):
-    """Matrix formatting: small text, a white-to-teal background scale on the share values, row totals
-    (each year = 100%) kept, per-industry total column hidden."""
-    m = {"Measure": {"Expression": {"SourceRef": {"Entity": table}}, "Property": "Events"}}
-    scope = [{"Column": {"Expression": {"SourceRef": {"Entity": table}}, "Property": "event_year"}}]
-    share = {"Arithmetic": {"Left": m, "Right": {"ScopedEval": {"Expression": m, "Scope": scope}}, "Operator": 3}}
-    ref = f"Divide({table}.Events, ScopedEval({table}.Events, [{table}.event_year]))"
-    gradient = {"FillRule": {"Input": share, "FillRule": {"linearGradient2": {
-        "min": {"color": {"Literal": {"Value": "'#FFFFFF'"}}},
-        "max": {"color": {"Literal": {"Value": "'#4A9BB8'"}}},
-        "nullColoringStrategy": {"strategy": {"Literal": {"Value": "'asZero'"}}}}}}}
-    return {"values": [{"properties": {"fontSize": literal("8D")}},
-                       {"properties": {"backColor": {"solid": {"color": {"expr": gradient}}}},
-                        "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}], "metadata": ref}}],
-            "rowHeaders": [{"properties": {"fontSize": literal("8D")}}],
-            "columnHeaders": [{"properties": {"fontSize": literal("8D")}}],
-            "subTotals": [{"properties": {"columnSubtotals": literal("false")}}]}
+TOP5_INDUSTRIES = ["Retail & Consumer", "Finance & Fintech", "Healthcare & Life Sciences", "Software & IT",
+                   "Food & Agriculture"]                 # rank 2-6 in sql/analytics/03 (rank 1 is Unknown)
 
 
 def build_pages():
@@ -421,14 +414,17 @@ def build_pages():
                        "labels": [{"properties": {"show": literal("true"), "labelDisplayUnits": literal("1D")}}]})
     p2.text(M, 656, 400, 48, "Unknown = the source does not identify the industry. It is not zero layoffs; "
                              "it is shown so shares are not overstated.", size="9pt", color=MUTED)
-    # Heatmap matrix (replaced the 100% stacked column on 25 Oct 2026): industry rows x year columns, each cell
-    # = that industry's share of the year's events ("% of column total", computed in the visual, no new DAX).
-    share = ("pct_of_col", E, ("Events", "event_year"), "Share of the year's events", "0.0%")
-    p2.visual("pivotTable", 428, MAIN_Y, 480, 248,
-              {"Rows": [("c", E, "industry_group", "Industry group")], "Columns": [("c", E, "event_year", "Year")],
-               "Values": [share]},
-              "Industry share of events by year", subtitle="Each column = 100% of that year's events.",
-              objects=heatmap_objects(E))
+    # Clustered column (25 Oct 2026; replaced the heatmap matrix, which had replaced a 100% stacked column):
+    # the five industry groups with the most events in 2019-2026 (SQL query 03), Unknown excluded, each shown as a
+    # share of ALL events in that year via "Share of all events in year %", so the five bars do not add up to 100%.
+    p2.visual("clusteredColumnChart", 428, MAIN_Y, 480, 248,
+              {"Category": [("c", E, "event_year", "Year")], "Series": [("c", E, "industry_group", "Industry group")],
+               "Y": [("m", E, "Share of all events in year %", "Share of all events that year", "0.0%")]},
+              "Industry share of events by year",
+              subtitle="Top 5 known industries; % of ALL events that year (do not sum to 100%)",
+              objects={"legend": [{"properties": {"show": literal("true"), "position": literal("'Top'"),
+                                                  "fontSize": literal("8D")}}]},
+              keep_only=(E, "industry_group", TOP5_INDUSTRIES))
     # Pie for one year at a time, beside (not instead of) the stacked chart: 17 groups, 6-9 under 3% per year,
     # so comparing years needs the stacked chart. All 17 groups are kept; nothing is merged into "Other".
     year = dropdown(p2, 428, 448, 150, 56, E, "event_year", "Year for the pie", single=True)
@@ -592,7 +588,8 @@ def apply_colours(pages):
                 vis.setdefault("visualContainerObjects", {})["background"] = [{"properties": {
                     "show": literal("true"), "color": solid(bg), "transparency": literal("0D")}}]
             elif "industry_group" in fields and vis["visualType"] in ("clusteredBarChart", "pieChart",
-                                                                      "hundredPercentStackedColumnChart"):
+                                                                      "hundredPercentStackedColumnChart",
+                                                                      "clusteredColumnChart"):
                 obj["dataPoint"] = _industry_points()
             elif vis["visualType"] in ("lineChart", "lineClusteredColumnComboChart", "clusteredBarChart"):
                 obj["dataPoint"] = [{"properties": {"fill": solid(SERIES_COLOURS[r])}, "selector": {"metadata": r}}

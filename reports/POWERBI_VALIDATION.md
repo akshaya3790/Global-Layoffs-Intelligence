@@ -64,16 +64,20 @@ Data was loaded by a Power BI refresh on 24 Oct (5:12 PM, Power BI log) and save
 
 Colours only, applied by `apply_colours()` in `src/phase5_build_pbip.py`. Before/after comparison of every report file: 26 files changed (15 KPI cards, 10 charts, the custom theme palette); every changed property is a colour (`fill`, `color`, `background`, `dataPoint`, `dataColors`), 0 other differences. Pages 1–3 were reopened in Power BI after the change: same values (5,000 · 1050.4 · 3,467 · 200 · 49.8 · 31.3 · 42.3 · 688 · 266 · 12.6; pie 31.28%; totals 5,000 and 27,88,908) and new screenshots. Page 4 has not been re-captured after the colour pass. Backup of the previous report: `_backups/2026-10-25/powerbi_before_colours/`.
 
-## Page 2 heatmap matrix (25 Oct 2026)
+## Page 2 "Industry share of events by year" (25 Oct 2026, final)
 
-The 100% stacked column "Industry share of events by year" was replaced by a matrix (industry rows × year columns) with the same position, size, title and subtitle. Each cell is `Events ÷ Events in the same year`, computed inside the visual as "% of column total" (no new DAX). White-to-teal background scale on the share; the Total row shows 100.0% for every year. Checked in Power BI against SQL query 04: Automotive 2019 3.8%, Finance & Fintech 2023 10.5%, Healthcare 2022 9.1%. Only this visual's file changed (preview comparison); the "Year for the pie" selector still ignores it (`page.json` unchanged). Limitation: at its existing size the matrix shows about 9 of 17 rows and 7 of 8 years at once and scrolls for the rest. Backup: `_backups/2026-10-25/powerbi_before_heatmap/`.
+First the 100% stacked column was replaced by a heatmap matrix; on request that matrix was then replaced by a **clustered column chart** (same position, size and title). Year on the axis, industry group as legend, filtered to the five industry groups with the most events in 2019–2026, Unknown excluded (SQL query 03: Retail & Consumer 680, Finance & Fintech 375, Healthcare & Life Sciences 298, Software & IT 281, Food & Agriculture 268).
+
+Value: a new measure, used only by this chart and approved by the owner: `Share of all events in year % = DIVIDE([Events], CALCULATE([Events], REMOVEFILTERS(v_bi_events[industry_group])))`. The denominator is every event in that year (Unknown and the other industries included), so the five bars do not add up to 100% (2019: 38.2%; 2022: 47.0%). No existing measure, SQL, view or data changed; the only other file change is the added measure line in `v_bi_events.tmdl`.
+
+Checked in Power BI (temporary data labels, capture `deliverables/validation/page2_column_chart_labels_check.png`) against SQL: 2019 Retail 17.2%, Finance 8.2%, Healthcare 4.8%, Software 3.8%, Food 4.2%; 2020 Retail 15.3%, Finance 5.8%, Healthcare 2.6%; 2021 Finance 5.7%, Food 6.0% (tooltip); 2022 Retail 14.9%. With the pie's year set to 2023 the column chart still showed every year, so the pie selector does not filter it. Backups: `_backups/2026-10-25/powerbi_before_heatmap/`, `powerbi_before_column_chart/`.
 
 ## Deliverables
 
 | File | Status |
 |---|---|
 | `deliverables/screenshots/page1.png`, `page3.png` | Re-captured 25 Oct after the colour pass |
-| `deliverables/screenshots/page2.png` | Re-captured 25 Oct after the heatmap change |
+| `deliverables/screenshots/page2.png` | Shows the heatmap version; needs a new capture of the column chart |
 | `deliverables/screenshots/page4.png` | Captured 24 Oct, **before** the colour pass (needs a new capture) |
 | `deliverables/validation/*.png` (3 slicer tests) | Created 25 Oct |
 | `deliverables/LayoffsDashboard.pbix` | Not created: needs File → Save as in Power BI |

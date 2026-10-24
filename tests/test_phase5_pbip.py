@@ -39,8 +39,9 @@ def _fields(obj):
     """Yield (kind, table, name) for every Column/Measure reference inside a visual."""
     if isinstance(obj, dict):
         for kind in ("Column", "Measure"):
-            if kind in obj and "SourceRef" in obj[kind].get("Expression", {}):
-                yield kind, obj[kind]["Expression"]["SourceRef"]["Entity"], obj[kind]["Property"]
+            ref = obj.get(kind, {}).get("Expression", {}).get("SourceRef", {}) if isinstance(obj.get(kind), dict) else {}
+            if "Entity" in ref:                  # "Source" aliases (inside filter queries) are covered by `field`
+                yield kind, ref["Entity"], obj[kind]["Property"]
         for v in obj.values():
             yield from _fields(v)
     elif isinstance(obj, list):
@@ -120,8 +121,8 @@ def test_pie_counts_events_and_year_slicer_filters_only_the_pie():
     visuals = {v["name"]: v for v in (json.loads(f.read_text(encoding="utf-8"))
                                       for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json"))}
     pie = [v for v in visuals.values() if v["visual"]["visualType"] == "pieChart"]
-    matrix = [v for v in visuals.values() if v["visual"]["visualType"] == "pivotTable"]
-    assert len(pie) == 1 and len(matrix) == 1                        # pie sits beside the year-by-industry matrix
+    columns = [v for v in visuals.values() if v["visual"]["visualType"] == "clusteredColumnChart"]
+    assert len(pie) == 1 and len(columns) == 1                       # pie sits beside the year-by-industry chart
     assert set(_fields(pie[0]["visual"]["query"])) == {("Column", "v_bi_events", "industry_group"),
                                                       ("Measure", "v_bi_events", "Events"),
                                                       ("Measure", "v_bi_events", "Share of selected events %")}
@@ -174,17 +175,20 @@ def test_interval_charts_show_estimate_and_bounds_without_adding_them(page, csv,
     assert (src[lo] <= src[est]).all() and (src[est] <= src[hi]).all()
 
 
-def test_industry_heatmap_is_share_of_each_years_events():
-    """Page 2 matrix: industry rows x year columns; the value is Events / Events in the same year (the visual's
-    "% of column total"), so every year column adds up to 100%, Unknown included."""
+def test_industry_share_chart_shows_top5_as_share_of_all_events_in_year():
+    """Page 2 clustered column: year on the axis, industry as legend, filtered to the five largest known
+    industries, valued with a measure whose denominator removes every industry filter (no renormalising)."""
     vs = [json.loads(f.read_text(encoding="utf-8")) for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json")]
-    m = [v for v in vs if v["visual"]["visualType"] == "pivotTable"]
-    assert len(m) == 1
-    q = m[0]["visual"]["query"]["queryState"]
-    assert q["Rows"]["projections"][0]["field"]["Column"]["Property"] == "industry_group"
-    assert q["Columns"]["projections"][0]["field"]["Column"]["Property"] == "event_year"
-    a = q["Values"]["projections"][0]["field"]["Arithmetic"]
-    assert a["Operator"] == 3 and a["Left"]["Measure"]["Property"] == "Events"
-    assert a["Right"]["ScopedEval"]["Expression"]["Measure"]["Property"] == "Events"
-    assert [s["Column"]["Property"] for s in a["Right"]["ScopedEval"]["Scope"]] == ["event_year"]
-    assert m[0]["visual"]["visualContainerObjects"]["title"][0]["properties"]["text"]["expr"]["Literal"]["Value"]         == "'Industry share of events by year'"
+    c = [v for v in vs if v["visual"]["visualType"] == "clusteredColumnChart"]
+    assert len(c) == 1
+    q = c[0]["visual"]["query"]["queryState"]
+    assert q["Category"]["projections"][0]["field"]["Column"]["Property"] == "event_year"
+    assert q["Series"]["projections"][0]["field"]["Column"]["Property"] == "industry_group"
+    assert q["Y"]["projections"][0]["field"]["Measure"]["Property"] == "Share of all events in year %"
+    values = [v[0]["Literal"]["Value"].strip("'") for v in
+              c[0]["filterConfig"]["filters"][0]["filter"]["Where"][0]["Condition"]["In"]["Values"]]
+    assert values == ["Retail & Consumer", "Finance & Fintech", "Healthcare & Life Sciences", "Software & IT",
+                      "Food & Agriculture"]
+    tmdl = (MODEL / "tables" / "v_bi_events.tmdl").read_text(encoding="utf-8")
+    assert "measure 'Share of all events in year %' = DIVIDE([Events], CALCULATE([Events], "            "REMOVEFILTERS(v_bi_events[industry_group])))" in tmdl
+    assert c[0]["visual"]["visualContainerObjects"]["title"][0]["properties"]["text"]["expr"]["Literal"]["Value"]         == "'Industry share of events by year'"

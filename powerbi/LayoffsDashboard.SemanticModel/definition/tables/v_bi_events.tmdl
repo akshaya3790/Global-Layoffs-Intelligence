@@ -36,6 +36,9 @@ table v_bi_events
 	measure 'Share of selected events %' = ROUND(DIVIDE([Events], CALCULATE([Events], ALLSELECTED(v_bi_events[industry_group]))) * 100, 1)
 		formatString: 0.0
 
+	measure 'Share of all events in year %' = DIVIDE([Events], CALCULATE([Events], REMOVEFILTERS(v_bi_events[industry_group])))
+		formatString: 0.0%
+
 	column 'event_key'
 		dataType: string
 		summarizeBy: none
