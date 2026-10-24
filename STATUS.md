@@ -1,6 +1,6 @@
 # Project status
 
-**As of 25 October 2026.** This is the single current status page. Older phase reports are kept unchanged in `reports/history/`.
+**As of 25 October 2026 (updated after the documentation pass).** This is the single current status page. Older phase reports are kept unchanged in `reports/history/`.
 
 ## Done and verified on the Windows PC
 
@@ -19,7 +19,9 @@ Environment: Windows 11, Python 3.14.6, PostgreSQL 18.6 (UTF8), psycopg2 2.9.13,
 | Dashboard numbers | 14/14 headline numbers: SQL = pandas, and Power BI's displayed values = SQL | `powerbi/headline_reconciliation.csv`, `reports/POWERBI_VALIDATION.md` |
 | Dashboard behaviour | Pie year selector (2020, 2023) and page 4 "Group by" (region) match SQL and filter only their own chart; interval charts plot estimate + bounds correctly | `deliverables/validation/`, `tests/test_phase5_pbip.py` |
 | Screenshots | 4 page captures | `deliverables/screenshots/page1.png` … `page4.png` |
-| Docs | README, METHODS, DATA_DICTIONARY, FINDINGS, INTERVIEW_PREP, RESUME_BULLETS, POWERBI_VALIDATION | repository root and `reports/` |
+| Docs | README (portfolio landing page); `docs/architecture.md`, `data_dictionary.md`, `methodology.md`, `business_findings.md`, `setup_windows.md` (commands marked tested / not tested), `resume_and_interview.md`; `reports/POWERBI_VALIDATION.md` | repository |
+| Dependencies | `requirements.txt` (minimums) and `requirements-lock.txt` (exact versions that passed all tests; pip dry-run: all already satisfied) | |
+| Notebook command | The notebook 05 command in `docs/setup_windows.md` was rerun on 25 Oct: 12/12 cells, 0 errors | |
 
 ## Waiting on you
 

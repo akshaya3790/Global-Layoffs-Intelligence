@@ -1,15 +1,20 @@
-# Tested on Windows 11, Python 3.14.6 (2026-10-24); versions in brackets are the ones that passed.
+# Minimum versions. Tested on Windows 11, Python 3.14.6 (24-25 Oct 2026); the exact tested versions are pinned
+# in requirements-lock.txt. Install with:  python -m pip install -r requirements.txt
 # Phase 1-3: data audit, cleaning, EDA
-pandas>=2.2          # [3.0.3]
-numpy>=1.26          # [2.5.1]
-matplotlib>=3.8      # [3.11.1]
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
 jupyter
 ipykernel
+nbclient            # runs notebooks without the Jupyter UI
+nbformat
 # Phase 4: PostgreSQL load and SQL analysis
 psycopg2-binary>=2.9
-sqlalchemy>=2.0      # [2.0.51]
+sqlalchemy>=2.0
 # Phase 5: statistics (bootstrap, Kaplan-Meier, log-rank)
-scipy>=1.11          # [1.18.0]
-scikit-learn>=1.4    # [1.9.0]
-# Tests
-pytest>=8            # [9.1.1]
+scipy>=1.11
+scikit-learn>=1.4
+# Tests (jsonschema + referencing validate the Power BI report files)
+pytest>=8
+jsonschema>=4.18
+referencing>=0.30

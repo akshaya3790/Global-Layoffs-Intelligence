@@ -1,0 +1,16 @@
+# Exact versions that passed all 214 tests on Windows 11, Python 3.14.6, 25 Oct 2026.
+# Install with:  python -m pip install -r requirements-lock.txt
+pandas==3.0.3
+numpy==2.5.1
+matplotlib==3.11.1
+jupyter==1.1.1
+ipykernel==7.4.0
+nbclient==0.11.0
+nbformat==5.11.1
+psycopg2-binary==2.9.13
+SQLAlchemy==2.0.51
+scipy==1.18.0
+scikit-learn==1.9.0
+pytest==9.1.1
+jsonschema==4.26.0
+referencing==0.37.0
