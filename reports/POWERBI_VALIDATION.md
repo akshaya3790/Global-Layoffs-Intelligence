@@ -60,11 +60,16 @@ Banner: 26% company sample (5,000 of 19,208 events); counts are sample counts; j
 
 Data was loaded by a Power BI refresh on 24 Oct (5:12 PM, Power BI log) and saved in the project cache. The database content has not changed since (load run 3 on 25 Oct produced the identical md5 fingerprint), so the cached data is current. No refresh errors were shown.
 
+## Colour pass (25 Oct 2026)
+
+Colours only, applied by `apply_colours()` in `src/phase5_build_pbip.py`. Before/after comparison of every report file: 26 files changed (15 KPI cards, 10 charts, the custom theme palette); every changed property is a colour (`fill`, `color`, `background`, `dataPoint`, `dataColors`), 0 other differences. Pages 1–3 were reopened in Power BI after the change: same values (5,000 · 1050.4 · 3,467 · 200 · 49.8 · 31.3 · 42.3 · 688 · 266 · 12.6; pie 31.28%; totals 5,000 and 27,88,908) and new screenshots. Page 4 has not been re-captured after the colour pass. Backup of the previous report: `_backups/2026-10-25/powerbi_before_colours/`.
+
 ## Deliverables
 
 | File | Status |
 |---|---|
-| `deliverables/screenshots/page1.png` … `page4.png` | Created 24 Oct (window captures) |
+| `deliverables/screenshots/page1.png` … `page3.png` | Re-captured 25 Oct after the colour pass |
+| `deliverables/screenshots/page4.png` | Captured 24 Oct, **before** the colour pass (needs a new capture) |
 | `deliverables/validation/*.png` (3 slicer tests) | Created 25 Oct |
 | `deliverables/LayoffsDashboard.pbix` | Not created: needs File → Save as in Power BI |
 | `deliverables/LayoffsDashboard.pdf` | Not created: needs File → Export → PDF in Power BI |

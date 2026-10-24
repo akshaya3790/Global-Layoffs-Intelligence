@@ -12,6 +12,7 @@ No credentials are written: Power BI asks for the PostgreSQL user and password o
 """
 from __future__ import annotations
 
+import copy
 import json
 import uuid
 from pathlib import Path
@@ -220,8 +221,8 @@ WARN_BG, WARN_TEXT, TECH_BG = "#FFF1DC", "#7A3E00", "#C0612B"
 THEME_NAME = "LayoffsTheme"
 THEME = {
     "name": THEME_NAME,
-    "dataColors": ["#1F5E7A", "#4E8FB0", "#9CC3D5", "#2E4A7D", "#6C8EBF", "#B8C7DC", "#3D7F8C", "#7FB3B8",
-                   "#C9DDE3", "#5B6C8F", "#8FA6C2", "#D5DEEA", "#2F6F6A", "#94B8B3", "#E3ECEF", "#9AA5B5"],
+    "dataColors": ["#1F3A5F", "#2A9D8F", "#E9A23B", "#7B5EA7", "#E07A5F", "#6A994E", "#3D6B99", "#5FB3A8",
+                   "#F2C57C", "#A88BC9", "#F0A08B", "#8AB17D", "#B5838D", "#7A9CC6", "#C9B26B", "#4F7F6F"],
     "background": "#FFFFFF", "foreground": NAVY, "tableAccent": BLUE,
     "good": "#21734A", "neutral": "#C0612B", "bad": "#A3322A",
     "textClasses": {"title": {"fontFace": "Segoe UI Semibold", "fontSize": 11, "color": NAVY},
@@ -495,6 +496,81 @@ def build_pages():
     return [p1, p2, p3, p4]
 
 
+# ---------------------------------------------------------------- colour pass (25 Oct 2026, colours only)
+# Applied after the pages are built: it only adds or replaces colour properties (fills, font colours,
+# backgrounds). Palette: navy, teal, amber, purple, coral, muted green, with lighter variants; orange stays
+# reserved for warnings and the tech case study.
+PALETTE = {"navy": "#1F3A5F", "teal": "#2A9D8F", "amber": "#E9A23B", "purple": "#7B5EA7", "coral": "#E07A5F",
+           "green": "#6A994E", "grey": "#9AA5B5"}
+# KPI cards: (background tint, number colour) per metric family, the same on every page.
+CARD_COLOURS = {
+    "Events": ("#E8EEF6", "#1F3A5F"), "Events vs 2019 %": ("#F1ECF8", "#5A3E8A"),
+    "Companies": ("#E5F4F2", "#1D6F66"), "Median disclosed cut": ("#FCF2E1", "#8A5A00"),
+    "Disclosure rate %": ("#ECF4E7", "#45692F"), "Unknown sector %": ("#FBEDE8", "#9A4A33"),
+    "US share of known-country %": ("#F1ECF8", "#5A3E8A"), "Repeat companies": ("#E8EEF6", "#1F3A5F"),
+    "Median days to next round": ("#E5F4F2", "#1D6F66"), "12-month repeat probability %": ("#F1ECF8", "#5A3E8A"),
+    "Events headcount unknown": ("#FBEDE8", "#9A4A33"), "Tech case-study rows": ("#F8E6DA", "#8A3F1A"),
+}
+# One colour per industry group, used by every industry chart; Unknown is grey.
+INDUSTRY_COLOURS = {
+    "Retail & Consumer": "#1F3A5F", "Finance & Fintech": "#2A9D8F", "Healthcare & Life Sciences": "#7B5EA7",
+    "Software & IT": "#E9A23B", "Food & Agriculture": "#6A994E", "Media & Gaming": "#E07A5F",
+    "Industrial & Manufacturing": "#3D6B99", "Energy & Resources": "#8AB17D", "Automotive": "#B5838D",
+    "Business Services": "#5FB3A8", "Travel & Transport": "#F2C57C", "Real Estate & Construction": "#A88BC9",
+    "Telecom": "#F0A08B", "Technology (mixed)": "#7A9CC6", "Education & Public Sector": "#C9B26B",
+    "Hardware & Semiconductors": "#4F7F6F", "Unknown": "#B8BEC7",
+}
+# Series colours by query reference (lines, interval estimates and bounds).
+SERIES_COLOURS = {
+    "v_bi_events.Events": PALETTE["navy"],                                  # p1 monthly line
+    "Sum(bootstrap_yearly.events)": PALETTE["teal"],                       # p1 estimate column
+    "Sum(bootstrap_yearly.events_lo)": PALETTE["amber"], "Sum(bootstrap_yearly.events_hi)": PALETTE["coral"],
+    "Sum(km_curve.p_repeat)": PALETTE["purple"],                           # p3 Kaplan-Meier curve
+    "Sum(repeat_by_first_cut.p_repeat_365d)": PALETTE["teal"],
+    "Sum(repeat_by_first_cut.p_repeat_365d_lo)": PALETTE["amber"], "Sum(repeat_by_first_cut.p_repeat_365d_hi)": PALETTE["coral"],
+    "Sum(v_bi_benchmark.events_ratio)": PALETTE["teal"], "Sum(v_bi_benchmark.jobs_ratio)": PALETTE["coral"],
+    "Sum(v_bi_benchmark.nominal_ratio)": PALETTE["grey"],
+    "Sum(v_bi_quality.disclosure_rate_pct)": PALETTE["green"],
+}
+
+
+def solid(hex_colour: str) -> dict:
+    return {"solid": {"color": literal(f"'{hex_colour}'")}}
+
+
+def _industry_points(entity="v_bi_events", column="industry_group"):
+    col = {"Column": {"Expression": {"SourceRef": {"Entity": entity}}, "Property": column}}
+    return [{"properties": {"fill": solid(c)},
+             "selector": {"data": [{"scopeId": {"Comparison": {"ComparisonKind": 0, "Left": col,
+                                                               "Right": {"Literal": {"Value": f"'{name}'"}}}}}]}}
+            for name, c in INDUSTRY_COLOURS.items()]
+
+
+def apply_colours(pages):
+    for page in pages:
+        for v in page.visuals:
+            vis = v["visual"]
+            if "query" not in vis:
+                continue
+            state = vis["query"]["queryState"]
+            refs = [p["queryRef"] for role in state.values() for p in role["projections"]]
+            fields = {p["field"].get("Column", {}).get("Property") for role in state.values() for p in role["projections"]}
+            obj = vis["objects"] = copy.deepcopy(vis.get("objects", {}))   # INTERVAL_LINES is shared
+            if vis["visualType"] == "card":
+                measure = state["Values"]["projections"][0]["field"]["Measure"]["Property"]
+                bg, fg = CARD_COLOURS[measure]
+                obj["labels"][0]["properties"]["color"] = solid(fg)
+                obj["categoryLabels"][0]["properties"]["color"] = solid(fg)
+                vis.setdefault("visualContainerObjects", {})["background"] = [{"properties": {
+                    "show": literal("true"), "color": solid(bg), "transparency": literal("0D")}}]
+            elif "industry_group" in fields and vis["visualType"] in ("clusteredBarChart", "pieChart",
+                                                                      "hundredPercentStackedColumnChart"):
+                obj["dataPoint"] = _industry_points()
+            elif vis["visualType"] in ("lineChart", "lineClusteredColumnComboChart", "clusteredBarChart"):
+                obj["dataPoint"] = [{"properties": {"fill": solid(SERIES_COLOURS[r])}, "selector": {"metadata": r}}
+                                    for r in refs if r in SERIES_COLOURS]
+
+
 def write_report():
     """PBIR report: definition/{version,report}.json, pages/pages.json, pages/<page>/page.json and
     pages/<page>/visuals/<visual>/visual.json, plus the base theme Power BI expects next to it."""
@@ -530,6 +606,7 @@ def write_report():
     custom.parent.mkdir(parents=True, exist_ok=True)
     dump(custom, THEME)
     pages = build_pages()
+    apply_colours(pages)
     names = [f"page{i + 1}" for i in range(len(pages))]
     dump(d / "pages" / "pages.json", {"$schema": f"{SCHEMA}/pagesMetadata/{V_PAGES}/schema.json",
                                       "pageOrder": names, "activePageName": names[0]})

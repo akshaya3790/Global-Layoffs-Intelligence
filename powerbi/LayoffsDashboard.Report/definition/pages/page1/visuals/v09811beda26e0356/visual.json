@@ -142,12 +142,51 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#1F5E7A'"
+                      "Value": "'#2A9D8F'"
                     }
                   }
                 }
               }
             }
+          },
+          "selector": {
+            "metadata": "Sum(bootstrap_yearly.events)"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E9A23B'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(bootstrap_yearly.events_lo)"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E07A5F'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(bootstrap_yearly.events_hi)"
           }
         }
       ]
