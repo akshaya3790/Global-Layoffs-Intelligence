@@ -13,12 +13,15 @@ Built by `python src/make_public_release.py` (one parentless commit; `main` is n
 | `data/processed/` | `layoff_events.csv` and its companion tables contain the 35 tech-derived rows |
 | `reports/audit/history/*/tech_layoffs_staged.csv`, `*/possible_duplicate_pairs.csv`, `*/excluded_candidate_pairs.csv` | Copies of tech rows |
 | `reports/eda/03_T*`, `reports/figures/03_T*`, `reports/phase4/query_results/11-14_*` | Summaries of the tech file's contents |
+| `reports/phase2_proposals/` | Mapping proposals list tech company names, industry labels and cross-source pairs |
 | Historical reports that quote individual tech rows | `reports/history/PHASE1_VERIFICATION_REPORT*.md`, `PHASE2_APPROVAL_CHECKLIST.md`, `PHASE2_CANONICAL_MODEL_PLAN.md`, `PROJECT_STATUS_SUMMARY.md`, `WORK_REPORT_2026-10-23_phase2_build.md` |
 | `deliverables/screenshots/page4.png`, `deliverables/validation/`, any `.pbix` / PDF | They show or embed the tech case-study rows |
 | Outputs of notebooks 01-04 | They print tech rows; the code cells are kept, the outputs are cleared |
 | This machine's folder path | Replaced by `<project folder>`, and by a placeholder in the Power BI `ProjectFolder` parameter |
 
-Never committed at all (git-ignored): `.env`, `_recovery/`, `_backups/`, `powerbi/data/`, Power BI cache files.
+Never committed at all (git-ignored): `.env`, `_recovery/`, `_backups/`, `powerbi/data/`, Power BI cache and local settings.
+
+Kept on purpose: metadata that only names the tech file or counts its columns (`reports/audit/column_mapping.csv`, `missing_values_summary.csv`, file hashes), code that reads it, and the SQL for queries 11-14 without their results.
 
 ## Published
 

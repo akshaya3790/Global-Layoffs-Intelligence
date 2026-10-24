@@ -18,6 +18,7 @@ REPO = Path(__file__).resolve().parents[1]
 EXCLUDE = [r"^data/interim/", r"^data/processed/", r"^data/raw/tech_layoffs_2025_2026\.csv$",
            r"^reports/audit/history/.*/(tech_layoffs_staged|possible_duplicate_pairs|excluded_candidate_pairs)\.csv$",
            r"^reports/eda/03_T", r"^reports/figures/03_T", r"^reports/phase4/query_results/1[1-4]_",
+           r"^reports/phase2_proposals/",                # mapping proposals list tech company names and labels
            # historical reports that quote individual tech rows
            r"^reports/(history/)?PHASE1_VERIFICATION_REPORT.*\.md$", r"^reports/(history/)?PHASE2_APPROVAL_CHECKLIST\.md$",
            r"^reports/(history/)?PHASE2_CANONICAL_MODEL_PLAN\.md$", r"^reports/(history/)?PROJECT_STATUS_SUMMARY\.md$",
