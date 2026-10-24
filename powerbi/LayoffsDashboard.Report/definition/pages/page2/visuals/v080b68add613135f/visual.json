@@ -5,12 +5,12 @@
     "x": 428,
     "y": 192,
     "z": 8000,
-    "height": 248,
+    "height": 512,
     "width": 480,
     "tabOrder": 8000
   },
   "visual": {
-    "visualType": "clusteredColumnChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
@@ -70,6 +70,26 @@
               "format": "0.0%"
             }
           ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "Events"
+                }
+              },
+              "queryRef": "v_bi_events.Events",
+              "nativeQueryRef": "Events",
+              "displayName": "Layoff events",
+              "format": "#,0"
+            }
+          ]
         }
       }
     },
@@ -88,14 +108,47 @@
             "position": {
               "expr": {
                 "Literal": {
-                  "Value": "'Top'"
+                  "Value": "'Right'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "8D"
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "axisType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Categorical'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
@@ -861,7 +914,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Top 5 known industries; % of ALL events that year (do not sum to 100%)'"
+                  "Value": "'Top 5 known industries, % of all events each year (not 100% total). 2026 = Jan-Jun.'"
                 }
               }
             },

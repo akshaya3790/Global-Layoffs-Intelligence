@@ -30,7 +30,7 @@ Scope for every finding: the **global sample** of news-reported layoffs (5,000 e
 ### 4. Retail & Consumer is the largest known industry group; Travel and Software had their own spikes
 
 - **Observed.** Retail & Consumer 680 events (13.6%), Finance & Fintech 375 (7.5%). Travel & Transport was 8.4% of 2020 events vs 1.4% in 2023; Software & IT 9.9% in 2023 vs 3.3% in 2020.
-- **Evidence.** Queries 03 and 04; Power BI page 2 (bar chart, 100% stacked chart, pie with year selector).
+- **Evidence.** Queries 03 and 04; Power BI page 2 (bar chart; line chart of the five largest known industries as a share of all events each year).
 - **Limitation.** 31.3% of events have no industry ("Unknown" is shown, not hidden), so gaps between smaller groups are not reliable.
 - **Decision it supports.** Sector monitoring should weight the industries named here, while noting a third of events cannot be assigned.
 

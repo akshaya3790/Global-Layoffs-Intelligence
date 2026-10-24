@@ -4,57 +4,5 @@
   "displayName": "2 Industry and geography",
   "displayOption": "FitToPage",
   "height": 720,
-  "width": 1280,
-  "visualInteractions": [
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v010b9b1f77f1e657",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v025679dd40c4b559",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v03b993e02773fd50",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v04f718dc4066785f",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v057fbd68b17ab35b",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v06cd19138c3cc959",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v077b212f2ac9df5b",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v080b68add613135f",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v1086f042b8a3b75c",
-      "type": "NoFilter"
-    },
-    {
-      "source": "v09a22d6978ba645b",
-      "target": "v129341d65850ed52",
-      "type": "NoFilter"
-    }
-  ]
+  "width": 1280
 }

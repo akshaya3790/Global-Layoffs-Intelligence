@@ -66,18 +66,20 @@ Colours only, applied by `apply_colours()` in `src/phase5_build_pbip.py`. Before
 
 ## Page 2 "Industry share of events by year" (25 Oct 2026, final)
 
-First the 100% stacked column was replaced by a heatmap matrix; on request that matrix was then replaced by a **clustered column chart** (same position, size and title). Year on the axis, industry group as legend, filtered to the five industry groups with the most events in 2019–2026, Unknown excluded (SQL query 03: Retail & Consumer 680, Finance & Fintech 375, Healthcare & Life Sciences 298, Software & IT 281, Food & Agriculture 268).
+History: 100% stacked column → heatmap matrix → clustered column → **line chart** (current). The line chart has the whole middle column of page 2 (480 × 512 px); the pie chart "Industry share, selected year", its "Year for the pie" selector and the selector's help text were removed. That selector only filtered the pie (all 10 of its page interactions were "no filter" on every other visual), so removing it changes no other visual; page 2 now has no visual interactions.
 
-Value: a new measure, used only by this chart and approved by the owner: `Share of all events in year % = DIVIDE([Events], CALCULATE([Events], REMOVEFILTERS(v_bi_events[industry_group])))`. The denominator is every event in that year (Unknown and the other industries included), so the five bars do not add up to 100% (2019: 38.2%; 2022: 47.0%). No existing measure, SQL, view or data changed; the only other file change is the added measure line in `v_bi_events.tmdl`.
+Line chart: year on a categorical axis (2019–2026 all labelled), one line per industry for the five industry groups with the most events in 2019–2026, Unknown excluded (SQL query 03: Retail & Consumer 680, Finance & Fintech 375, Healthcare & Life Sciences 298, Software & IT 281, Food & Agriculture 268), no data labels, legend on the right, tooltip with the share and the event count. Value: `Share of all events in year % = DIVIDE([Events], CALCULATE([Events], REMOVEFILTERS(v_bi_events[industry_group])))`, added with the owner's approval and used only here. The denominator is every event in that year, so the five lines are not renormalised (they total 32–47% per year). Subtitle: "Top 5 known industries, % of all events each year (not 100% total). 2026 = Jan-Jun."
 
-Checked in Power BI (temporary data labels, capture `deliverables/validation/page2_column_chart_labels_check.png`) against SQL: 2019 Retail 17.2%, Finance 8.2%, Healthcare 4.8%, Software 3.8%, Food 4.2%; 2020 Retail 15.3%, Finance 5.8%, Healthcare 2.6%; 2021 Finance 5.7%, Food 6.0% (tooltip); 2022 Retail 14.9%. With the pie's year set to 2023 the column chart still showed every year, so the pie selector does not filter it. Backups: `_backups/2026-10-25/powerbi_before_heatmap/`, `powerbi_before_column_chart/`.
+Validated against SQL: with temporary data labels (capture `deliverables/validation/page2_column_chart_labels_check.png`, same measure and filter in the previous column version) 2019 Retail 17.2%, Finance 8.2%, Healthcare 4.8%, Software 3.8%, Food 4.2%; 2020 Retail 15.3%, Finance 5.8%, Healthcare 2.6%; 2021 Food 6.0%; 2022 Retail 14.9%. The line chart plots the same series (Retail falls from about 17% to about 11.6%; Finance peaks at 10.5% in 2023). Files changed: `page2/page.json` (interactions removed), `page2/visuals/v080b68add613135f/visual.json` (the chart); removed `page2/visuals/v09a22d6978ba645b`, `v1086f042b8a3b75c`, `v11d458fe74da605d`. Cards, bar chart, region table and pages 1, 3, 4: no file change. Known limitation: in the legend, "Healthcare & Life Sciences" is shortened to "Healthcare & Life Sci…" at this width.
+
+The earlier slicer tests of the pie (2020, 2023) below are kept as history; that visual no longer exists.
 
 ## Deliverables
 
 | File | Status |
 |---|---|
 | `deliverables/screenshots/page1.png`, `page3.png` | Re-captured 25 Oct after the colour pass |
-| `deliverables/screenshots/page2.png` | Shows the heatmap version; needs a new capture of the column chart |
+| `deliverables/screenshots/page2.png` | Re-captured 25 Oct with the line chart (final page 2) |
 | `deliverables/screenshots/page4.png` | Captured 24 Oct, **before** the colour pass (needs a new capture) |
 | `deliverables/validation/*.png` (3 slicer tests) | Created 25 Oct |
 | `deliverables/LayoffsDashboard.pbix` | Not created: needs File → Save as in Power BI |

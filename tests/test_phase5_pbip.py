@@ -116,21 +116,16 @@ def test_no_credentials_in_project():
     assert not re.search(r"(?i)password\s*[=:]", text)
 
 
-def test_pie_counts_events_and_year_slicer_filters_only_the_pie():
+def test_page2_has_no_pie_or_year_selector_left():
+    """The pie chart, its year selector and its help text were removed on 25 Oct 2026. The selector only ever
+    filtered the pie, so page 2 must have no visual interactions left and no slicer at all."""
     page = json.loads((DEFINITION / "pages" / "page2" / "page.json").read_text(encoding="utf-8"))
-    visuals = {v["name"]: v for v in (json.loads(f.read_text(encoding="utf-8"))
-                                      for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json"))}
-    pie = [v for v in visuals.values() if v["visual"]["visualType"] == "pieChart"]
-    columns = [v for v in visuals.values() if v["visual"]["visualType"] == "clusteredColumnChart"]
-    assert len(pie) == 1 and len(columns) == 1                       # pie sits beside the year-by-industry chart
-    assert set(_fields(pie[0]["visual"]["query"])) == {("Column", "v_bi_events", "industry_group"),
-                                                      ("Measure", "v_bi_events", "Events"),
-                                                      ("Measure", "v_bi_events", "Share of selected events %")}
-    year = [n for n, v in visuals.items() if v["visual"]["visualType"] == "slicer"
-            and ("Column", "v_bi_events", "event_year") in set(_fields(v["visual"]))]
-    assert len(year) == 1
-    ignored = {i["target"] for i in page["visualInteractions"] if i["source"] == year[0] and i["type"] == "NoFilter"}
-    assert ignored == set(visuals) - {year[0], pie[0]["name"]}       # every other visual ignores the year slicer
+    types = [json.loads(f.read_text(encoding="utf-8"))["visual"]["visualType"]
+             for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json")]
+    assert "pieChart" not in types and "slicer" not in types
+    assert "visualInteractions" not in page
+    assert sorted(types) == sorted(["textbox", "textbox", "textbox", "card", "card", "card", "clusteredBarChart",
+                                    "lineChart", "tableEx"])
 
 
 @pytest.mark.parametrize("page", ["page1", "page2", "page3", "page4"])
@@ -176,10 +171,10 @@ def test_interval_charts_show_estimate_and_bounds_without_adding_them(page, csv,
 
 
 def test_industry_share_chart_shows_top5_as_share_of_all_events_in_year():
-    """Page 2 clustered column: year on the axis, industry as legend, filtered to the five largest known
+    """Page 2 line chart: year on the axis, industry as legend, filtered to the five largest known
     industries, valued with a measure whose denominator removes every industry filter (no renormalising)."""
     vs = [json.loads(f.read_text(encoding="utf-8")) for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json")]
-    c = [v for v in vs if v["visual"]["visualType"] == "clusteredColumnChart"]
+    c = [v for v in vs if v["visual"]["visualType"] == "lineChart"]
     assert len(c) == 1
     q = c[0]["visual"]["query"]["queryState"]
     assert q["Category"]["projections"][0]["field"]["Column"]["Property"] == "event_year"

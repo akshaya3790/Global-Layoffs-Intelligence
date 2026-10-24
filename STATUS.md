@@ -17,7 +17,7 @@ Environment: Windows 11, Python 3.14.6, PostgreSQL 18.6 (UTF8), psycopg2 2.9.13,
 | Tests | **214 passed, 0 failed, 0 skipped** with the database (25 Oct); 191 passed + 23 database tests skipped without it | `LAYOFFS_ENABLE_DB_TESTS=1 python -m pytest -q tests` |
 | Statistics | Notebook 05 executed, 12/12 cells, 0 errors | `notebooks/05_*.ipynb`, `reports/stats/` |
 | Dashboard numbers | 14/14 headline numbers: SQL = pandas, and Power BI's displayed values = SQL | `powerbi/headline_reconciliation.csv`, `reports/POWERBI_VALIDATION.md` |
-| Dashboard behaviour | Pie year selector (2020, 2023) and page 4 "Group by" (region) match SQL and filter only their own chart; interval charts plot estimate + bounds correctly | `deliverables/validation/`, `tests/test_phase5_pbip.py` |
+| Dashboard behaviour | Page 4 "Group by" (region) matches SQL and filters only its chart; interval charts plot estimate + bounds correctly; page 2 now shows the top 5 known industries as a line chart (pie and its selector removed, 25 Oct) | `reports/POWERBI_VALIDATION.md`, `deliverables/validation/`, `tests/test_phase5_pbip.py` |
 | Screenshots | 4 page captures | `deliverables/screenshots/page1.png` … `page4.png` |
 | Docs | README (portfolio landing page); `docs/architecture.md`, `data_dictionary.md`, `methodology.md`, `business_findings.md`, `setup_windows.md` (commands marked tested / not tested), `resume_and_interview.md`; `reports/POWERBI_VALIDATION.md` | repository |
 | Dependencies | `requirements.txt` (minimums) and `requirements-lock.txt` (exact versions that passed all tests; pip dry-run: all already satisfied) | |

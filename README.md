@@ -79,7 +79,7 @@ Four pages on PostgreSQL views (`powerbi/LayoffsDashboard.pbip`); the sample-cov
 |---|---|---|
 | ![Page 1](deliverables/screenshots/page1.png) | ![Page 2](deliverables/screenshots/page2.png) | ![Page 3](deliverables/screenshots/page3.png) |
 
-Page 4 (data quality and coverage, including the separate tech case-study panel) is in the project; its screenshot is not published because it shows tech-file rows. Navigation: page tabs at the bottom; page 1 slicers filter page 1; the "Year for the pie" selector on page 2 filters only the pie; "Group by" on page 4 filters only the disclosure-rate chart. Validation: [reports/POWERBI_VALIDATION.md](reports/POWERBI_VALIDATION.md).
+Page 4 (data quality and coverage, including the separate tech case-study panel) is in the project; its screenshot is not published because it shows tech-file rows. Navigation: page tabs at the bottom; page 1 slicers filter page 1; page 2 shows the five largest known industries as shares of all events each year; "Group by" on page 4 filters only the disclosure-rate chart. Validation: [reports/POWERBI_VALIDATION.md](reports/POWERBI_VALIDATION.md).
 
 ## Reproduce on Windows
 

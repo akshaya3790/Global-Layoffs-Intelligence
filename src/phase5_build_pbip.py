@@ -253,12 +253,16 @@ class Page:
         self.text(0, 0, 1280, 44, BANNER, size="9pt", bold=True, color=WARN_TEXT, background=WARN_BG)
         self.text(M, 48, 1248, 40, f"{title}: {question}", size="14pt", bold=True, color=NAVY)
 
-    def _add(self, x, y, w, h, visual):
+    def _add(self, x, y, w, h, visual, keep_slot=None):
         self.z += 1
         name = f"v{len(self.visuals) + 1:02d}" + uuid.uuid5(uuid.NAMESPACE_URL, self.title + str(self.z)).hex[:14]
+        z = self.z
+        if keep_slot:                                  # (index, z) the visual had before earlier visuals were removed
+            index, z = keep_slot
+            name = f"v{index:02d}" + uuid.uuid5(uuid.NAMESPACE_URL, self.title + str(z)).hex[:14]
         self.visuals.append({"$schema": f"{SCHEMA}/visualContainer/{V_VISUAL}/schema.json", "name": name,
-                             "position": {"x": x, "y": y, "z": self.z * 1000, "height": h, "width": w,
-                                          "tabOrder": self.z * 1000},
+                             "position": {"x": x, "y": y, "z": z * 1000, "height": h, "width": w,
+                                          "tabOrder": z * 1000},
                              "visual": visual})
         return name
 
@@ -275,7 +279,8 @@ class Page:
         return self._add(x, y, w, h, visual)
 
     def visual(self, vtype, x, y, w, h, roles: dict, title: str | None = None, objects: dict | None = None,
-               subtitle: str | None = None, sort_by: tuple | None = None, keep_only: tuple | None = None):
+               subtitle: str | None = None, sort_by: tuple | None = None, keep_only: tuple | None = None,
+               keep_slot: tuple | None = None):
         """roles: {projection role: [(kind, table, field[, display name[, format]]), ...]}, kind "m"|"c"|"sum".
         Display names and formats change only how a field is labelled in this visual, never its calculation."""
         state = {}
@@ -320,7 +325,7 @@ class Page:
                                                "fontColor": {"solid": {"color": literal(f"'{MUTED}'")}},
                                                "fontSize": literal("9D")}}]
         visual["visualContainerObjects"] = vco
-        name = self._add(x, y, w, h, visual)
+        name = self._add(x, y, w, h, visual, keep_slot)
         if keep_only:
             self.visuals[-1]["filterConfig"] = self._filter
         return name
@@ -414,37 +419,28 @@ def build_pages():
                        "labels": [{"properties": {"show": literal("true"), "labelDisplayUnits": literal("1D")}}]})
     p2.text(M, 656, 400, 48, "Unknown = the source does not identify the industry. It is not zero layoffs; "
                              "it is shown so shares are not overstated.", size="9pt", color=MUTED)
-    # Clustered column (25 Oct 2026; replaced the heatmap matrix, which had replaced a 100% stacked column):
-    # the five industry groups with the most events in 2019-2026 (SQL query 03), Unknown excluded, each shown as a
-    # share of ALL events in that year via "Share of all events in year %", so the five bars do not add up to 100%.
-    p2.visual("clusteredColumnChart", 428, MAIN_Y, 480, 248,
+    # Line chart (25 Oct 2026; earlier versions: 100% stacked column, heatmap matrix, clustered column): the five
+    # industry groups with the most events in 2019-2026 (SQL query 03), Unknown excluded, each as a share of ALL
+    # events in that year ("Share of all events in year %"), so the five lines do not add up to 100%. It now has the
+    # full middle column; the pie chart, its year selector and its help text were removed (the selector filtered
+    # only the pie).
+    p2.visual("lineChart", 428, MAIN_Y, 480, 512,
               {"Category": [("c", E, "event_year", "Year")], "Series": [("c", E, "industry_group", "Industry group")],
-               "Y": [("m", E, "Share of all events in year %", "Share of all events that year", "0.0%")]},
+               "Y": [("m", E, "Share of all events in year %", "Share of all events that year", "0.0%")],
+               "Tooltips": [("m", E, "Events", "Layoff events", "#,0")]},
               "Industry share of events by year",
-              subtitle="Top 5 known industries; % of ALL events that year (do not sum to 100%)",
-              objects={"legend": [{"properties": {"show": literal("true"), "position": literal("'Top'"),
-                                                  "fontSize": literal("8D")}}]},
+              subtitle="Top 5 known industries, % of all events each year (not 100% total). 2026 = Jan-Jun.",
+              objects={"legend": [{"properties": {"show": literal("true"), "position": literal("'Right'"),
+                                                  "fontSize": literal("9D")}}],
+                       "categoryAxis": [{"properties": {"axisType": literal("'Categorical'"), "fontSize": literal("9D")}}],
+                       "labels": [{"properties": {"show": literal("false")}}]},
               keep_only=(E, "industry_group", TOP5_INDUSTRIES))
-    # Pie for one year at a time, beside (not instead of) the stacked chart: 17 groups, 6-9 under 3% per year,
-    # so comparing years needs the stacked chart. All 17 groups are kept; nothing is merged into "Other".
-    year = dropdown(p2, 428, 448, 150, 56, E, "event_year", "Year for the pie", single=True)
-    p2.text(428, 508, 150, 196, "Pick one year to see its industry mix (all years if none is picked). "
-                                "Hover a slice for its industry, event count and share.", size="9pt", color=MUTED)
-    pie = p2.visual("pieChart", 586, 448, 322, 256,
-                    {"Category": [("c", E, "industry_group", "Industry group")],
-                     "Y": [("m", E, "Events", "Layoff events", "#,0")],
-                     "Tooltips": [("m", E, "Share of selected events %", "Share of selected year (%)", "0.0")]},
-                    "Industry share, selected year",
-                    objects={"labels": [{"properties": {"show": literal("true"),
-                                                        "labelStyle": literal("'Percent of total'"),
-                                                        "fontSize": literal("8D")}}],
-                             "legend": [{"properties": {"show": literal("false")}}]})
     p2.visual("tableEx", 920, MAIN_Y, 344, 512,
               {"Values": [("c", E, "region", "Region"), ("c", E, "country", "Country"),
                           ("m", E, "Events", "Events", "#,0")]},
               "Events by region and country", subtitle="Unknown = no country given (9% of events).",
-              objects=table_objects({"v_bi_events.region": 105, "v_bi_events.country": 130, "v_bi_events.Events": 70}))
-    p2.only_filters(year, pie)
+              objects=table_objects({"v_bi_events.region": 105, "v_bi_events.country": 130, "v_bi_events.Events": 70}),
+              keep_slot=(12, 12))                    # same name and stacking order as before the pie was removed
 
     # ---- page 3
     p3 = Page("3 Companies and repeat layoffs", "which employers cut repeatedly, and how soon?")
@@ -589,7 +585,7 @@ def apply_colours(pages):
                     "show": literal("true"), "color": solid(bg), "transparency": literal("0D")}}]
             elif "industry_group" in fields and vis["visualType"] in ("clusteredBarChart", "pieChart",
                                                                       "hundredPercentStackedColumnChart",
-                                                                      "clusteredColumnChart"):
+                                                                      "clusteredColumnChart", "lineChart"):
                 obj["dataPoint"] = _industry_points()
             elif vis["visualType"] in ("lineChart", "lineClusteredColumnComboChart", "clusteredBarChart"):
                 obj["dataPoint"] = [{"properties": {"fill": solid(SERIES_COLOURS[r])}, "selector": {"metadata": r}}
