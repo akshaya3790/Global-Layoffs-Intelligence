@@ -19,7 +19,7 @@ All results below were produced on the Windows PC. "Inspected in Power BI" means
 | 11 | Loader idempotent | Done: 3 runs, 142/142 each, identical md5 `a99e3e0c…c319` |
 | 12 | 19 SQL queries | Done: 19/19 ran; 16 reconciled, 979 cells, 0 mismatches |
 | 13 | Documentation | Done: README, STATUS, METHODS, DATA_DICTIONARY, reports/FINDINGS, reports/POWERBI_VALIDATION; old reports moved to `reports/history/` |
-| 14 | Public release prepared | Done: branch `public-release` (commit `b77d4af`, 252 files, 11.1 MB), separate history from `main`; fresh copy: 135 passed, 79 skipped, 0 failed |
+| 14 | Public release prepared | Done: branch `public-release` (one commit, about 253 files, 11 MB), separate history from `main`; fresh copy: 135 passed, 79 skipped, 0 failed |
 | 15 | Published | **Not done: waiting on your approval** |
 | 16 | Findings report | Done: `reports/FINDINGS.md` (6 findings with evidence, denominator, uncertainty, decision) |
 | 17 | Resume and interview materials | Done: `reports/INTERVIEW_PREP.md` (3 bullets, 2-minute walkthrough, 5-minute technical, Q&A), `reports/RESUME_BULLETS.md` |
