@@ -1,8 +1,18 @@
 # Power BI dashboard: build guide
 
-**Status (24 Oct 2026):** not built yet. Power BI Desktop is not installed on this PC. Everything the dashboard needs is ready: the SQL views (`sql/ddl/06_bi_views.sql`), the survival results (`reports/stats/`) and a CSV fallback (`powerbi/data/`, written by `python src/phase5_export_bi.py`).
+**Status (24 Oct 2026):** `src/phase5_build_pbip.py` generates `powerbi/LayoffsDashboard.pbip` (a Power BI Project: TMDL model, 16 DAX measures, 4 pages with the coverage banner). It opens in Power BI Desktop 26.10 on the project PC. A `.pbix` file has not been produced, and the cards have not yet been checked after a refresh. The sections below describe the same design for building or adjusting it by hand.
 
-Save the finished file as `powerbi/layoffs_dashboard.pbix`, with one screenshot per page in `powerbi/screenshots/` and a PDF export.
+## Views (sql/ddl/06_bi_views.sql)
+
+| View | Grain | Filter | Notes |
+|---|---|---|---|
+| `core.v_bi_events` | one global event (5,000 rows) | global sample only | 25 curated columns, `has_disclosed_headcount`, `size_band` (Undisclosed kept separate), `is_partial_period`, `period_note` |
+| `core.v_bi_company_summary` | one company (cleaned name, 3,467 rows) | global only | `days_to_second_event` is NULL when no second event was seen (censored, not "never") |
+| `core.v_bi_quality` | one dimension value (year, region, industry group) | global only | disclosure, Unknown-sector and missing-country rates |
+| `core.v_bi_benchmark` | one year (8 rows) | global only | sample vs full-population counts typed in from the data card (cited) |
+| `core.v_bi_kpis` | one row | global only | every headline number, for reconciliation |
+
+Each view is tested against pandas in `tests/test_phase5_bi_views.py` (5 tests, passing on the project PC), and no view contains a tech row.
 
 ## 0. Before you start
 

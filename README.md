@@ -74,10 +74,13 @@ flowchart LR
    python src/phase4_analytics.py
    python src/phase5_export_bi.py
    ```
-6. Optional database tests (they create and drop their own `layoffs_test_*` databases):
+6. Optional database tests (they create and drop their own `layoffs_test_*` databases; nothing else is touched):
    ```powershell
    $env:LAYOFFS_ENABLE_DB_TESTS = "1"; python -m pytest -q tests
    ```
+7. Dashboard: `python src/phase5_build_pbip.py`, then open `powerbi/LayoffsDashboard.pbip` in Power BI Desktop and click *Refresh*. Power BI asks for the PostgreSQL user and password itself; nothing is stored in the project. Steps and DAX: [powerbi/DASHBOARD_BUILD_GUIDE.md](powerbi/DASHBOARD_BUILD_GUIDE.md).
+
+**Reproducibility.** The loader is safe to rerun: each run replaces the core tables with the same rows in one transaction and is recorded in `audit.load_runs`. A fresh clone can run Phases 3 to 5 from `data/processed/` (verified against its SHA-256 manifest). Rerunning Phases 1 and 2 also needs the tech raw file, which is not published.
 
 ## Verification status (Windows, 24 Oct 2026)
 
@@ -90,10 +93,20 @@ flowchart LR
 
 Details and what is still open: [STATUS.md](STATUS.md). Resume bullets backed by these results: [reports/RESUME_BULLETS.md](reports/RESUME_BULLETS.md).
 
+## Limitations
+
+1. **Sample, not the market.** 26% company sample of one news-based source. Unreported layoffs are missing, and coverage favours large, English-covered companies.
+2. **Disclosed jobs are lower bounds** and cover about half of events; disclosure is higher in North America (55%) than elsewhere. Year rankings by jobs are not supported beyond "2020 was highest".
+3. **2026 is partial** (to 14 June), and May–June look incomplete.
+4. **31% of events have no sector and 9% no country**; both stay visible as Unknown.
+5. **Company names are not merged without evidence**, so large brands can be split, which undercounts their repeat layoffs.
+6. **Survival estimates are associations**, left-truncated at January 2019, and affected by the source merging reports within 45 days. Nothing here establishes a cause.
+7. **No layoff rate** can be computed: the global file has no company size.
+
 ## Data and licence
 
-- Global file: Fliar Research (2026). *Layoffs Dataset 2019–2026: Global, India, US, UK* (sample release). Data: Radar API, https://github.com/fliarbi/radar-api-mcp. **Licence CC BY-NC 4.0** (non-commercial, attribution required).
-- Tech file (`tech_layoffs_2025_2026.csv`, 35 rows): source and licence unknown. It is git-ignored and not published; derived rows in `data/processed/` are labelled low confidence.
+- **Global file.** Fliar Research (2026). *Layoffs Dataset 2019–2026: Global, India, US, UK* (sample release). Data: Radar API, https://github.com/fliarbi/radar-api-mcp. **Licence CC BY-NC 4.0**: free to share and adapt for non-commercial use with attribution. This repository and anything derived from it inherit that restriction. Full-population benchmark figures are taken from the publisher's data card (`data/raw/SOURCE_DATA_CARD.md`).
+- **Tech file** (`tech_layoffs_2025_2026.csv`, 35 rows): **source and licence unknown.** Its company size is derived from its own percentage, and 6 dates look wrong. The raw file is git-ignored and not published. Its 35 derived rows in `data/processed/` are labelled low confidence, are kept out of every global figure, and appear only in a separate case-study panel.
 
 ## Repository layout
 

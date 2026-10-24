@@ -1,5 +1,7 @@
 # Global Layoffs Intelligence: status summary
 
+> **Superseded.** This is a historical snapshot from 23 Oct 2026. The current status is in [STATUS.md](../STATUS.md).
+
 **As of:** 2026-10-23
 **Where things stand:** Phase 1 (data audit) is finished and verified. Phase 2 (cleaning) is planned but **not started**, and notebook 02 does not exist yet.
 

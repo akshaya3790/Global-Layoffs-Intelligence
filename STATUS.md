@@ -8,13 +8,17 @@ Environment: Windows 11, Python 3.14.6, PostgreSQL 18.6 (UTF8), psycopg2 2.9.13,
 
 | Check | Result |
 |---|---|
+| Connection | `.env` keys match `src/phase4_config.py` (PGHOST, PGPORT, PGDATABASE, PGUSER, PGPASSWORD); password set and never printed; server on localhost:5432, role `postgres` (superuser, CREATEDB) |
+| `.env` in git | ignored by `.gitignore` and absent from every commit |
 | Raw SHA-256, `layoffs_2019_2026_sample.csv` | `a181c6ce…f686`, matches |
 | Raw SHA-256, `tech_layoffs_2025_2026.csv` | `f011a4d0…cc5c`, matches |
 | Load 1 (`python src/phase4_load.py`) | exit 0, **5,035 events**, **142/142 checks**, committed (run 1) |
 | Load 2 (rerun) | exit 0, **142/142 checks**, row counts and content fingerprint (md5 of all events) identical to load 1 |
 | Schemas and views | `staging`, `core`, `audit`; 10 views in `core` including the 5 new `v_bi_*` |
 | 19 analytics queries (`python src/phase4_analytics.py`) | **19/19 ran**; 16 reconciled with Phase 3, **979 cells, 0 mismatches**; 3 are checked in tests instead |
-| Full test suite with the database (`LAYOFFS_ENABLE_DB_TESTS=1`) | **200 passed, 0 failed, 0 skipped** |
+| Data rules after load 2 | 5,000 global + 35 tech events; 2,511 global headcounts NULL, 0 zero headcounts; 0 duplicate keys; every row has a source file and line; 0 tech rows in global views |
+| Full test suite with the database (`LAYOFFS_ENABLE_DB_TESTS=1`) | **200 collected, 200 passed, 0 failed, 0 skipped**, including all 23 database tests (18 Phase 4 + 5 BI views). Without the database: 177 passed, 23 skipped |
+| Query catalogue | `reports/phase4/QUERY_CATALOG.md` |
 | Dashboard headline numbers (`python src/phase5_export_bi.py`) | **14/14 match** between SQL views and pandas (the 12-month repeat probability comes from notebook 05, not SQL) |
 | Notebook 05 executed end to end | 12 of 12 code cells, 0 errors |
 | Notebook 03 finding F3 | Reworded: only "2020 > every other year" is claimed for disclosed jobs |
