@@ -23,4 +23,4 @@ All code (`src/`, `sql/`, `tests/`), notebooks 01-05 (05 with outputs, which use
 
 ## What this means for reproducing the project
 
-A public clone can read all code, SQL, tests, statistics outputs and the dashboard design, and can run the tests that need only the global raw file. Rebuilding `data/processed/` (and therefore loading PostgreSQL) needs the tech file too, which is not distributed. If its licence is later confirmed, the full `main` history can be published instead.
+A public clone can read all code, SQL, tests, statistics outputs and the dashboard design. Tested on a fresh export of `public-release` (24 Oct 2026): **121 passed, 79 skipped, 0 failed**. The skips are 23 database tests and 56 tests that read the excluded data (`tests/conftest.py` reports them as skipped, with that reason). The local folder path is replaced by `<project folder>` or a placeholder in the Power BI `ProjectFolder` parameter. Rebuilding `data/processed/` (and therefore loading PostgreSQL) needs the tech file too, which is not distributed. If its licence is later confirmed, the full `main` history can be published instead.
