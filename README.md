@@ -79,9 +79,16 @@ flowchart LR
    $env:LAYOFFS_ENABLE_DB_TESTS = "1"; python -m pytest -q tests
    ```
 
-## Verification status
+## Verification status (Windows, 24 Oct 2026)
 
-See [STATUS.md](STATUS.md) for what has been run on which machine, with counts.
+| Check | Result |
+|---|---|
+| Two consecutive loads | 5,035 events and 142/142 checks each time, identical content |
+| 19 SQL queries | 19/19 ran; 16 reconciled with pandas, 979 cells, 0 mismatches |
+| Tests (with database) | 200 passed |
+| Dashboard headline numbers | 14/14 match between SQL views and pandas |
+
+Details and what is still open: [STATUS.md](STATUS.md). Resume bullets backed by these results: [reports/RESUME_BULLETS.md](reports/RESUME_BULLETS.md).
 
 ## Data and licence
 

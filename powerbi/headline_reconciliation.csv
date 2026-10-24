@@ -1,0 +1,15 @@
+page,metric,sql_value,pandas_value,matches
+1,Events (sample),5000.0,5000.0,True
+1,Companies affected,3467.0,3467.0,True
+1,Events in 2019 (baseline),476.0,476.0,True
+1,Disclosed jobs cut (lower bound),2788908.0,2788908.0,True
+1,Median disclosed cut,200.0,200.0,True
+1,Disclosure rate %,49.8,49.8,True
+2,Unknown sector %,31.3,31.3,True
+2,US share of known-country events %,42.3,42.3,True
+3,Repeat companies (2+ events),688.0,688.0,True
+3,Companies with 2nd event in sample,688.0,688.0,True
+3,Median days to 2nd event (repeaters),266.0,266.0,True
+3,12-month repeat probability (Kaplan-Meier),0.126,0.126,True
+4,Tech case-study rows (separate panel),35.0,35.0,True
+4,Tech rows inside global views,0.0,0.0,True
