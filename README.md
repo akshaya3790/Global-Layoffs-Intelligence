@@ -55,6 +55,8 @@ flowchart LR
 - **Repeat layoffs.** One row per company: time from its first event to its second, right-censored at 14 June 2026. Kaplan-Meier with Greenwood (log-log) 95% intervals; log-rank tests between groups. Written in NumPy/SciPy and unit-tested against hand-worked examples.
 - **Deliberately not built:** a severity classifier (ROC-AUC ≈ 0.63 in a feasibility probe, and a target that exists only for the non-random half of disclosed events), a monthly forecast, and an "AI layoffs" page (41 relevant rows).
 
+Full detail: [METHODS.md](METHODS.md). Column definitions: [DATA_DICTIONARY.md](DATA_DICTIONARY.md).
+
 ## Setup (Windows)
 
 1. Install Python 3.11+ and PostgreSQL 13+ (tested on Python 3.14.6 and PostgreSQL 18).
@@ -84,16 +86,26 @@ flowchart LR
 
 **Reproducibility.** The loader is safe to rerun: each run replaces the core tables with the same rows in one transaction and is recorded in `audit.load_runs`. A fresh clone can run Phases 3 to 5 from `data/processed/` (verified against its SHA-256 manifest). Rerunning Phases 1 and 2 also needs the tech raw file, which is not published.
 
-## Verification status (Windows, 24 Oct 2026)
+## Dashboard
+
+Four pages, built on PostgreSQL views (Power BI Project: `powerbi/LayoffsDashboard.pbip`). Every page carries the sample-coverage banner.
+
+| Executive overview | Industry and geography | Companies and repeat layoffs |
+|---|---|---|
+| ![Page 1](deliverables/screenshots/page1.png) | ![Page 2](deliverables/screenshots/page2.png) | ![Page 3](deliverables/screenshots/page3.png) |
+
+Page 4 (data quality and coverage) is in the project; its screenshot is not published because it shows the separate tech case-study rows.
+
+## Verification status (Windows, 24–25 Oct 2026)
 
 | Check | Result |
 |---|---|
-| Two consecutive loads | 5,035 events and 142/142 checks each time, identical content |
+| Three consecutive loads | 5,035 events and 142/142 checks each time, identical content (md5 fingerprint) |
 | 19 SQL queries | 19/19 ran; 16 reconciled with pandas, 979 cells, 0 mismatches |
-| Tests (with database) | 200 passed |
-| Dashboard headline numbers | 14/14 match between SQL views and pandas |
+| Tests (with database) | 214 passed, 0 failed |
+| Dashboard | 14/14 headline numbers match SQL; slicers tested against SQL ([validation](reports/POWERBI_VALIDATION.md)) |
 
-Details and what is still open: [STATUS.md](STATUS.md). Resume bullets backed by these results: [reports/RESUME_BULLETS.md](reports/RESUME_BULLETS.md).
+More: [STATUS.md](STATUS.md) · [METHODS.md](METHODS.md) · [DATA_DICTIONARY.md](DATA_DICTIONARY.md) · [Findings](reports/FINDINGS.md) · [Interview prep](reports/INTERVIEW_PREP.md) · [Resume bullets](reports/RESUME_BULLETS.md) · [Query catalogue](reports/phase4/QUERY_CATALOG.md)
 
 ## Limitations
 
@@ -116,4 +128,4 @@ Details and what is still open: [STATUS.md](STATUS.md). Resume bullets backed by
 data/raw  data/interim  data/processed   notebooks/01-05   src/   sql/ddl  sql/analytics
 tests/    reports/ (eda, stats, phase4, figures, audit)   powerbi/
 ```
-Older phase reports in `reports/*.md` are kept as history; `STATUS.md` is the current status.
+Older phase reports are kept in `reports/history/`; `STATUS.md` is the current status.

@@ -4,6 +4,8 @@ The local project (branch `main`) contains data derived from the 35-row technolo
 
 ## Excluded from `public-release`
 
+Built by `python src/make_public_release.py` (one parentless commit; `main` is not touched).
+
 | Path | Why |
 |---|---|
 | `data/raw/tech_layoffs_2025_2026.csv` | Unknown source and licence (never committed anywhere) |
@@ -11,9 +13,10 @@ The local project (branch `main`) contains data derived from the 35-row technolo
 | `data/processed/` | `layoff_events.csv` and its companion tables contain the 35 tech-derived rows |
 | `reports/audit/history/*/tech_layoffs_staged.csv`, `*/possible_duplicate_pairs.csv`, `*/excluded_candidate_pairs.csv` | Copies of tech rows |
 | `reports/eda/03_T*`, `reports/figures/03_T*`, `reports/phase4/query_results/11-14_*` | Summaries of the tech file's contents |
-| Phase 1-2 reports that quote individual tech rows | `reports/PHASE1_VERIFICATION_REPORT*.md`, `PHASE2_APPROVAL_CHECKLIST.md`, `PHASE2_CANONICAL_MODEL_PLAN.md`, `PROJECT_STATUS_SUMMARY.md`, `WORK_REPORT_2026-10-23_phase2_build.md` |
+| Historical reports that quote individual tech rows | `reports/history/PHASE1_VERIFICATION_REPORT*.md`, `PHASE2_APPROVAL_CHECKLIST.md`, `PHASE2_CANONICAL_MODEL_PLAN.md`, `PROJECT_STATUS_SUMMARY.md`, `WORK_REPORT_2026-10-23_phase2_build.md` |
+| `deliverables/screenshots/page4.png`, `deliverables/validation/`, any `.pbix` / PDF | They show or embed the tech case-study rows |
 | Outputs of notebooks 01-04 | They print tech rows; the code cells are kept, the outputs are cleared |
-| Local folder path in the Power BI model | Replaced by a placeholder you set after cloning |
+| This machine's folder path | Replaced by `<project folder>`, and by a placeholder in the Power BI `ProjectFolder` parameter |
 
 Never committed at all (git-ignored): `.env`, `_recovery/`, `_backups/`, `powerbi/data/`, Power BI cache files.
 

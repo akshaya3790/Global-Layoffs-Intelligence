@@ -1,7 +1,7 @@
 """Phase 2 cleaning rules for notebooks/02_data_cleaning.ipynb.
 
-Every rule here was approved in reports/PHASE2_APPROVAL_CHECKLIST.md (A-01 to A-16) and
-reports/PHASE2_FINAL_SCHEMA_AND_MAPPINGS.md (P1-P5). Each function returns NEW values and
+Every rule here was approved in reports/history/PHASE2_APPROVAL_CHECKLIST.md (A-01 to A-16) and
+reports/history/PHASE2_FINAL_SCHEMA_AND_MAPPINGS.md (P1-P5). Each function returns NEW values and
 never changes its input. Missing values stay missing unless a rule says otherwise.
 """
 import re

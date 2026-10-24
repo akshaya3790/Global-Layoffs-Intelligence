@@ -150,3 +150,25 @@ def test_tech_table_is_wide_with_wrapped_headers():
             and {t for _, t, _ in _fields(v["visual"]["query"])} == {"v_tech_events"}]
     assert len(tech) == 1 and tech[0]["position"]["width"] >= 700
     assert tech[0]["visual"]["objects"]["columnHeaders"][0]["properties"]["wordWrap"]["expr"]["Literal"]["Value"] == "true"
+
+
+@pytest.mark.parametrize("page,csv,key,est,lo,hi", [
+    ("page1", "reports/stats/bootstrap_yearly.csv", "event_year", "events", "events_lo", "events_hi"),
+    ("page3", "reports/stats/repeat_probability_by_first_cut_size.csv", "group",
+     "p_repeat_365d", "p_repeat_365d_lo", "p_repeat_365d_hi"),
+])
+def test_interval_charts_show_estimate_and_bounds_without_adding_them(page, csv, key, est, lo, hi):
+    """The estimate is the column (Y) and the bounds are markers (Y2). Each category has exactly one row in
+    the source, so the visual's Sum() returns the stored value itself, and lower <= estimate <= upper."""
+    import pandas as pd
+    combo = [json.loads(f.read_text(encoding="utf-8")) for f in (DEFINITION / "pages" / page / "visuals").glob("*/visual.json")]
+    combo = [v for v in combo if v["visual"]["visualType"] == "lineClusteredColumnComboChart"]
+    assert len(combo) == 1
+    q = combo[0]["visual"]["query"]["queryState"]
+    name = lambda p: p["field"]["Aggregation"]["Expression"]["Column"]["Property"]
+    assert [name(p) for p in q["Y"]["projections"]] == [est]
+    assert [name(p) for p in q["Y2"]["projections"]] == [lo, hi]
+    assert combo[0]["visual"]["objects"]["lineStyles"][0]["properties"]["strokeWidth"]["expr"]["Literal"]["Value"] == "0D"
+    src = pd.read_csv(ROOT / csv)
+    assert src[key].is_unique
+    assert (src[lo] <= src[est]).all() and (src[est] <= src[hi]).all()
