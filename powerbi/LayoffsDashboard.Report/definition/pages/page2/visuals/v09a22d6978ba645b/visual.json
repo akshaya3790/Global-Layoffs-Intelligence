@@ -2,18 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v09a22d6978ba645b",
   "position": {
-    "x": 566,
-    "y": 462,
+    "x": 428,
+    "y": 448,
     "z": 9000,
-    "height": 238,
-    "width": 342,
+    "height": 56,
+    "width": 150,
     "tabOrder": 9000
   },
   "visual": {
-    "visualType": "pieChart",
+    "visualType": "slicer",
     "query": {
       "queryState": {
-        "Category": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -23,47 +23,12 @@
                       "Entity": "v_bi_events"
                     }
                   },
-                  "Property": "industry_group"
+                  "Property": "event_year"
                 }
               },
-              "queryRef": "v_bi_events.industry_group",
-              "nativeQueryRef": "industry_group"
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "Events"
-                }
-              },
-              "queryRef": "v_bi_events.Events",
-              "nativeQueryRef": "Events"
-            }
-          ]
-        },
-        "Tooltips": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "Share of selected events %"
-                }
-              },
-              "queryRef": "v_bi_events.Share of selected events %",
-              "nativeQueryRef": "Share of selected events %"
+              "queryRef": "v_bi_events.event_year",
+              "nativeQueryRef": "event_year",
+              "displayName": "Year for the pie"
             }
           ]
         }
@@ -71,33 +36,46 @@
     },
     "drillFilterOtherVisuals": true,
     "objects": {
-      "labels": [
+      "data": [
         {
           "properties": {
-            "show": {
+            "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "labelStyle": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Category, percent of total'"
+                  "Value": "'Dropdown'"
                 }
               }
             }
           }
         }
       ],
-      "legend": [
+      "header": [
         {
           "properties": {
-            "show": {
+            "text": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'Year for the pie'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "selection": [
+        {
+          "properties": {
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -112,14 +90,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Industry share of layoff events, selected year (all years if none picked)'"
+                  "Value": "false"
                 }
               }
             }

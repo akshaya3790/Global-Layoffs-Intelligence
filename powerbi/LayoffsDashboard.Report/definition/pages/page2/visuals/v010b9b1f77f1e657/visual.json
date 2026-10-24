@@ -5,7 +5,7 @@
     "x": 0,
     "y": 0,
     "z": 1000,
-    "height": 64,
+    "height": 44,
     "width": 1280,
     "tabOrder": 1000
   },
@@ -23,7 +23,7 @@
                     "value": "26% company sample of news-reported layoffs (5,000 of 19,208 events). Counts are sample counts. Job figures are disclosed cuts only (lower bound). 2026 covers January to 14 June only. Source: Fliar Research (2026), CC BY-NC 4.0.",
                     "textStyle": {
                       "fontSize": "9pt",
-                      "color": "#FFFFFF",
+                      "color": "#7A3E00",
                       "fontWeight": "bold"
                     }
                   }
@@ -50,7 +50,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#8a5a00'"
+                      "Value": "'#FFF1DC'"
                     }
                   }
                 }

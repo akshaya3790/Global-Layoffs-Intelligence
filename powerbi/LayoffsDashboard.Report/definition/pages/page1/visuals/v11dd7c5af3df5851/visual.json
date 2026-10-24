@@ -3,9 +3,9 @@
   "name": "v11dd7c5af3df5851",
   "position": {
     "x": 331,
-    "y": 530,
+    "y": 600,
     "z": 11000,
-    "height": 170,
+    "height": 56,
     "width": 303,
     "tabOrder": 11000
   },
@@ -27,12 +27,63 @@
                 }
               },
               "queryRef": "v_bi_events.region",
-              "nativeQueryRef": "region"
+              "nativeQueryRef": "region",
+              "displayName": "Region"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Region'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

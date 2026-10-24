@@ -3,9 +3,9 @@
   "name": "v06a5f3d2c4a9e758",
   "position": {
     "x": 772,
-    "y": 110,
+    "y": 96,
     "z": 6000,
-    "height": 96,
+    "height": 84,
     "width": 240,
     "tabOrder": 6000
   },
@@ -27,12 +27,67 @@
                 }
               },
               "queryRef": "v_bi_events.Median disclosed cut",
-              "nativeQueryRef": "Median disclosed cut"
+              "nativeQueryRef": "Median disclosed cut",
+              "displayName": "Median disclosed cut (people)"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

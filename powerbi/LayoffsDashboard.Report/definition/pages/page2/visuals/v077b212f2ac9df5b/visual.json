@@ -2,92 +2,33 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v077b212f2ac9df5b",
   "position": {
-    "x": 428,
-    "y": 218,
+    "x": 16,
+    "y": 656,
     "z": 7000,
-    "height": 236,
-    "width": 480,
+    "height": 48,
+    "width": 400,
     "tabOrder": 7000
   },
   "visual": {
-    "visualType": "hundredPercentStackedColumnChart",
-    "query": {
-      "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "event_year"
-                }
-              },
-              "queryRef": "v_bi_events.event_year",
-              "nativeQueryRef": "event_year"
-            }
-          ]
-        },
-        "Series": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "industry_group"
-                }
-              },
-              "queryRef": "v_bi_events.industry_group",
-              "nativeQueryRef": "industry_group"
-            }
-          ]
-        },
-        "Y": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "Events"
-                }
-              },
-              "queryRef": "v_bi_events.Events",
-              "nativeQueryRef": "Events"
-            }
-          ]
-        }
-      }
-    },
+    "visualType": "textbox",
     "drillFilterOtherVisuals": true,
-    "visualContainerObjects": {
-      "title": [
+    "objects": {
+      "general": [
         {
           "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Unknown = the source does not identify the industry. It is not zero layoffs; it is shown so shares are not overstated.",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "color": "#5A6577"
+                    }
+                  }
+                ]
               }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Industry share of events by year'"
-                }
-              }
-            }
+            ]
           }
         }
       ]

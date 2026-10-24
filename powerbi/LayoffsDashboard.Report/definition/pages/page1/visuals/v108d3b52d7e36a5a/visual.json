@@ -3,9 +3,9 @@
   "name": "v108d3b52d7e36a5a",
   "position": {
     "x": 16,
-    "y": 530,
+    "y": 600,
     "z": 10000,
-    "height": 170,
+    "height": 56,
     "width": 303,
     "tabOrder": 10000
   },
@@ -27,12 +27,63 @@
                 }
               },
               "queryRef": "v_bi_events.event_year",
-              "nativeQueryRef": "event_year"
+              "nativeQueryRef": "event_year",
+              "displayName": "Year"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Year'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

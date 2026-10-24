@@ -33,3 +33,8 @@ powerbi/data/
 # Power BI project local files (data cache and per-user settings)
 **/.pbi/localSettings.json
 **/.pbi/cache.abf
+
+# Files Power BI Desktop adds on save (not part of the generated project)
+powerbi/**/.pbi/
+powerbi/LayoffsDashboard.SemanticModel/diagramLayout.json
+powerbi/LayoffsDashboard.SemanticModel/definition/cultures/

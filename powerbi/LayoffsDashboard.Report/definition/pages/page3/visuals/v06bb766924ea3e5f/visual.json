@@ -3,10 +3,10 @@
   "name": "v06bb766924ea3e5f",
   "position": {
     "x": 16,
-    "y": 218,
+    "y": 192,
     "z": 6000,
-    "height": 482,
-    "width": 520,
+    "height": 512,
+    "width": 560,
     "tabOrder": 6000
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "v_bi_company_summary.company_name",
-              "nativeQueryRef": "company_name"
+              "nativeQueryRef": "company_name",
+              "displayName": "Company"
             },
             {
               "field": {
@@ -46,7 +47,9 @@
                 }
               },
               "queryRef": "Sum(v_bi_company_summary.events)",
-              "nativeQueryRef": "Sum of events"
+              "nativeQueryRef": "Sum of events",
+              "displayName": "Events",
+              "format": "#,0"
             },
             {
               "field": {
@@ -60,7 +63,9 @@
                 }
               },
               "queryRef": "v_bi_company_summary.first_event_date",
-              "nativeQueryRef": "first_event_date"
+              "nativeQueryRef": "first_event_date",
+              "displayName": "First event",
+              "format": "dd MMM yyyy"
             },
             {
               "field": {
@@ -74,7 +79,9 @@
                 }
               },
               "queryRef": "v_bi_company_summary.last_event_date",
-              "nativeQueryRef": "last_event_date"
+              "nativeQueryRef": "last_event_date",
+              "displayName": "Last event",
+              "format": "dd MMM yyyy"
             },
             {
               "field": {
@@ -93,13 +100,144 @@
                 }
               },
               "queryRef": "Sum(v_bi_company_summary.disclosed_jobs_cut)",
-              "nativeQueryRef": "Sum of disclosed_jobs_cut"
+              "nativeQueryRef": "Sum of disclosed_jobs_cut",
+              "displayName": "Disclosed jobs cut (lower bound)",
+              "format": "#,0"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "v_bi_company_summary"
+                      }
+                    },
+                    "Property": "events"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "170D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "v_bi_company_summary.company_name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "60D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_bi_company_summary.events)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "92D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "v_bi_company_summary.first_event_date"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "92D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "v_bi_company_summary.last_event_date"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "110D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(v_bi_company_summary.disclosed_jobs_cut)"
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -114,7 +252,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Companies and their events (brand names may be split)'"
+                  "Value": "'Companies and their events (most events first)'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Brand names may be split across spellings.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

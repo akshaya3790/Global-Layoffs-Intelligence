@@ -130,3 +130,23 @@ def test_pie_counts_events_and_year_slicer_filters_only_the_pie():
     assert len(year) == 1
     ignored = {i["target"] for i in page["visualInteractions"] if i["source"] == year[0] and i["type"] == "NoFilter"}
     assert ignored == set(visuals) - {year[0], pie[0]["name"]}       # every other visual ignores the year slicer
+
+
+@pytest.mark.parametrize("page", ["page1", "page2", "page3", "page4"])
+def test_visuals_stay_on_the_page_and_do_not_overlap(page):
+    boxes = [(f.parent.name, json.loads(f.read_text(encoding="utf-8"))["position"])
+             for f in (DEFINITION / "pages" / page / "visuals").glob("*/visual.json")]
+    for name, p in boxes:
+        assert p["x"] >= 0 and p["y"] >= 0 and p["x"] + p["width"] <= 1280 and p["y"] + p["height"] <= 720, name
+    for i, (a, p) in enumerate(boxes):
+        for b, q in boxes[i + 1:]:
+            assert not (p["x"] < q["x"] + q["width"] and q["x"] < p["x"] + p["width"]
+                        and p["y"] < q["y"] + q["height"] and q["y"] < p["y"] + p["height"]), (a, b)
+
+
+def test_tech_table_is_wide_with_wrapped_headers():
+    tables = [json.loads(f.read_text(encoding="utf-8")) for f in (DEFINITION / "pages" / "page4" / "visuals").glob("*/visual.json")]
+    tech = [v for v in tables if v["visual"]["visualType"] == "tableEx"
+            and {t for _, t, _ in _fields(v["visual"]["query"])} == {"v_tech_events"}]
+    assert len(tech) == 1 and tech[0]["position"]["width"] >= 700
+    assert tech[0]["visual"]["objects"]["columnHeaders"][0]["properties"]["wordWrap"]["expr"]["Literal"]["Value"] == "true"

@@ -3,14 +3,14 @@
   "name": "v09811beda26e0356",
   "position": {
     "x": 788,
-    "y": 218,
+    "y": 192,
     "z": 9000,
-    "height": 300,
+    "height": 392,
     "width": 476,
     "tabOrder": 9000
   },
   "visual": {
-    "visualType": "clusteredColumnChart",
+    "visualType": "lineClusteredColumnComboChart",
     "query": {
       "queryState": {
         "Category": {
@@ -27,11 +27,37 @@
                 }
               },
               "queryRef": "bootstrap_yearly.event_year",
-              "nativeQueryRef": "event_year"
+              "nativeQueryRef": "event_year",
+              "displayName": "Year"
             }
           ]
         },
         "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "bootstrap_yearly"
+                        }
+                      },
+                      "Property": "events"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(bootstrap_yearly.events)",
+              "nativeQueryRef": "Sum of events",
+              "displayName": "Events (sample)",
+              "format": "#,0"
+            }
+          ]
+        },
+        "Y2": {
           "projections": [
             {
               "field": {
@@ -50,26 +76,9 @@
                 }
               },
               "queryRef": "Sum(bootstrap_yearly.events_lo)",
-              "nativeQueryRef": "Sum of events_lo"
-            },
-            {
-              "field": {
-                "Aggregation": {
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "bootstrap_yearly"
-                        }
-                      },
-                      "Property": "events"
-                    }
-                  },
-                  "Function": 0
-                }
-              },
-              "queryRef": "Sum(bootstrap_yearly.events)",
-              "nativeQueryRef": "Sum of events"
+              "nativeQueryRef": "Sum of events_lo",
+              "displayName": "90% interval: lower",
+              "format": "#,0"
             },
             {
               "field": {
@@ -88,13 +97,61 @@
                 }
               },
               "queryRef": "Sum(bootstrap_yearly.events_hi)",
-              "nativeQueryRef": "Sum of events_hi"
+              "nativeQueryRef": "Sum of events_hi",
+              "displayName": "90% interval: upper",
+              "format": "#,0"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "lineStyles": [
+        {
+          "properties": {
+            "strokeWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "markerSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "6D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1F5E7A'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -109,7 +166,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Events per year with 90% bootstrap interval (2026 = Jan-Jun)'"
+                  "Value": "'Events per year with 90% interval'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Column = sample count; markers = company-cluster bootstrap interval. 2026 = Jan–Jun. Not affected by the slicers.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

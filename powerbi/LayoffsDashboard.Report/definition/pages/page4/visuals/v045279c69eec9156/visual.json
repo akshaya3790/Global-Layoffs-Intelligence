@@ -3,9 +3,9 @@
   "name": "v045279c69eec9156",
   "position": {
     "x": 331,
-    "y": 110,
+    "y": 96,
     "z": 4000,
-    "height": 96,
+    "height": 84,
     "width": 303,
     "tabOrder": 4000
   },
@@ -27,12 +27,67 @@
                 }
               },
               "queryRef": "v_bi_events.Unknown sector %",
-              "nativeQueryRef": "Unknown sector %"
+              "nativeQueryRef": "Unknown sector %",
+              "displayName": "Events with unknown industry (%)"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

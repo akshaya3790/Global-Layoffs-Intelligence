@@ -180,7 +180,7 @@ def write_model():
     refs = "".join(f"ref table {t}\n" for t in tables)
     (d / "model.tmdl").write_text(
         "model Model\n\tculture: en-US\n\tdefaultPowerBIDataSourceVersion: powerBI_V3\n"
-        "\tsourceQueryCulture: en-US\n\tdataAccessOptions\n\t\tlegacyRedirects\n\t\treturnErrorValuesAsNull\n\n"
+        "\tsourceQueryCulture: en-US\n\tdataAccessOptions\n\t\tlegacyRedirects\n\t\treturnErrorValuesAsNull\n\tannotation __PBI_TimeIntelligenceEnabled = 0\n\n"
         + refs, encoding="utf-8")
     folder = str(ROOT).replace('"', '""')
     (d / "expressions.tmdl").write_text(
@@ -191,6 +191,9 @@ def write_model():
     (d / "relationships.tmdl").write_text(
         f"relationship {uuid.uuid5(uuid.NAMESPACE_URL, 'events-company')}\n"
         "\tfromColumn: v_bi_events.company_name\n\ttoColumn: v_bi_company_summary.company_name\n", encoding="utf-8")
+    for stale in (d / "tables").glob("*.tmdl"):           # e.g. LocalDateTable_* that Desktop adds on save
+        if stale.stem not in tables:
+            stale.unlink()
     for v, cols in VIEWS.items():
         (d / "tables" / f"{v}.tmdl").write_text(view_table(v, cols), encoding="utf-8")
     for n, (rel, cols) in CSVS.items():
@@ -211,15 +214,39 @@ BASE_THEME = "CY26SU10"
 THEME_DIR = Path(r"C:\Program Files\Microsoft Power BI Desktop\bin\WebView2Resources\minerva\sharedresources\BaseThemes")
 
 
+# Design system (24 Oct 2026 redesign): white canvas, navy text, blue data colours, orange only for warnings.
+NAVY, MUTED, BLUE, LIGHT_BLUE, GREY = "#1B2A41", "#5A6577", "#1F5E7A", "#9CC3D5", "#9AA5B5"
+WARN_BG, WARN_TEXT, TECH_BG = "#FFF1DC", "#7A3E00", "#C0612B"
+THEME_NAME = "LayoffsTheme"
+THEME = {
+    "name": THEME_NAME,
+    "dataColors": ["#1F5E7A", "#4E8FB0", "#9CC3D5", "#2E4A7D", "#6C8EBF", "#B8C7DC", "#3D7F8C", "#7FB3B8",
+                   "#C9DDE3", "#5B6C8F", "#8FA6C2", "#D5DEEA", "#2F6F6A", "#94B8B3", "#E3ECEF", "#9AA5B5"],
+    "background": "#FFFFFF", "foreground": NAVY, "tableAccent": BLUE,
+    "good": "#21734A", "neutral": "#C0612B", "bad": "#A3322A",
+    "textClasses": {"title": {"fontFace": "Segoe UI Semibold", "fontSize": 11, "color": NAVY},
+                    "label": {"fontFace": "Segoe UI", "fontSize": 9, "color": MUTED},
+                    "callout": {"fontFace": "Segoe UI Semibold", "fontSize": 24, "color": NAVY},
+                    "header": {"fontFace": "Segoe UI Semibold", "fontSize": 12, "color": NAVY}},
+}
+M = 16                      # page margin; every page uses the same grid
+CARD_Y, CARD_H = 96, 84
+MAIN_Y = 192
+
+
 def literal(value: str) -> dict:
     return {"expr": {"Literal": {"Value": value}}}
+
+
+def quoted(text: str) -> dict:
+    return literal("'" + text.replace("'", "''") + "'")
 
 
 class Page:
     def __init__(self, title, question):
         self.title, self.visuals, self.z, self.interactions = title, [], 0, []
-        self.text(0, 0, 1280, 64, BANNER, size="9pt", bold=True, color="#FFFFFF", background="#8a5a00")
-        self.text(16, 66, 1248, 40, f"{title}: {question}", size="13pt", bold=True, color="#1b2330")
+        self.text(0, 0, 1280, 44, BANNER, size="9pt", bold=True, color=WARN_TEXT, background=WARN_BG)
+        self.text(M, 48, 1248, 40, f"{title}: {question}", size="14pt", bold=True, color=NAVY)
 
     def _add(self, x, y, w, h, visual):
         self.z += 1
@@ -230,7 +257,7 @@ class Page:
                              "visual": visual})
         return name
 
-    def text(self, x, y, w, h, value, size="10pt", bold=False, color="#1b2330", background=None):
+    def text(self, x, y, w, h, value, size="10pt", bold=False, color=NAVY, background=None):
         style = {"fontSize": size, "color": color}
         if bold:
             style["fontWeight"] = "bold"
@@ -238,17 +265,18 @@ class Page:
                   "objects": {"general": [{"properties": {"paragraphs": [{"textRuns": [{"value": value, "textStyle": style}]}]}}]}}
         if background:
             visual["visualContainerObjects"] = {"background": [{"properties": {
-                "show": literal("true"),
-                "color": {"solid": {"color": literal(f"'{background}'")}},
+                "show": literal("true"), "color": {"solid": {"color": literal(f"'{background}'")}},
                 "transparency": literal("0D")}}]}
         return self._add(x, y, w, h, visual)
 
-    def visual(self, vtype, x, y, w, h, roles: dict, title: str | None = None, objects: dict | None = None):
-        """roles: {projection role: [("m"|"c"|"sum", table, field), ...]}"""
+    def visual(self, vtype, x, y, w, h, roles: dict, title: str | None = None, objects: dict | None = None,
+               subtitle: str | None = None, sort_by: tuple | None = None):
+        """roles: {projection role: [(kind, table, field[, display name[, format]]), ...]}, kind "m"|"c"|"sum".
+        Display names and formats change only how a field is labelled in this visual, never its calculation."""
         state = {}
         for role, fields in roles.items():
             projections = []
-            for kind, table, field in fields:
+            for kind, table, field, *extra in fields:
                 src = {"Expression": {"SourceRef": {"Entity": table}}, "Property": field}
                 if kind == "m":
                     ref, expr, native = f"{table}.{field}", {"Measure": src}, field
@@ -257,14 +285,28 @@ class Page:
                 else:
                     ref, expr = f"Sum({table}.{field})", {"Aggregation": {"Expression": {"Column": src}, "Function": 0}}
                     native = f"Sum of {field}"
-                projections.append({"field": expr, "queryRef": ref, "nativeQueryRef": native})
+                proj = {"field": expr, "queryRef": ref, "nativeQueryRef": native}
+                if len(extra) > 0 and extra[0]:
+                    proj["displayName"] = extra[0]
+                if len(extra) > 1 and extra[1]:
+                    proj["format"] = extra[1]
+                projections.append(proj)
             state[role] = {"projections": projections}
         visual = {"visualType": vtype, "query": {"queryState": state}, "drillFilterOtherVisuals": True}
+        if sort_by:                                    # (role, index) of the projection to sort descending
+            role, i = sort_by
+            visual["query"]["sortDefinition"] = {"sort": [{"field": state[role]["projections"][i]["field"],
+                                                           "direction": "Descending"}]}
         if objects:
             visual["objects"] = objects
-        if title:
-            visual["visualContainerObjects"] = {"title": [{"properties": {
-                "show": literal("true"), "text": literal("'" + title.replace("'", "''") + "'")}}]}
+        vco = {"title": [{"properties": {"show": literal("true" if title else "false"),
+                                         **({"text": quoted(title), "fontColor": {"solid": {"color": literal(f"'{NAVY}'")}},
+                                             "fontSize": literal("11D"), "bold": literal("true")} if title else {})}}]}
+        if subtitle:
+            vco["subTitle"] = [{"properties": {"show": literal("true"), "text": quoted(subtitle),
+                                               "fontColor": {"solid": {"color": literal(f"'{MUTED}'")}},
+                                               "fontSize": literal("9D")}}]
+        visual["visualContainerObjects"] = vco
         return self._add(x, y, w, h, visual)
 
     def only_filters(self, source, target):
@@ -280,83 +322,176 @@ class Page:
         return page
 
 
-def cards(page, items, y=110):
+def cards(page, items):
+    """One aligned row of KPI cards: (table, measure, label)."""
     w = (1248 - 12 * (len(items) - 1)) // len(items)
-    for i, (table, measure) in enumerate(items):
-        page.visual("card", 16 + i * (w + 12), y, w, 96, {"Values": [("m", table, measure)]})
+    for i, (table, measure, label) in enumerate(items):
+        page.visual("card", M + i * (w + 12), CARD_Y, w, CARD_H, {"Values": [("m", table, measure, label)]},
+                    objects={"labels": [{"properties": {"fontSize": literal("22D"),
+                                                        "color": {"solid": {"color": literal(f"'{NAVY}'")}}}}],
+                             "categoryLabels": [{"properties": {"fontSize": literal("9D")}}]})
+
+
+def dropdown(page, x, y, w, h, table, field, label, single=False):
+    objects = {"data": [{"properties": {"mode": literal("'Dropdown'")}}],
+               "header": [{"properties": {"text": quoted(label), "fontSize": literal("9D")}}]}
+    if single:
+        objects["selection"] = [{"properties": {"singleSelect": literal("true")}}]
+    return page.visual("slicer", x, y, w, h, {"Values": [("c", table, field, label)]}, objects=objects)
+
+
+def table_objects(widths: dict | None = None):
+    obj = {"columnHeaders": [{"properties": {"wordWrap": literal("true"), "fontSize": literal("9D")}}],
+           "values": [{"properties": {"fontSize": literal("9D")}}]}
+    if widths:
+        obj["columnWidth"] = [{"properties": {"value": literal(f"{w}D")}, "selector": {"metadata": ref}}
+                              for ref, w in widths.items()]
+    return obj
+
+
+# Interval charts: the estimate is a column; the lower and upper bounds are markers with no connecting line,
+# so they read as the ends of an interval, not as extra series to add up.
+INTERVAL_LINES = {"lineStyles": [{"properties": {"strokeWidth": literal("0D"), "showMarker": literal("true"),
+                                                 "markerSize": literal("6D")}}],
+                  "dataPoint": [{"properties": {"fill": {"solid": {"color": literal(f"'{BLUE}'")}}}}]}
 
 
 def build_pages():
     E, C, Q, B = "v_bi_events", "v_bi_company_summary", "v_bi_quality", "v_bi_benchmark"
-    p1 = Page("1 Executive overview", "is layoff activity unusual right now?")
-    cards(p1, [(E, "Events"), (E, "Events vs 2019 %"), (E, "Companies"), (E, "Median disclosed cut"), (E, "Disclosure rate %")])
-    p1.visual("lineChart", 16, 218, 760, 300, {"Category": [("c", E, "month_start")], "Y": [("m", E, "Events")]},
-              "Layoff events per month (May-Jun 2026 incomplete)")
-    p1.visual("clusteredColumnChart", 788, 218, 476, 300,
-              {"Category": [("c", "bootstrap_yearly", "event_year")],
-               "Y": [("sum", "bootstrap_yearly", "events_lo"), ("sum", "bootstrap_yearly", "events"),
-                     ("sum", "bootstrap_yearly", "events_hi")]},
-              "Events per year with 90% bootstrap interval (2026 = Jan-Jun)")
-    for i, field in enumerate(["event_year", "region", "industry_group", "is_furlough"]):
-        p1.visual("slicer", 16 + i * 315, 530, 303, 170, {"Values": [("c", E, field)]})
+    BY, KM, R1 = "bootstrap_yearly", "km_curve", "repeat_by_first_cut"
 
-    p2 = Page("2 Industry and geography", "where do layoffs concentrate, and what shifted?")
-    cards(p2, [(E, "Events"), (E, "Unknown sector %"), (E, "US share of known-country %")])
-    p2.visual("clusteredBarChart", 16, 218, 400, 482, {"Category": [("c", E, "industry_group")], "Y": [("m", E, "Events")]},
-              "Events by industry group (Unknown = no sector, 31%)")
-    p2.visual("hundredPercentStackedColumnChart", 428, 218, 480, 236,
-              {"Category": [("c", E, "event_year")], "Series": [("c", E, "industry_group")], "Y": [("m", E, "Events")]},
-              "Industry share of events by year")
+    # ---- page 1
+    p1 = Page("1 Executive overview", "what is happening in the layoff-event sample, and how has it changed?")
+    cards(p1, [(E, "Events", "Layoff events (sample)"), (E, "Events vs 2019 %", "Events vs 2019 (%, pick a year)"),
+               (E, "Companies", "Companies affected"), (E, "Median disclosed cut", "Median disclosed cut (people)"),
+               (E, "Disclosure rate %", "Events with disclosed headcount (%)")])
+    p1.visual("lineChart", M, MAIN_Y, 760, 392,
+              {"Category": [("c", E, "month_start", "Month")], "Y": [("m", E, "Events", "Layoff events", "#,0")]},
+              "Layoff events per month", subtitle="Sample counts. May–Jun 2026 look incomplete (collection lag), "
+                                                   "not a real decline.")
+    p1.visual("lineClusteredColumnComboChart", 788, MAIN_Y, 476, 392,
+              {"Category": [("c", BY, "event_year", "Year")],
+               "Y": [("sum", BY, "events", "Events (sample)", "#,0")],
+               "Y2": [("sum", BY, "events_lo", "90% interval: lower", "#,0"),
+                      ("sum", BY, "events_hi", "90% interval: upper", "#,0")]},
+              "Events per year with 90% interval",
+              subtitle="Column = sample count; markers = company-cluster bootstrap interval. 2026 = Jan–Jun. "
+                       "Not affected by the slicers.", objects=INTERVAL_LINES)
+    for i, (field, label) in enumerate([("event_year", "Year"), ("region", "Region"),
+                                        ("industry_group", "Industry group"), ("is_furlough", "Furlough (temporary)?")]):
+        dropdown(p1, M + i * 315, 600, 303, 56, E, field, label)
+    p1.text(M, 664, 1248, 40, "Counts describe a 26% company sample of news-reported layoffs, not every layoff "
+                              "worldwide. Job figures are disclosed cuts only.", size="9pt", color=MUTED)
+
+    # ---- page 2
+    p2 = Page("2 Industry and geography", "where do layoff events concentrate, and how did the mix change?")
+    cards(p2, [(E, "Events", "Layoff events (sample)"), (E, "Unknown sector %", "Events with unknown industry (%)"),
+               (E, "US share of known-country %", "US share of events with a known country (%)")])
+    p2.visual("clusteredBarChart", M, MAIN_Y, 400, 460,
+              {"Category": [("c", E, "industry_group", "Industry group")], "Y": [("m", E, "Events", "Layoff events", "#,0")]},
+              "Layoff events by industry group", subtitle="Event counts, not job cuts.",
+              objects={"categoryAxis": [{"properties": {"fontSize": literal("9D"), "maxMarginFactor": literal("40L")}}],
+                       "labels": [{"properties": {"show": literal("true"), "labelDisplayUnits": literal("1D")}}]})
+    p2.text(M, 656, 400, 48, "Unknown = the source does not identify the industry. It is not zero layoffs; "
+                             "it is shown so shares are not overstated.", size="9pt", color=MUTED)
+    p2.visual("hundredPercentStackedColumnChart", 428, MAIN_Y, 480, 248,
+              {"Category": [("c", E, "event_year", "Year")], "Series": [("c", E, "industry_group", "Industry group")],
+               "Y": [("m", E, "Events", "Layoff events", "#,0")]},
+              "Industry share of events by year", subtitle="Each column = 100% of that year's events.",
+              objects={"legend": [{"properties": {"show": literal("true"), "position": literal("'Top'"),
+                                                  "fontSize": literal("8D")}}]})
     # Pie for one year at a time, beside (not instead of) the stacked chart: 17 groups, 6-9 under 3% per year,
     # so comparing years needs the stacked chart. All 17 groups are kept; nothing is merged into "Other".
-    year = p2.visual("slicer", 428, 462, 130, 238, {"Values": [("c", E, "event_year")]}, "Year for the pie",
-                     objects={"data": [{"properties": {"mode": literal("'Dropdown'")}}],
-                              "selection": [{"properties": {"singleSelect": literal("true")}}]})
-    pie = p2.visual("pieChart", 566, 462, 342, 238,
-                    {"Category": [("c", E, "industry_group")], "Y": [("m", E, "Events")],
-                     "Tooltips": [("m", E, "Share of selected events %")]},
-                    "Industry share of layoff events, selected year (all years if none picked)",
+    year = dropdown(p2, 428, 448, 150, 56, E, "event_year", "Year for the pie", single=True)
+    p2.text(428, 508, 150, 196, "Pick one year to see its industry mix (all years if none is picked). "
+                                "Hover a slice for its industry, event count and share.", size="9pt", color=MUTED)
+    pie = p2.visual("pieChart", 586, 448, 322, 256,
+                    {"Category": [("c", E, "industry_group", "Industry group")],
+                     "Y": [("m", E, "Events", "Layoff events", "#,0")],
+                     "Tooltips": [("m", E, "Share of selected events %", "Share of selected year (%)", "0.0")]},
+                    "Industry share, selected year",
                     objects={"labels": [{"properties": {"show": literal("true"),
-                                                        "labelStyle": literal("'Category, percent of total'")}}],
+                                                        "labelStyle": literal("'Percent of total'"),
+                                                        "fontSize": literal("8D")}}],
                              "legend": [{"properties": {"show": literal("false")}}]})
-    p2.visual("tableEx", 920, 218, 344, 482, {"Values": [("c", E, "region"), ("c", E, "country"), ("m", E, "Events")]},
-              "Events by region and country (9% have no country)")
+    p2.visual("tableEx", 920, MAIN_Y, 344, 512,
+              {"Values": [("c", E, "region", "Region"), ("c", E, "country", "Country"),
+                          ("m", E, "Events", "Events", "#,0")]},
+              "Events by region and country", subtitle="Unknown = no country given (9% of events).",
+              objects=table_objects({"v_bi_events.region": 105, "v_bi_events.country": 130, "v_bi_events.Events": 70}))
     p2.only_filters(year, pie)
 
+    # ---- page 3
     p3 = Page("3 Companies and repeat layoffs", "which employers cut repeatedly, and how soon?")
-    cards(p3, [(C, "Repeat companies"), (C, "Median days to next round"), ("repeat_overall", "12-month repeat probability %")])
-    p3.visual("tableEx", 16, 218, 520, 482,
-              {"Values": [("c", C, "company_name"), ("sum", C, "events"), ("c", C, "first_event_date"),
-                          ("c", C, "last_event_date"), ("sum", C, "disclosed_jobs_cut")]},
-              "Companies and their events (brand names may be split)")
-    p3.visual("lineChart", 548, 218, 716, 280, {"Category": [("c", "km_curve", "months")], "Y": [("m", "km_curve", "Repeat probability %")]},
-              "Chance of another layoff, months after the first (Kaplan-Meier)")
-    p3.visual("clusteredColumnChart", 548, 510, 716, 190,
-              {"Category": [("c", "repeat_by_first_cut", "group")],
-               "Y": [("sum", "repeat_by_first_cut", "p_repeat_365d_lo"), ("sum", "repeat_by_first_cut", "p_repeat_365d"),
-                     ("sum", "repeat_by_first_cut", "p_repeat_365d_hi")]},
-              "12-month repeat probability by size of first cut (95% interval)")
+    cards(p3, [(C, "Repeat companies", "Companies with 2+ events"),
+               (C, "Median days to next round", "Median days to 2nd event (repeaters)"),
+               ("repeat_overall", "12-month repeat probability %", "Another layoff within 12 months (%)")])
+    p3.visual("tableEx", M, MAIN_Y, 560, 512,
+              {"Values": [("c", C, "company_name", "Company"), ("sum", C, "events", "Events", "#,0"),
+                          ("c", C, "first_event_date", "First event", "dd MMM yyyy"),
+                          ("c", C, "last_event_date", "Last event", "dd MMM yyyy"),
+                          ("sum", C, "disclosed_jobs_cut", "Disclosed jobs cut (lower bound)", "#,0")]},
+              "Companies and their events (most events first)", subtitle="Brand names may be split across spellings.",
+              sort_by=("Values", 1),
+              objects=table_objects({"v_bi_company_summary.company_name": 170, "Sum(v_bi_company_summary.events)": 60,
+                                     "v_bi_company_summary.first_event_date": 92,
+                                     "v_bi_company_summary.last_event_date": 92,
+                                     "Sum(v_bi_company_summary.disclosed_jobs_cut)": 110}))
+    p3.visual("lineChart", 588, MAIN_Y, 676, 300,
+              {"Category": [("c", KM, "months", "Months since first layoff in the sample")],
+               "Y": [("sum", KM, "p_repeat", "Had another layoff", "0%")]},
+              "Chance of another layoff after the first (Kaplan-Meier)",
+              subtitle="Share of sampled companies with a 2nd layoff within N months. Companies with no 2nd event by "
+                       "14 Jun 2026 count as censored, not 'never'. Association only, not a prediction.")
+    p3.visual("lineClusteredColumnComboChart", 588, 504, 676, 200,
+              {"Category": [("c", R1, "group", "Size of first cut")],
+               "Y": [("sum", R1, "p_repeat_365d", "Repeat within 12 months", "0.0%")],
+               "Y2": [("sum", R1, "p_repeat_365d_lo", "95% interval: lower", "0.0%"),
+                      ("sum", R1, "p_repeat_365d_hi", "95% interval: upper", "0.0%")]},
+              "12-month repeat probability by size of first cut",
+              subtitle="Column = Kaplan-Meier estimate; markers = 95% interval.", objects=INTERVAL_LINES)
 
-    p4 = Page("4 Data quality and coverage", "how far can I trust a number?")
-    cards(p4, [(E, "Disclosure rate %"), (E, "Unknown sector %"), (E, "Events headcount unknown"), ("v_tech_events", "Tech case-study rows")])
-    p4.visual("lineChart", 16, 218, 620, 240,
-              {"Category": [("c", B, "event_year")],
-               "Y": [("sum", B, "events_ratio"), ("sum", B, "jobs_ratio"), ("sum", B, "nominal_ratio")]},
-              "Sample / full data by year: events track 0.26, disclosed jobs do not")
-    p4.visual("clusteredBarChart", 648, 218, 616, 240,
-              {"Category": [("c", Q, "value")], "Y": [("sum", Q, "disclosure_rate_pct")]},
-              "Headcount disclosure rate % (pick a dimension with the slicer)")
-    p4.visual("slicer", 648, 462, 300, 60, {"Values": [("c", Q, "dimension")]})
-    p4.visual("tableEx", 16, 470, 620, 230,
-              {"Values": [("c", "sensitivity_by_year", "event_year"), ("sum", "sensitivity_by_year", "all_events"),
-                          ("sum", "sensitivity_by_year", "excl_furloughs"),
-                          ("sum", "sensitivity_by_year", "excl_internal_duplicates")]},
-              "Sensitivity: events per year under exclusions (query 19)")
-    p4.text(960, 462, 304, 60, "Tech case study (35 rows): unknown source, derived company size, 6 suspect dates. "
-                               "Never part of global totals.", size="9pt", bold=True, color="#FFFFFF", background="#c0612b")
-    p4.visual("tableEx", 960, 526, 304, 174,
-              {"Values": [("c", "v_tech_events", "company_name"), ("c", "v_tech_events", "event_date"),
-                          ("sum", "v_tech_events", "employees_laid_off"), ("c", "v_tech_events", "ai_related")]})
+    # ---- page 4
+    p4 = Page("4 Data quality and coverage", "how far can each number be trusted?")
+    cards(p4, [(E, "Disclosure rate %", "Events with disclosed headcount (%)"),
+               (E, "Unknown sector %", "Events with unknown industry (%)"),
+               (E, "Events headcount unknown", "Events with undisclosed headcount"),
+               ("v_tech_events", "Tech case-study rows", "Tech case-study rows (separate)")])
+    p4.visual("lineChart", M, MAIN_Y, 620, 252,
+              {"Category": [("c", B, "event_year", "Year")],
+               "Y": [("sum", B, "events_ratio", "Events: sample ÷ full", "0.000"),
+                     ("sum", B, "jobs_ratio", "Disclosed jobs: sample ÷ full", "0.000"),
+                     ("sum", B, "nominal_ratio", "Expected 0.260 (5,000 ÷ 19,208)", "0.000")]},
+              "Sample coverage vs the full data, by year",
+              subtitle="Events track 0.26; disclosed job totals swing, so they are lower bounds for the sample only. "
+                       "Source: Fliar data card.")
+    p4.visual("clusteredBarChart", 648, MAIN_Y, 616, 204,
+              {"Category": [("c", Q, "value", "Group")],
+               "Y": [("sum", Q, "disclosure_rate_pct", "Headcount disclosure rate (%)", "0.0")]},
+              "Headcount disclosure rate by group", subtitle="Share of events that state a headcount. "
+                                                             "Choose year, region or industry below.",
+              objects={"labels": [{"properties": {"show": literal("true")}}]})
+    dropdown(p4, 648, 400, 616, 44, Q, "dimension", "Group by")
+    p4.visual("tableEx", M, 456, 470, 248,
+              {"Values": [("c", "sensitivity_by_year", "event_year", "Year"),
+                          ("sum", "sensitivity_by_year", "all_events", "All events", "#,0"),
+                          ("sum", "sensitivity_by_year", "excl_furloughs", "Without furloughs", "#,0"),
+                          ("sum", "sensitivity_by_year", "excl_internal_duplicates", "Without possible duplicates", "#,0")]},
+              "Sensitivity: events per year under exclusions (query 19)",
+              objects=table_objects({"sensitivity_by_year.event_year": 60, "Sum(sensitivity_by_year.all_events)": 110,
+                                     "Sum(sensitivity_by_year.excl_furloughs)": 130,
+                                     "Sum(sensitivity_by_year.excl_internal_duplicates)": 150}))
+    # The tech case-study table gets the full width right of the sensitivity table, under its warning card.
+    p4.text(498, 456, 766, 52, "SEPARATE TECH CASE STUDY (35 rows). Source and licence unknown; company size is "
+                               "derived from its own percentage; 6 dates look wrong. Never included in global totals.",
+            size="9pt", bold=True, color="#FFFFFF", background=TECH_BG)
+    p4.visual("tableEx", 498, 512, 766, 192,
+              {"Values": [("c", "v_tech_events", "company_name", "Company"),
+                          ("c", "v_tech_events", "event_date", "Date", "dd MMM yyyy"),
+                          ("sum", "v_tech_events", "employees_laid_off", "Reported laid off", "#,0"),
+                          ("c", "v_tech_events", "ai_related", "AI-related (source label)")]},
+              objects=table_objects({"v_tech_events.company_name": 260, "v_tech_events.event_date": 130,
+                                     "Sum(v_tech_events.employees_laid_off)": 160, "v_tech_events.ai_related": 170}))
     return [p1, p2, p3, p4]
 
 
@@ -379,14 +514,21 @@ def write_report():
     dump(d / "report.json", {
         "$schema": f"{SCHEMA}/report/{V_REPORT}/schema.json",
         "themeCollection": {"baseTheme": {"name": BASE_THEME, "type": "SharedResources",
-                                          "reportVersionAtImport": {"visual": V_VISUAL, "report": V_REPORT, "page": V_PAGE}}},
+                                          "reportVersionAtImport": {"visual": V_VISUAL, "report": V_REPORT, "page": V_PAGE}},
+                            "customTheme": {"name": f"{THEME_NAME}.json", "type": "RegisteredResources",
+                                            "reportVersionAtImport": {"visual": V_VISUAL, "report": V_REPORT, "page": V_PAGE}}},
         "resourcePackages": [{"name": "SharedResources", "type": "SharedResources",
-                              "items": [{"name": BASE_THEME, "path": f"BaseThemes/{BASE_THEME}.json", "type": "BaseTheme"}]}],
+                              "items": [{"name": BASE_THEME, "path": f"BaseThemes/{BASE_THEME}.json", "type": "BaseTheme"}]},
+                             {"name": "RegisteredResources", "type": "RegisteredResources",
+                              "items": [{"name": f"{THEME_NAME}.json", "path": f"{THEME_NAME}.json", "type": "CustomTheme"}]}],
         "settings": {"useStylableVisualContainerHeader": True, "defaultDrillFilterOtherVisuals": True}})
     theme_dst = rp / "StaticResources" / "SharedResources" / "BaseThemes" / f"{BASE_THEME}.json"
     theme_dst.parent.mkdir(parents=True, exist_ok=True)
     if (THEME_DIR / f"{BASE_THEME}.json").exists():
         shutil.copyfile(THEME_DIR / f"{BASE_THEME}.json", theme_dst)
+    custom = rp / "StaticResources" / "RegisteredResources" / f"{THEME_NAME}.json"
+    custom.parent.mkdir(parents=True, exist_ok=True)
+    dump(custom, THEME)
     pages = build_pages()
     names = [f"page{i + 1}" for i in range(len(pages))]
     dump(d / "pages" / "pages.json", {"$schema": f"{SCHEMA}/pagesMetadata/{V_PAGES}/schema.json",

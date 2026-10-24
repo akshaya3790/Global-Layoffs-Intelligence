@@ -5,6 +5,7 @@ model Model
 	dataAccessOptions
 		legacyRedirects
 		returnErrorValuesAsNull
+	annotation __PBI_TimeIntelligenceEnabled = 0
 
 ref table v_bi_events
 ref table v_bi_company_summary

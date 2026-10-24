@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v1465b2dc06bca958",
+  "position": {
+    "x": 16,
+    "y": 664,
+    "z": 14000,
+    "height": 40,
+    "width": 1248,
+    "tabOrder": 14000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Counts describe a 26% company sample of news-reported layoffs, not every layoff worldwide. Job figures are disclosed cuts only.",
+                    "textStyle": {
+                      "fontSize": "9pt",
+                      "color": "#5A6577"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

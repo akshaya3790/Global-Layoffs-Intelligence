@@ -3,9 +3,9 @@
   "name": "v053059c95186925d",
   "position": {
     "x": 520,
-    "y": 110,
+    "y": 96,
     "z": 5000,
-    "height": 96,
+    "height": 84,
     "width": 240,
     "tabOrder": 5000
   },
@@ -27,12 +27,67 @@
                 }
               },
               "queryRef": "v_bi_events.Companies",
-              "nativeQueryRef": "Companies"
+              "nativeQueryRef": "Companies",
+              "displayName": "Companies affected"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

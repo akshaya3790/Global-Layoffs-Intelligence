@@ -3,17 +3,17 @@
   "name": "v080b68add613135f",
   "position": {
     "x": 428,
-    "y": 462,
+    "y": 192,
     "z": 8000,
-    "height": 238,
-    "width": 130,
+    "height": 248,
+    "width": 480,
     "tabOrder": 8000
   },
   "visual": {
-    "visualType": "slicer",
+    "visualType": "hundredPercentStackedColumnChart",
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
           "projections": [
             {
               "field": {
@@ -27,7 +27,47 @@
                 }
               },
               "queryRef": "v_bi_events.event_year",
-              "nativeQueryRef": "event_year"
+              "nativeQueryRef": "event_year",
+              "displayName": "Year"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "industry_group"
+                }
+              },
+              "queryRef": "v_bi_events.industry_group",
+              "nativeQueryRef": "industry_group",
+              "displayName": "Industry group"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "Events"
+                }
+              },
+              "queryRef": "v_bi_events.Events",
+              "nativeQueryRef": "Events",
+              "displayName": "Layoff events",
+              "format": "#,0"
             }
           ]
         }
@@ -35,26 +75,27 @@
     },
     "drillFilterOtherVisuals": true,
     "objects": {
-      "data": [
+      "legend": [
         {
           "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Dropdown'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "selection": [
-        {
-          "properties": {
-            "singleSelect": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
                 }
               }
             }
@@ -76,7 +117,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Year for the pie'"
+                  "Value": "'Industry share of events by year'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Each column = 100% of that year''s events.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

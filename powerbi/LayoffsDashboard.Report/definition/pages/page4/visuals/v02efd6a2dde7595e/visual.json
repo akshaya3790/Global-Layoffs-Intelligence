@@ -3,7 +3,7 @@
   "name": "v02efd6a2dde7595e",
   "position": {
     "x": 16,
-    "y": 66,
+    "y": 48,
     "z": 2000,
     "height": 40,
     "width": 1248,
@@ -20,10 +20,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "4 Data quality and coverage: how far can I trust a number?",
+                    "value": "4 Data quality and coverage: how far can each number be trusted?",
                     "textStyle": {
-                      "fontSize": "13pt",
-                      "color": "#1b2330",
+                      "fontSize": "14pt",
+                      "color": "#1B2A41",
                       "fontWeight": "bold"
                     }
                   }

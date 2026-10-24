@@ -3,9 +3,9 @@
   "name": "v08373b5938b70754",
   "position": {
     "x": 648,
-    "y": 218,
+    "y": 192,
     "z": 8000,
-    "height": 240,
+    "height": 204,
     "width": 616,
     "tabOrder": 8000
   },
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "v_bi_quality.value",
-              "nativeQueryRef": "value"
+              "nativeQueryRef": "value",
+              "displayName": "Group"
             }
           ]
         },
@@ -50,13 +51,30 @@
                 }
               },
               "queryRef": "Sum(v_bi_quality.disclosure_rate_pct)",
-              "nativeQueryRef": "Sum of disclosure_rate_pct"
+              "nativeQueryRef": "Sum of disclosure_rate_pct",
+              "displayName": "Headcount disclosure rate (%)",
+              "format": "0.0"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -71,7 +89,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Headcount disclosure rate % (pick a dimension with the slicer)'"
+                  "Value": "'Headcount disclosure rate by group'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Share of events that state a headcount. Choose year, region or industry below.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

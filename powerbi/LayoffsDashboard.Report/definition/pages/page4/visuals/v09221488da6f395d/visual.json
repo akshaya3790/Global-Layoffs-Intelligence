@@ -3,10 +3,10 @@
   "name": "v09221488da6f395d",
   "position": {
     "x": 648,
-    "y": 462,
+    "y": 400,
     "z": 9000,
-    "height": 60,
-    "width": 300,
+    "height": 44,
+    "width": 616,
     "tabOrder": 9000
   },
   "visual": {
@@ -27,12 +27,63 @@
                 }
               },
               "queryRef": "v_bi_quality.dimension",
-              "nativeQueryRef": "dimension"
+              "nativeQueryRef": "dimension",
+              "displayName": "Group by"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Group by'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

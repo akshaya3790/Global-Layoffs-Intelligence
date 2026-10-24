@@ -3,9 +3,9 @@
   "name": "v129255d9ddc23353",
   "position": {
     "x": 646,
-    "y": 530,
+    "y": 600,
     "z": 12000,
-    "height": 170,
+    "height": 56,
     "width": 303,
     "tabOrder": 12000
   },
@@ -27,12 +27,63 @@
                 }
               },
               "queryRef": "v_bi_events.industry_group",
-              "nativeQueryRef": "industry_group"
+              "nativeQueryRef": "industry_group",
+              "displayName": "Industry group"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Industry group'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

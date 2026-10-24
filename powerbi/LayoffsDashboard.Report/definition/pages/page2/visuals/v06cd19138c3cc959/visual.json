@@ -3,9 +3,9 @@
   "name": "v06cd19138c3cc959",
   "position": {
     "x": 16,
-    "y": 218,
+    "y": 192,
     "z": 6000,
-    "height": 482,
+    "height": 460,
     "width": 400,
     "tabOrder": 6000
   },
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "v_bi_events.industry_group",
-              "nativeQueryRef": "industry_group"
+              "nativeQueryRef": "industry_group",
+              "displayName": "Industry group"
             }
           ]
         },
@@ -45,13 +46,57 @@
                 }
               },
               "queryRef": "v_bi_events.Events",
-              "nativeQueryRef": "Events"
+              "nativeQueryRef": "Events",
+              "displayName": "Layoff events",
+              "format": "#,0"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "categoryAxis": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "maxMarginFactor": {
+              "expr": {
+                "Literal": {
+                  "Value": "40L"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -66,7 +111,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Events by industry group (Unknown = no sector, 31%)'"
+                  "Value": "'Layoff events by industry group'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Event counts, not job cuts.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

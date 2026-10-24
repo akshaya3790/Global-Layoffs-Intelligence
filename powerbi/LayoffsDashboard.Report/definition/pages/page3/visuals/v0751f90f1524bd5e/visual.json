@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v0751f90f1524bd5e",
   "position": {
-    "x": 548,
-    "y": 218,
+    "x": 588,
+    "y": 192,
     "z": 7000,
-    "height": 280,
-    "width": 716,
+    "height": 300,
+    "width": 676,
     "tabOrder": 7000
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "km_curve.months",
-              "nativeQueryRef": "months"
+              "nativeQueryRef": "months",
+              "displayName": "Months since first layoff in the sample"
             }
           ]
         },
@@ -35,17 +36,24 @@
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "km_curve"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "km_curve"
+                        }
+                      },
+                      "Property": "p_repeat"
                     }
                   },
-                  "Property": "Repeat probability %"
+                  "Function": 0
                 }
               },
-              "queryRef": "km_curve.Repeat probability %",
-              "nativeQueryRef": "Repeat probability %"
+              "queryRef": "Sum(km_curve.p_repeat)",
+              "nativeQueryRef": "Sum of p_repeat",
+              "displayName": "Had another layoff",
+              "format": "0%"
             }
           ]
         }
@@ -66,7 +74,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Chance of another layoff, months after the first (Kaplan-Meier)'"
+                  "Value": "'Chance of another layoff after the first (Kaplan-Meier)'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Share of sampled companies with a 2nd layoff within N months. Companies with no 2nd event by 14 Jun 2026 count as censored, not ''never''. Association only, not a prediction.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

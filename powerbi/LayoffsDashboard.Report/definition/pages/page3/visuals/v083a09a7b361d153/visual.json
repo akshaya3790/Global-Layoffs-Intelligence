@@ -2,15 +2,15 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v083a09a7b361d153",
   "position": {
-    "x": 548,
-    "y": 510,
+    "x": 588,
+    "y": 504,
     "z": 8000,
-    "height": 190,
-    "width": 716,
+    "height": 200,
+    "width": 676,
     "tabOrder": 8000
   },
   "visual": {
-    "visualType": "clusteredColumnChart",
+    "visualType": "lineClusteredColumnComboChart",
     "query": {
       "queryState": {
         "Category": {
@@ -27,11 +27,37 @@
                 }
               },
               "queryRef": "repeat_by_first_cut.group",
-              "nativeQueryRef": "group"
+              "nativeQueryRef": "group",
+              "displayName": "Size of first cut"
             }
           ]
         },
         "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "repeat_by_first_cut"
+                        }
+                      },
+                      "Property": "p_repeat_365d"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(repeat_by_first_cut.p_repeat_365d)",
+              "nativeQueryRef": "Sum of p_repeat_365d",
+              "displayName": "Repeat within 12 months",
+              "format": "0.0%"
+            }
+          ]
+        },
+        "Y2": {
           "projections": [
             {
               "field": {
@@ -50,26 +76,9 @@
                 }
               },
               "queryRef": "Sum(repeat_by_first_cut.p_repeat_365d_lo)",
-              "nativeQueryRef": "Sum of p_repeat_365d_lo"
-            },
-            {
-              "field": {
-                "Aggregation": {
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "repeat_by_first_cut"
-                        }
-                      },
-                      "Property": "p_repeat_365d"
-                    }
-                  },
-                  "Function": 0
-                }
-              },
-              "queryRef": "Sum(repeat_by_first_cut.p_repeat_365d)",
-              "nativeQueryRef": "Sum of p_repeat_365d"
+              "nativeQueryRef": "Sum of p_repeat_365d_lo",
+              "displayName": "95% interval: lower",
+              "format": "0.0%"
             },
             {
               "field": {
@@ -88,13 +97,61 @@
                 }
               },
               "queryRef": "Sum(repeat_by_first_cut.p_repeat_365d_hi)",
-              "nativeQueryRef": "Sum of p_repeat_365d_hi"
+              "nativeQueryRef": "Sum of p_repeat_365d_hi",
+              "displayName": "95% interval: upper",
+              "format": "0.0%"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "lineStyles": [
+        {
+          "properties": {
+            "strokeWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "markerSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "6D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1F5E7A'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -109,7 +166,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'12-month repeat probability by size of first cut (95% interval)'"
+                  "Value": "'12-month repeat probability by size of first cut'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Column = Kaplan-Meier estimate; markers = 95% interval.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

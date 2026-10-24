@@ -3,9 +3,9 @@
   "name": "v06844091298e8955",
   "position": {
     "x": 961,
-    "y": 110,
+    "y": 96,
     "z": 6000,
-    "height": 96,
+    "height": 84,
     "width": 303,
     "tabOrder": 6000
   },
@@ -27,12 +27,67 @@
                 }
               },
               "queryRef": "v_tech_events.Tech case-study rows",
-              "nativeQueryRef": "Tech case-study rows"
+              "nativeQueryRef": "Tech case-study rows",
+              "displayName": "Tech case-study rows (separate)"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

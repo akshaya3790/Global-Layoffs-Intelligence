@@ -3,9 +3,9 @@
   "name": "v03b993e02773fd50",
   "position": {
     "x": 16,
-    "y": 110,
+    "y": 96,
     "z": 3000,
-    "height": 96,
+    "height": 84,
     "width": 408,
     "tabOrder": 3000
   },
@@ -27,12 +27,67 @@
                 }
               },
               "queryRef": "v_bi_events.Events",
-              "nativeQueryRef": "Events"
+              "nativeQueryRef": "Events",
+              "displayName": "Layoff events (sample)"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

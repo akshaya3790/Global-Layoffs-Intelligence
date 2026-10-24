@@ -3,10 +3,10 @@
   "name": "v10152908eb9fa15b",
   "position": {
     "x": 16,
-    "y": 470,
+    "y": 456,
     "z": 10000,
-    "height": 230,
-    "width": 620,
+    "height": 248,
+    "width": 470,
     "tabOrder": 10000
   },
   "visual": {
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "sensitivity_by_year.event_year",
-              "nativeQueryRef": "event_year"
+              "nativeQueryRef": "event_year",
+              "displayName": "Year"
             },
             {
               "field": {
@@ -46,7 +47,9 @@
                 }
               },
               "queryRef": "Sum(sensitivity_by_year.all_events)",
-              "nativeQueryRef": "Sum of all_events"
+              "nativeQueryRef": "Sum of all_events",
+              "displayName": "All events",
+              "format": "#,0"
             },
             {
               "field": {
@@ -65,7 +68,9 @@
                 }
               },
               "queryRef": "Sum(sensitivity_by_year.excl_furloughs)",
-              "nativeQueryRef": "Sum of excl_furloughs"
+              "nativeQueryRef": "Sum of excl_furloughs",
+              "displayName": "Without furloughs",
+              "format": "#,0"
             },
             {
               "field": {
@@ -84,13 +89,108 @@
                 }
               },
               "queryRef": "Sum(sensitivity_by_year.excl_internal_duplicates)",
-              "nativeQueryRef": "Sum of excl_internal_duplicates"
+              "nativeQueryRef": "Sum of excl_internal_duplicates",
+              "displayName": "Without possible duplicates",
+              "format": "#,0"
             }
           ]
         }
       }
     },
     "drillFilterOtherVisuals": true,
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "60D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "sensitivity_by_year.event_year"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "110D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(sensitivity_by_year.all_events)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "130D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(sensitivity_by_year.excl_furloughs)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "150D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(sensitivity_by_year.excl_internal_duplicates)"
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -106,6 +206,31 @@
               "expr": {
                 "Literal": {
                   "Value": "'Sensitivity: events per year under exclusions (query 19)'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

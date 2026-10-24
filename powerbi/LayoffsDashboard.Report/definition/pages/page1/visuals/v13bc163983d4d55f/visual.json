@@ -3,9 +3,9 @@
   "name": "v13bc163983d4d55f",
   "position": {
     "x": 961,
-    "y": 530,
+    "y": 600,
     "z": 13000,
-    "height": 170,
+    "height": 56,
     "width": 303,
     "tabOrder": 13000
   },
@@ -27,12 +27,63 @@
                 }
               },
               "queryRef": "v_bi_events.is_furlough",
-              "nativeQueryRef": "is_furlough"
+              "nativeQueryRef": "is_furlough",
+              "displayName": "Furlough (temporary)?"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Furlough (temporary)?'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

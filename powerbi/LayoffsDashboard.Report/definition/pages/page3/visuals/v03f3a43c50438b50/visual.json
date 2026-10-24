@@ -3,9 +3,9 @@
   "name": "v03f3a43c50438b50",
   "position": {
     "x": 16,
-    "y": 110,
+    "y": 96,
     "z": 3000,
-    "height": 96,
+    "height": 84,
     "width": 408,
     "tabOrder": 3000
   },
@@ -27,12 +27,67 @@
                 }
               },
               "queryRef": "v_bi_company_summary.Repeat companies",
-              "nativeQueryRef": "Repeat companies"
+              "nativeQueryRef": "Repeat companies",
+              "displayName": "Companies with 2+ events"
             }
           ]
         }
       }
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "22D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

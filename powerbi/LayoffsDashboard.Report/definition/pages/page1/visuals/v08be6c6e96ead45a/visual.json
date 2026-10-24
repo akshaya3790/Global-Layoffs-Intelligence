@@ -3,9 +3,9 @@
   "name": "v08be6c6e96ead45a",
   "position": {
     "x": 16,
-    "y": 218,
+    "y": 192,
     "z": 8000,
-    "height": 300,
+    "height": 392,
     "width": 760,
     "tabOrder": 8000
   },
@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "v_bi_events.month_start",
-              "nativeQueryRef": "month_start"
+              "nativeQueryRef": "month_start",
+              "displayName": "Month"
             }
           ]
         },
@@ -45,7 +46,9 @@
                 }
               },
               "queryRef": "v_bi_events.Events",
-              "nativeQueryRef": "Events"
+              "nativeQueryRef": "Events",
+              "displayName": "Layoff events",
+              "format": "#,0"
             }
           ]
         }
@@ -66,7 +69,70 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Layoff events per month (May-Jun 2026 incomplete)'"
+                  "Value": "'Layoff events per month'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1B2A41'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Sample counts. May–Jun 2026 look incomplete (collection lag), not a real decline.'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5A6577'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
                 }
               }
             }

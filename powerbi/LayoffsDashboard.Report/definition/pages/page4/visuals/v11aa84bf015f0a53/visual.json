@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
   "name": "v11aa84bf015f0a53",
   "position": {
-    "x": 960,
-    "y": 462,
+    "x": 498,
+    "y": 456,
     "z": 11000,
-    "height": 60,
-    "width": 304,
+    "height": 52,
+    "width": 766,
     "tabOrder": 11000
   },
   "visual": {
@@ -20,7 +20,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Tech case study (35 rows): unknown source, derived company size, 6 suspect dates. Never part of global totals.",
+                    "value": "SEPARATE TECH CASE STUDY (35 rows). Source and licence unknown; company size is derived from its own percentage; 6 dates look wrong. Never included in global totals.",
                     "textStyle": {
                       "fontSize": "9pt",
                       "color": "#FFFFFF",
@@ -50,7 +50,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#c0612b'"
+                      "Value": "'#C0612B'"
                     }
                   }
                 }
