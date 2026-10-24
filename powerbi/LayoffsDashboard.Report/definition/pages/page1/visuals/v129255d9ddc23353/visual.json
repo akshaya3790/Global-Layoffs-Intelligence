@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v129255d9ddc23353",
+  "position": {
+    "x": 646,
+    "y": 530,
+    "z": 12000,
+    "height": 170,
+    "width": 303,
+    "tabOrder": 12000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "industry_group"
+                }
+              },
+              "queryRef": "v_bi_events.industry_group",
+              "nativeQueryRef": "industry_group"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

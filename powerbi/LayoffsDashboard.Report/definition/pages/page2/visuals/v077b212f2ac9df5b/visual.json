@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v077b212f2ac9df5b",
+  "position": {
+    "x": 428,
+    "y": 218,
+    "z": 7000,
+    "height": 482,
+    "width": 480,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "hundredPercentStackedColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "event_year"
+                }
+              },
+              "queryRef": "v_bi_events.event_year",
+              "nativeQueryRef": "event_year"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "industry_group"
+                }
+              },
+              "queryRef": "v_bi_events.industry_group",
+              "nativeQueryRef": "industry_group"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "Events"
+                }
+              },
+              "queryRef": "v_bi_events.Events",
+              "nativeQueryRef": "Events"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Industry share of events by year'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

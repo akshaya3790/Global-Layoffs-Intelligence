@@ -1,0 +1,121 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v083a09a7b361d153",
+  "position": {
+    "x": 548,
+    "y": 510,
+    "z": 8000,
+    "height": 190,
+    "width": 716,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "repeat_by_first_cut"
+                    }
+                  },
+                  "Property": "group"
+                }
+              },
+              "queryRef": "repeat_by_first_cut.group",
+              "nativeQueryRef": "group"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "repeat_by_first_cut"
+                        }
+                      },
+                      "Property": "p_repeat_365d_lo"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(repeat_by_first_cut.p_repeat_365d_lo)",
+              "nativeQueryRef": "Sum of p_repeat_365d_lo"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "repeat_by_first_cut"
+                        }
+                      },
+                      "Property": "p_repeat_365d"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(repeat_by_first_cut.p_repeat_365d)",
+              "nativeQueryRef": "Sum of p_repeat_365d"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "repeat_by_first_cut"
+                        }
+                      },
+                      "Property": "p_repeat_365d_hi"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(repeat_by_first_cut.p_repeat_365d_hi)",
+              "nativeQueryRef": "Sum of p_repeat_365d_hi"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'12-month repeat probability by size of first cut (95% interval)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

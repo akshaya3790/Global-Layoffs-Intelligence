@@ -1,0 +1,126 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v06bb766924ea3e5f",
+  "position": {
+    "x": 16,
+    "y": 218,
+    "z": 6000,
+    "height": 482,
+    "width": 520,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_company_summary"
+                    }
+                  },
+                  "Property": "company_name"
+                }
+              },
+              "queryRef": "v_bi_company_summary.company_name",
+              "nativeQueryRef": "company_name"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_bi_company_summary"
+                        }
+                      },
+                      "Property": "events"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_bi_company_summary.events)",
+              "nativeQueryRef": "Sum of events"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_company_summary"
+                    }
+                  },
+                  "Property": "first_event_date"
+                }
+              },
+              "queryRef": "v_bi_company_summary.first_event_date",
+              "nativeQueryRef": "first_event_date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_company_summary"
+                    }
+                  },
+                  "Property": "last_event_date"
+                }
+              },
+              "queryRef": "v_bi_company_summary.last_event_date",
+              "nativeQueryRef": "last_event_date"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_bi_company_summary"
+                        }
+                      },
+                      "Property": "disclosed_jobs_cut"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_bi_company_summary.disclosed_jobs_cut)",
+              "nativeQueryRef": "Sum of disclosed_jobs_cut"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Companies and their events (brand names may be split)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v10152908eb9fa15b",
+  "position": {
+    "x": 16,
+    "y": 470,
+    "z": 10000,
+    "height": 230,
+    "width": 620,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "sensitivity_by_year"
+                    }
+                  },
+                  "Property": "event_year"
+                }
+              },
+              "queryRef": "sensitivity_by_year.event_year",
+              "nativeQueryRef": "event_year"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "sensitivity_by_year"
+                        }
+                      },
+                      "Property": "all_events"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(sensitivity_by_year.all_events)",
+              "nativeQueryRef": "Sum of all_events"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "sensitivity_by_year"
+                        }
+                      },
+                      "Property": "excl_furloughs"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(sensitivity_by_year.excl_furloughs)",
+              "nativeQueryRef": "Sum of excl_furloughs"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "sensitivity_by_year"
+                        }
+                      },
+                      "Property": "excl_internal_duplicates"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(sensitivity_by_year.excl_internal_duplicates)",
+              "nativeQueryRef": "Sum of excl_internal_duplicates"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Sensitivity: events per year under exclusions (query 19)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

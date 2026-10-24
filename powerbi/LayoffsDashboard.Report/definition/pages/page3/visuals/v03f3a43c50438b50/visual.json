@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v03f3a43c50438b50",
+  "position": {
+    "x": 16,
+    "y": 110,
+    "z": 3000,
+    "height": 96,
+    "width": 408,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_company_summary"
+                    }
+                  },
+                  "Property": "Repeat companies"
+                }
+              },
+              "queryRef": "v_bi_company_summary.Repeat companies",
+              "nativeQueryRef": "Repeat companies"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

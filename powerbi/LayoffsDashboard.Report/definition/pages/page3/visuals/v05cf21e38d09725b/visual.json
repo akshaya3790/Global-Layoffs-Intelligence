@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v05cf21e38d09725b",
+  "position": {
+    "x": 856,
+    "y": 110,
+    "z": 5000,
+    "height": 96,
+    "width": 408,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "repeat_overall"
+                    }
+                  },
+                  "Property": "12-month repeat probability %"
+                }
+              },
+              "queryRef": "repeat_overall.12-month repeat probability %",
+              "nativeQueryRef": "12-month repeat probability %"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

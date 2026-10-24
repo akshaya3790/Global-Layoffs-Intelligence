@@ -1,0 +1,83 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v08373b5938b70754",
+  "position": {
+    "x": 648,
+    "y": 218,
+    "z": 8000,
+    "height": 240,
+    "width": 616,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_quality"
+                    }
+                  },
+                  "Property": "value"
+                }
+              },
+              "queryRef": "v_bi_quality.value",
+              "nativeQueryRef": "value"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_bi_quality"
+                        }
+                      },
+                      "Property": "disclosure_rate_pct"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_bi_quality.disclosure_rate_pct)",
+              "nativeQueryRef": "Sum of disclosure_rate_pct"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Headcount disclosure rate % (pick a dimension with the slicer)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

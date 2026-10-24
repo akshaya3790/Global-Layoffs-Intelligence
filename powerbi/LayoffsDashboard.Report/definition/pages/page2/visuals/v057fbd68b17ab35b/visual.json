@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v057fbd68b17ab35b",
+  "position": {
+    "x": 856,
+    "y": 110,
+    "z": 5000,
+    "height": 96,
+    "width": 408,
+    "tabOrder": 5000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_events"
+                    }
+                  },
+                  "Property": "US share of known-country %"
+                }
+              },
+              "queryRef": "v_bi_events.US share of known-country %",
+              "nativeQueryRef": "US share of known-country %"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

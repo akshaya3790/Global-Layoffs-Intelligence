@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v06844091298e8955",
+  "position": {
+    "x": 961,
+    "y": 110,
+    "z": 6000,
+    "height": 96,
+    "width": 303,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_tech_events"
+                    }
+                  },
+                  "Property": "Tech case-study rows"
+                }
+              },
+              "queryRef": "v_tech_events.Tech case-study rows",
+              "nativeQueryRef": "Tech case-study rows"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

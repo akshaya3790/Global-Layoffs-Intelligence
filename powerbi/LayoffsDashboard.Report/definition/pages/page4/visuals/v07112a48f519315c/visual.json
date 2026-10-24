@@ -1,0 +1,121 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.0.0/schema.json",
+  "name": "v07112a48f519315c",
+  "position": {
+    "x": 16,
+    "y": 218,
+    "z": 7000,
+    "height": 240,
+    "width": 620,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "v_bi_benchmark"
+                    }
+                  },
+                  "Property": "event_year"
+                }
+              },
+              "queryRef": "v_bi_benchmark.event_year",
+              "nativeQueryRef": "event_year"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_bi_benchmark"
+                        }
+                      },
+                      "Property": "events_ratio"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_bi_benchmark.events_ratio)",
+              "nativeQueryRef": "Sum of events_ratio"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_bi_benchmark"
+                        }
+                      },
+                      "Property": "jobs_ratio"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_bi_benchmark.jobs_ratio)",
+              "nativeQueryRef": "Sum of jobs_ratio"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_bi_benchmark"
+                        }
+                      },
+                      "Property": "nominal_ratio"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(v_bi_benchmark.nominal_ratio)",
+              "nativeQueryRef": "Sum of nominal_ratio"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Sample / full data by year: events track 0.26, disclosed jobs do not'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

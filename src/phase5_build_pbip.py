@@ -201,64 +201,70 @@ def platform(kind):
             "config": {"version": "2.0", "logicalId": str(uuid.uuid5(uuid.NAMESPACE_URL, NAME + kind))}}
 
 
-# ---------------------------------------------------------------- report (legacy report.json layout)
+# ---------------------------------------------------------------- report (PBIR: definition/ folder)
+# Schema versions Power BI Desktop reads; every file is validated against these by tests/test_phase5_pbip.py.
+SCHEMA = "https://developer.microsoft.com/json-schemas/fabric/item/report/definition"
+V_REPORT, V_PAGE, V_VISUAL, V_PAGES, V_META = "3.0.0", "2.0.0", "2.0.0", "1.0.0", "1.0.0"
+BASE_THEME = "CY26SU10"
+THEME_DIR = Path(r"C:\Program Files\Microsoft Power BI Desktop\bin\WebView2Resources\minerva\sharedresources\BaseThemes")
+
+
+def literal(value: str) -> dict:
+    return {"expr": {"Literal": {"Value": value}}}
+
+
 class Page:
     def __init__(self, title, question):
-        self.title, self.containers, self.z = title, [], 0
-        self.text(0, 0, 1280, 56, BANNER, size="10pt", bold=True, color="#FFFFFF", background="#8a5a00")
-        self.text(16, 60, 1248, 44, f"{title}: {question}", size="14pt", bold=True, color="#1b2330")
+        self.title, self.visuals, self.z = title, [], 0
+        self.text(0, 0, 1280, 64, BANNER, size="9pt", bold=True, color="#FFFFFF", background="#8a5a00")
+        self.text(16, 66, 1248, 40, f"{title}: {question}", size="13pt", bold=True, color="#1b2330")
 
-    def _add(self, x, y, w, h, single):
+    def _add(self, x, y, w, h, visual):
         self.z += 1
-        name = uuid.uuid4().hex[:20]
-        cfg = {"name": name, "layouts": [{"id": 0, "position": {"x": x, "y": y, "z": self.z * 1000, "width": w, "height": h}}],
-               "singleVisual": single}
-        self.containers.append({"x": x, "y": y, "z": self.z * 1000, "width": w, "height": h,
-                                "config": json.dumps(cfg), "filters": "[]"})
+        name = f"v{len(self.visuals) + 1:02d}" + uuid.uuid5(uuid.NAMESPACE_URL, self.title + str(self.z)).hex[:14]
+        self.visuals.append({"$schema": f"{SCHEMA}/visualContainer/{V_VISUAL}/schema.json", "name": name,
+                             "position": {"x": x, "y": y, "z": self.z * 1000, "height": h, "width": w,
+                                          "tabOrder": self.z * 1000},
+                             "visual": visual})
 
     def text(self, x, y, w, h, value, size="10pt", bold=False, color="#1b2330", background=None):
         style = {"fontSize": size, "color": color}
         if bold:
             style["fontWeight"] = "bold"
-        single = {"visualType": "textbox", "drillFilterOtherVisuals": True,
+        visual = {"visualType": "textbox", "drillFilterOtherVisuals": True,
                   "objects": {"general": [{"properties": {"paragraphs": [{"textRuns": [{"value": value, "textStyle": style}]}]}}]}}
         if background:
-            single["vcObjects"] = {"background": [{"properties": {
-                "show": {"expr": {"Literal": {"Value": "true"}}},
-                "color": {"solid": {"color": {"expr": {"Literal": {"Value": f"'{background}'"}}}}},
-                "transparency": {"expr": {"Literal": {"Value": "0D"}}}}}]}
-        self._add(x, y, w, h, single)
+            visual["visualContainerObjects"] = {"background": [{"properties": {
+                "show": literal("true"),
+                "color": {"solid": {"color": literal(f"'{background}'")}},
+                "transparency": literal("0D")}}]}
+        self._add(x, y, w, h, visual)
 
     def visual(self, vtype, x, y, w, h, roles: dict, title: str | None = None):
         """roles: {projection role: [("m"|"c"|"sum", table, field), ...]}"""
-        froms, selects, projections = {}, [], {}
+        state = {}
         for role, fields in roles.items():
-            projections[role] = []
+            projections = []
             for kind, table, field in fields:
-                alias = froms.setdefault(table, f"t{len(froms)}")
-                src = {"Expression": {"SourceRef": {"Source": alias}}, "Property": field}
+                src = {"Expression": {"SourceRef": {"Entity": table}}, "Property": field}
                 if kind == "m":
-                    ref, sel = f"{table}.{field}", {"Measure": src}
+                    ref, expr, native = f"{table}.{field}", {"Measure": src}, field
                 elif kind == "c":
-                    ref, sel = f"{table}.{field}", {"Column": src}
+                    ref, expr, native = f"{table}.{field}", {"Column": src}, field
                 else:
-                    ref, sel = f"Sum({table}.{field})", {"Aggregation": {"Expression": {"Column": src}, "Function": 0}}
-                sel["Name"] = ref
-                if ref not in [s["Name"] for s in selects]:
-                    selects.append(sel)
-                projections[role].append({"queryRef": ref})
-        single = {"visualType": vtype, "projections": projections, "drillFilterOtherVisuals": True,
-                  "prototypeQuery": {"Version": 2, "From": [{"Name": a, "Entity": t, "Type": 0} for t, a in froms.items()],
-                                     "Select": selects}}
+                    ref, expr = f"Sum({table}.{field})", {"Aggregation": {"Expression": {"Column": src}, "Function": 0}}
+                    native = f"Sum of {field}"
+                projections.append({"field": expr, "queryRef": ref, "nativeQueryRef": native})
+            state[role] = {"projections": projections}
+        visual = {"visualType": vtype, "query": {"queryState": state}, "drillFilterOtherVisuals": True}
         if title:
-            single["vcObjects"] = {"title": [{"properties": {
-                "show": {"expr": {"Literal": {"Value": "true"}}},
-                "text": {"expr": {"Literal": {"Value": "'" + title.replace("'", "''") + "'"}}}}}]}
-        self._add(x, y, w, h, single)
+            visual["visualContainerObjects"] = {"title": [{"properties": {
+                "show": literal("true"), "text": literal("'" + title.replace("'", "''") + "'")}}]}
+        self._add(x, y, w, h, visual)
 
-    def section(self, i):
-        return {"name": f"page{i}", "displayName": self.title, "displayOption": 1, "width": 1280, "height": 720,
-                "config": "{}", "filters": "[]", "visualContainers": self.containers}
+    def page_json(self, name):
+        return {"$schema": f"{SCHEMA}/page/{V_PAGE}/schema.json", "name": name, "displayName": self.title,
+                "displayOption": "FitToPage", "height": 720, "width": 1280}
 
 
 def cards(page, items, y=110):
@@ -329,15 +335,43 @@ def build_pages():
 
 
 def write_report():
+    """PBIR report: definition/{version,report}.json, pages/pages.json, pages/<page>/page.json and
+    pages/<page>/visuals/<visual>/visual.json, plus the base theme Power BI expects next to it."""
+    import shutil
     rp = OUT / f"{NAME}.Report"
-    rp.mkdir(parents=True, exist_ok=True)
+    if (rp / "report.json").exists():          # superseded legacy layout; the caller backs it up first
+        (rp / "report.json").unlink()
+    if (rp / "definition").exists():
+        shutil.rmtree(rp / "definition")
+    d = rp / "definition"
+    (d / "pages").mkdir(parents=True)
     (rp / "definition.pbir").write_text(json.dumps(
         {"version": "4.0", "datasetReference": {"byPath": {"path": f"../{NAME}.SemanticModel"}}}, indent=2), encoding="utf-8")
     (rp / ".platform").write_text(json.dumps(platform("Report"), indent=2), encoding="utf-8")
-    report = {"config": json.dumps({"version": "5.43", "activeSectionIndex": 0, "objects": {}}),
-              "layoutOptimization": 0, "resourcePackages": [],
-              "sections": [p.section(i) for i, p in enumerate(build_pages())]}
-    (rp / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    dump = lambda path, obj: path.write_text(json.dumps(obj, indent=2, ensure_ascii=False), encoding="utf-8")
+    dump(d / "version.json", {"$schema": f"{SCHEMA}/versionMetadata/{V_META}/schema.json", "version": "2.0.0"})
+    dump(d / "report.json", {
+        "$schema": f"{SCHEMA}/report/{V_REPORT}/schema.json",
+        "themeCollection": {"baseTheme": {"name": BASE_THEME, "type": "SharedResources",
+                                          "reportVersionAtImport": {"visual": V_VISUAL, "report": V_REPORT, "page": V_PAGE}}},
+        "resourcePackages": [{"name": "SharedResources", "type": "SharedResources",
+                              "items": [{"name": BASE_THEME, "path": f"BaseThemes/{BASE_THEME}.json", "type": "BaseTheme"}]}],
+        "settings": {"useStylableVisualContainerHeader": True, "defaultDrillFilterOtherVisuals": True}})
+    theme_dst = rp / "StaticResources" / "SharedResources" / "BaseThemes" / f"{BASE_THEME}.json"
+    theme_dst.parent.mkdir(parents=True, exist_ok=True)
+    if (THEME_DIR / f"{BASE_THEME}.json").exists():
+        shutil.copyfile(THEME_DIR / f"{BASE_THEME}.json", theme_dst)
+    pages = build_pages()
+    names = [f"page{i + 1}" for i in range(len(pages))]
+    dump(d / "pages" / "pages.json", {"$schema": f"{SCHEMA}/pagesMetadata/{V_PAGES}/schema.json",
+                                      "pageOrder": names, "activePageName": names[0]})
+    for name, page in zip(names, pages):
+        pd_ = d / "pages" / name
+        (pd_ / "visuals").mkdir(parents=True)
+        dump(pd_ / "page.json", page.page_json(name))
+        for v in page.visuals:
+            (pd_ / "visuals" / v["name"]).mkdir()
+            dump(pd_ / "visuals" / v["name"] / "visual.json", v)
 
 
 def main():
