@@ -1,0 +1,26 @@
+# Public release: what is and is not published
+
+The local project (branch `main`) contains data derived from the 35-row technology layoffs file, whose source and licence are unknown. Until redistribution rights are established, the public GitHub repository is published from a separate branch, `public-release`, that leaves that data out. `main` keeps the full local history unchanged and is not pushed.
+
+## Excluded from `public-release`
+
+| Path | Why |
+|---|---|
+| `data/raw/tech_layoffs_2025_2026.csv` | Unknown source and licence (never committed anywhere) |
+| `data/interim/` | `tech_layoffs_staged.csv` is a staged copy of the tech file; the pair files list tech rows |
+| `data/processed/` | `layoff_events.csv` and its companion tables contain the 35 tech-derived rows |
+| `reports/audit/history/*/tech_layoffs_staged.csv`, `*/possible_duplicate_pairs.csv`, `*/excluded_candidate_pairs.csv` | Copies of tech rows |
+| `reports/eda/03_T*`, `reports/figures/03_T*`, `reports/phase4/query_results/11-14_*` | Summaries of the tech file's contents |
+| Phase 1-2 reports that quote individual tech rows | `reports/PHASE1_VERIFICATION_REPORT*.md`, `PHASE2_APPROVAL_CHECKLIST.md`, `PHASE2_CANONICAL_MODEL_PLAN.md`, `PROJECT_STATUS_SUMMARY.md`, `WORK_REPORT_2026-10-23_phase2_build.md` |
+| Outputs of notebooks 01-04 | They print tech rows; the code cells are kept, the outputs are cleared |
+| Local folder path in the Power BI model | Replaced by a placeholder you set after cloning |
+
+Never committed at all (git-ignored): `.env`, `_recovery/`, `_backups/`, `powerbi/data/`, Power BI cache files.
+
+## Published
+
+All code (`src/`, `sql/`, `tests/`), notebooks 01-05 (05 with outputs, which use only global data), the global sample file and its data card (CC BY-NC 4.0, attributed), global EDA, statistics and query outputs, the Power BI project, and the documentation.
+
+## What this means for reproducing the project
+
+A public clone can read all code, SQL, tests, statistics outputs and the dashboard design, and can run the tests that need only the global raw file. Rebuilding `data/processed/` (and therefore loading PostgreSQL) needs the tech file too, which is not distributed. If its licence is later confirmed, the full `main` history can be published instead.

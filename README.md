@@ -78,7 +78,9 @@ flowchart LR
    ```powershell
    $env:LAYOFFS_ENABLE_DB_TESTS = "1"; python -m pytest -q tests
    ```
-7. Dashboard: `python src/phase5_build_pbip.py`, then open `powerbi/LayoffsDashboard.pbip` in Power BI Desktop and click *Refresh*. Power BI asks for the PostgreSQL user and password itself; nothing is stored in the project. Steps and DAX: [powerbi/DASHBOARD_BUILD_GUIDE.md](powerbi/DASHBOARD_BUILD_GUIDE.md).
+7. Dashboard: `python src/phase5_build_pbip.py` (writes your local folder into the model's `ProjectFolder` parameter), then open `powerbi/LayoffsDashboard.pbip` in Power BI Desktop and click *Refresh*. Power BI asks for the PostgreSQL user and password itself; nothing is stored in the project. Steps and DAX: [powerbi/DASHBOARD_BUILD_GUIDE.md](powerbi/DASHBOARD_BUILD_GUIDE.md).
+
+**Public repository.** The GitHub version is built from a `public-release` branch that leaves out every file containing rows from the technology layoffs file (unknown licence); see [PUBLIC_RELEASE.md](PUBLIC_RELEASE.md). With it you can read and test the code, SQL, statistics and dashboard design, but rebuilding `data/processed/` and loading PostgreSQL needs that file.
 
 **Reproducibility.** The loader is safe to rerun: each run replaces the core tables with the same rows in one transaction and is recorded in `audit.load_runs`. A fresh clone can run Phases 3 to 5 from `data/processed/` (verified against its SHA-256 manifest). Rerunning Phases 1 and 2 also needs the tech raw file, which is not published.
 
