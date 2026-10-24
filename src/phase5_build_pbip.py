@@ -278,11 +278,18 @@ class Page:
         for role, fields in roles.items():
             projections = []
             for kind, table, field, *extra in fields:
-                src = {"Expression": {"SourceRef": {"Entity": table}}, "Property": field}
+                src = {"Expression": {"SourceRef": {"Entity": table}}, "Property": field if isinstance(field, str) else field[0]}
                 if kind == "m":
                     ref, expr, native = f"{table}.{field}", {"Measure": src}, field
                 elif kind == "c":
                     ref, expr, native = f"{table}.{field}", {"Column": src}, field
+                elif kind == "pct_of_col":          # field = (measure, column that defines the column total)
+                    measure, col = field
+                    m = {"Measure": {"Expression": {"SourceRef": {"Entity": table}}, "Property": measure}}
+                    scope = [{"Column": {"Expression": {"SourceRef": {"Entity": table}}, "Property": col}}]
+                    expr = {"Arithmetic": {"Left": m, "Right": {"ScopedEval": {"Expression": m, "Scope": scope}},
+                                           "Operator": 3}}
+                    ref, native = f"Divide({table}.{measure}, ScopedEval({table}.{measure}, [{table}.{col}]))", f"%CT {measure}"
                 else:
                     ref, expr = f"Sum({table}.{field})", {"Aggregation": {"Expression": {"Column": src}, "Function": 0}}
                     native = f"Sum of {field}"
@@ -357,6 +364,25 @@ INTERVAL_LINES = {"lineStyles": [{"properties": {"strokeWidth": literal("0D"), "
                   "dataPoint": [{"properties": {"fill": {"solid": {"color": literal(f"'{BLUE}'")}}}}]}
 
 
+def heatmap_objects(table):
+    """Matrix formatting: small text, a white-to-teal background scale on the share values, row totals
+    (each year = 100%) kept, per-industry total column hidden."""
+    m = {"Measure": {"Expression": {"SourceRef": {"Entity": table}}, "Property": "Events"}}
+    scope = [{"Column": {"Expression": {"SourceRef": {"Entity": table}}, "Property": "event_year"}}]
+    share = {"Arithmetic": {"Left": m, "Right": {"ScopedEval": {"Expression": m, "Scope": scope}}, "Operator": 3}}
+    ref = f"Divide({table}.Events, ScopedEval({table}.Events, [{table}.event_year]))"
+    gradient = {"FillRule": {"Input": share, "FillRule": {"linearGradient2": {
+        "min": {"color": {"Literal": {"Value": "'#FFFFFF'"}}},
+        "max": {"color": {"Literal": {"Value": "'#4A9BB8'"}}},
+        "nullColoringStrategy": {"strategy": {"Literal": {"Value": "'asZero'"}}}}}}}
+    return {"values": [{"properties": {"fontSize": literal("8D")}},
+                       {"properties": {"backColor": {"solid": {"color": {"expr": gradient}}}},
+                        "selector": {"data": [{"dataViewWildcard": {"matchingOption": 1}}], "metadata": ref}}],
+            "rowHeaders": [{"properties": {"fontSize": literal("8D")}}],
+            "columnHeaders": [{"properties": {"fontSize": literal("8D")}}],
+            "subTotals": [{"properties": {"columnSubtotals": literal("false")}}]}
+
+
 def build_pages():
     E, C, Q, B = "v_bi_events", "v_bi_company_summary", "v_bi_quality", "v_bi_benchmark"
     BY, KM, R1 = "bootstrap_yearly", "km_curve", "repeat_by_first_cut"
@@ -395,12 +421,14 @@ def build_pages():
                        "labels": [{"properties": {"show": literal("true"), "labelDisplayUnits": literal("1D")}}]})
     p2.text(M, 656, 400, 48, "Unknown = the source does not identify the industry. It is not zero layoffs; "
                              "it is shown so shares are not overstated.", size="9pt", color=MUTED)
-    p2.visual("hundredPercentStackedColumnChart", 428, MAIN_Y, 480, 248,
-              {"Category": [("c", E, "event_year", "Year")], "Series": [("c", E, "industry_group", "Industry group")],
-               "Y": [("m", E, "Events", "Layoff events", "#,0")]},
+    # Heatmap matrix (replaced the 100% stacked column on 25 Oct 2026): industry rows x year columns, each cell
+    # = that industry's share of the year's events ("% of column total", computed in the visual, no new DAX).
+    share = ("pct_of_col", E, ("Events", "event_year"), "Share of the year's events", "0.0%")
+    p2.visual("pivotTable", 428, MAIN_Y, 480, 248,
+              {"Rows": [("c", E, "industry_group", "Industry group")], "Columns": [("c", E, "event_year", "Year")],
+               "Values": [share]},
               "Industry share of events by year", subtitle="Each column = 100% of that year's events.",
-              objects={"legend": [{"properties": {"show": literal("true"), "position": literal("'Top'"),
-                                                  "fontSize": literal("8D")}}]})
+              objects=heatmap_objects(E))
     # Pie for one year at a time, beside (not instead of) the stacked chart: 17 groups, 6-9 under 3% per year,
     # so comparing years needs the stacked chart. All 17 groups are kept; nothing is merged into "Other".
     year = dropdown(p2, 428, 448, 150, 56, E, "event_year", "Year for the pie", single=True)

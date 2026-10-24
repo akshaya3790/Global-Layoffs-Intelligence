@@ -10,29 +10,10 @@
     "tabOrder": 8000
   },
   "visual": {
-    "visualType": "hundredPercentStackedColumnChart",
+    "visualType": "pivotTable",
     "query": {
       "queryState": {
-        "Category": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "v_bi_events"
-                    }
-                  },
-                  "Property": "event_year"
-                }
-              },
-              "queryRef": "v_bi_events.event_year",
-              "nativeQueryRef": "event_year",
-              "displayName": "Year"
-            }
-          ]
-        },
-        "Series": {
+        "Rows": {
           "projections": [
             {
               "field": {
@@ -51,23 +32,73 @@
             }
           ]
         },
-        "Y": {
+        "Columns": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
                       "Entity": "v_bi_events"
                     }
                   },
-                  "Property": "Events"
+                  "Property": "event_year"
                 }
               },
-              "queryRef": "v_bi_events.Events",
-              "nativeQueryRef": "Events",
-              "displayName": "Layoff events",
-              "format": "#,0"
+              "queryRef": "v_bi_events.event_year",
+              "nativeQueryRef": "event_year",
+              "displayName": "Year"
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Arithmetic": {
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "v_bi_events"
+                        }
+                      },
+                      "Property": "Events"
+                    }
+                  },
+                  "Right": {
+                    "ScopedEval": {
+                      "Expression": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "v_bi_events"
+                            }
+                          },
+                          "Property": "Events"
+                        }
+                      },
+                      "Scope": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "v_bi_events"
+                              }
+                            },
+                            "Property": "event_year"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "Operator": 3
+                }
+              },
+              "queryRef": "Divide(v_bi_events.Events, ScopedEval(v_bi_events.Events, [v_bi_events.event_year]))",
+              "nativeQueryRef": "%CT Events",
+              "displayName": "Share of the year's events",
+              "format": "0.0%"
             }
           ]
         }
@@ -75,23 +106,112 @@
     },
     "drillFilterOtherVisuals": true,
     "objects": {
-      "legend": [
+      "values": [
         {
           "properties": {
-            "show": {
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "8D"
                 }
               }
-            },
-            "position": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Top'"
+            }
+          }
+        },
+        {
+          "properties": {
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "FillRule": {
+                      "Input": {
+                        "Arithmetic": {
+                          "Left": {
+                            "Measure": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "v_bi_events"
+                                }
+                              },
+                              "Property": "Events"
+                            }
+                          },
+                          "Right": {
+                            "ScopedEval": {
+                              "Expression": {
+                                "Measure": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "v_bi_events"
+                                    }
+                                  },
+                                  "Property": "Events"
+                                }
+                              },
+                              "Scope": [
+                                {
+                                  "Column": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "v_bi_events"
+                                      }
+                                    },
+                                    "Property": "event_year"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "Operator": 3
+                        }
+                      },
+                      "FillRule": {
+                        "linearGradient2": {
+                          "min": {
+                            "color": {
+                              "Literal": {
+                                "Value": "'#FFFFFF'"
+                              }
+                            }
+                          },
+                          "max": {
+                            "color": {
+                              "Literal": {
+                                "Value": "'#4A9BB8'"
+                              }
+                            }
+                          },
+                          "nullColoringStrategy": {
+                            "strategy": {
+                              "Literal": {
+                                "Value": "'asZero'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
-            },
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Divide(v_bi_events.Events, ScopedEval(v_bi_events.Events, [v_bi_events.event_year]))"
+          }
+        }
+      ],
+      "rowHeaders": [
+        {
+          "properties": {
             "fontSize": {
               "expr": {
                 "Literal": {
@@ -102,702 +222,29 @@
           }
         }
       ],
-      "dataPoint": [
+      "columnHeaders": [
         {
           "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#1F3A5F'"
-                    }
-                  }
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8D"
                 }
               }
             }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Retail & Consumer'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
           }
-        },
+        }
+      ],
+      "subTotals": [
         {
           "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#2A9D8F'"
-                    }
-                  }
+            "columnSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Finance & Fintech'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#7B5EA7'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Healthcare & Life Sciences'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#E9A23B'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Software & IT'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#6A994E'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Food & Agriculture'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#E07A5F'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Media & Gaming'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#3D6B99'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Industrial & Manufacturing'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#8AB17D'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Energy & Resources'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#B5838D'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Automotive'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#5FB3A8'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Business Services'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#F2C57C'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Travel & Transport'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#A88BC9'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Real Estate & Construction'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#F0A08B'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Telecom'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#7A9CC6'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Technology (mixed)'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#C9B26B'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Education & Public Sector'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#4F7F6F'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Hardware & Semiconductors'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#B8BEC7'"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "scopeId": {
-                  "Comparison": {
-                    "ComparisonKind": 0,
-                    "Left": {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Entity": "v_bi_events"
-                          }
-                        },
-                        "Property": "industry_group"
-                      }
-                    },
-                    "Right": {
-                      "Literal": {
-                        "Value": "'Unknown'"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
           }
         }
       ]

@@ -120,8 +120,8 @@ def test_pie_counts_events_and_year_slicer_filters_only_the_pie():
     visuals = {v["name"]: v for v in (json.loads(f.read_text(encoding="utf-8"))
                                       for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json"))}
     pie = [v for v in visuals.values() if v["visual"]["visualType"] == "pieChart"]
-    stacked = [v for v in visuals.values() if v["visual"]["visualType"] == "hundredPercentStackedColumnChart"]
-    assert len(pie) == 1 and len(stacked) == 1                       # added beside, not instead of
+    matrix = [v for v in visuals.values() if v["visual"]["visualType"] == "pivotTable"]
+    assert len(pie) == 1 and len(matrix) == 1                        # pie sits beside the year-by-industry matrix
     assert set(_fields(pie[0]["visual"]["query"])) == {("Column", "v_bi_events", "industry_group"),
                                                       ("Measure", "v_bi_events", "Events"),
                                                       ("Measure", "v_bi_events", "Share of selected events %")}
@@ -172,3 +172,19 @@ def test_interval_charts_show_estimate_and_bounds_without_adding_them(page, csv,
     src = pd.read_csv(ROOT / csv)
     assert src[key].is_unique
     assert (src[lo] <= src[est]).all() and (src[est] <= src[hi]).all()
+
+
+def test_industry_heatmap_is_share_of_each_years_events():
+    """Page 2 matrix: industry rows x year columns; the value is Events / Events in the same year (the visual's
+    "% of column total"), so every year column adds up to 100%, Unknown included."""
+    vs = [json.loads(f.read_text(encoding="utf-8")) for f in (DEFINITION / "pages" / "page2" / "visuals").glob("*/visual.json")]
+    m = [v for v in vs if v["visual"]["visualType"] == "pivotTable"]
+    assert len(m) == 1
+    q = m[0]["visual"]["query"]["queryState"]
+    assert q["Rows"]["projections"][0]["field"]["Column"]["Property"] == "industry_group"
+    assert q["Columns"]["projections"][0]["field"]["Column"]["Property"] == "event_year"
+    a = q["Values"]["projections"][0]["field"]["Arithmetic"]
+    assert a["Operator"] == 3 and a["Left"]["Measure"]["Property"] == "Events"
+    assert a["Right"]["ScopedEval"]["Expression"]["Measure"]["Property"] == "Events"
+    assert [s["Column"]["Property"] for s in a["Right"]["ScopedEval"]["Scope"]] == ["event_year"]
+    assert m[0]["visual"]["visualContainerObjects"]["title"][0]["properties"]["text"]["expr"]["Literal"]["Value"]         == "'Industry share of events by year'"

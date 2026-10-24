@@ -64,11 +64,16 @@ Data was loaded by a Power BI refresh on 24 Oct (5:12 PM, Power BI log) and save
 
 Colours only, applied by `apply_colours()` in `src/phase5_build_pbip.py`. Before/after comparison of every report file: 26 files changed (15 KPI cards, 10 charts, the custom theme palette); every changed property is a colour (`fill`, `color`, `background`, `dataPoint`, `dataColors`), 0 other differences. Pages 1–3 were reopened in Power BI after the change: same values (5,000 · 1050.4 · 3,467 · 200 · 49.8 · 31.3 · 42.3 · 688 · 266 · 12.6; pie 31.28%; totals 5,000 and 27,88,908) and new screenshots. Page 4 has not been re-captured after the colour pass. Backup of the previous report: `_backups/2026-10-25/powerbi_before_colours/`.
 
+## Page 2 heatmap matrix (25 Oct 2026)
+
+The 100% stacked column "Industry share of events by year" was replaced by a matrix (industry rows × year columns) with the same position, size, title and subtitle. Each cell is `Events ÷ Events in the same year`, computed inside the visual as "% of column total" (no new DAX). White-to-teal background scale on the share; the Total row shows 100.0% for every year. Checked in Power BI against SQL query 04: Automotive 2019 3.8%, Finance & Fintech 2023 10.5%, Healthcare 2022 9.1%. Only this visual's file changed (preview comparison); the "Year for the pie" selector still ignores it (`page.json` unchanged). Limitation: at its existing size the matrix shows about 9 of 17 rows and 7 of 8 years at once and scrolls for the rest. Backup: `_backups/2026-10-25/powerbi_before_heatmap/`.
+
 ## Deliverables
 
 | File | Status |
 |---|---|
-| `deliverables/screenshots/page1.png` … `page3.png` | Re-captured 25 Oct after the colour pass |
+| `deliverables/screenshots/page1.png`, `page3.png` | Re-captured 25 Oct after the colour pass |
+| `deliverables/screenshots/page2.png` | Re-captured 25 Oct after the heatmap change |
 | `deliverables/screenshots/page4.png` | Captured 24 Oct, **before** the colour pass (needs a new capture) |
 | `deliverables/validation/*.png` (3 slicer tests) | Created 25 Oct |
 | `deliverables/LayoffsDashboard.pbix` | Not created: needs File → Save as in Power BI |
