@@ -4,7 +4,7 @@ All numbers below were produced and checked on the project PC (see [STATUS.md](.
 
 ## Three resume bullets
 
-1. Built a reproducible Python and PostgreSQL pipeline that loads 5,035 layoff records through staging and core schemas in one audited transaction, guarded by 142 integrity checks per load and 214 automated tests; verified idempotent across three consecutive loads.
+1. Built a reproducible Python and PostgreSQL pipeline that loads 5,035 layoff records through staging and core schemas in one audited transaction, guarded by 142 integrity checks per load and 267 automated tests; verified idempotent across three consecutive loads.
 2. Wrote 19 analytical SQL queries and a 4-page Power BI dashboard on curated views; reconciled 979 cells with pandas (0 mismatches) and all 14 headline dashboard metrics with SQL.
 3. Validated a 26% company-cluster sample against published population totals and quantified uncertainty with a company-cluster bootstrap and Kaplan–Meier survival analysis: 12.6% (95% CI 11.5–13.8%) of companies laid off again within 12 months.
 
@@ -30,7 +30,7 @@ Finally I built a 4-page Power BI dashboard on SQL views, with the sample warnin
 4. **Analytics (SQL).** 19 queries with CTEs, window functions and `FILTER` aggregates, run read-only. 16 reconcile with the Phase 3 pandas outputs (979 cells); the rest are recomputed in tests.
 5. **Statistics (Python).** Benchmark ratios against the data card; a company-cluster bootstrap (resampling companies, not rows, because the sample is clustered); Kaplan–Meier with right-censoring at the data end date, Greenwood intervals and log-rank tests, written in NumPy/SciPy and unit-tested.
 6. **BI (Power BI).** Five reporting views (`v_bi_*`) with fixed grain; the report is generated as a Power BI Project (PBIP) from Python, validated against Microsoft's schemas, and every headline number is reconciled with SQL.
-7. **Testing.** 214 pytest tests: business rules (missing never becomes zero, no tech rows in global figures), database integration in throwaway databases, statistics maths, and dashboard file checks.
+7. **Testing.** 267 pytest tests: business rules (missing never becomes zero, no tech rows in global figures), database integration in throwaway databases, statistics maths, and dashboard file checks.
 
 ## Likely questions, with short answers
 
@@ -73,7 +73,7 @@ Every number below was produced on the Windows PC on 24–25 October 2026 (see `
 
 - Built a reproducible Python and PostgreSQL pipeline that loads 5,035 layoff records from two sources through staging and core schemas in a single audited transaction, guarded by 142 automated integrity and reconciliation checks per load; verified rerun-safe (three consecutive loads, identical content).
 - Pinned raw data with SHA-256 fingerprints and traced every processed row back to its source file and line; kept Git byte-exact so checksums survive a fresh clone.
-- Wrote 214 pytest tests, including database tests that create and drop throwaway PostgreSQL databases, covering business rules such as no zero-filling of missing values and no low-confidence rows in global totals.
+- Wrote 267 pytest tests, including database tests that create and drop throwaway PostgreSQL databases, covering business rules such as no zero-filling of missing values and no low-confidence rows in global totals.
 
 ### Data Analyst
 

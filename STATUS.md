@@ -14,7 +14,7 @@ Environment: Windows 11, Python 3.14.6, PostgreSQL 18.6 (UTF8), psycopg2 2.9.13,
 | Loads | **3 runs** (24 Oct ×2, 25 Oct ×1): each 5,035 events, **142/142 checks**, identical md5 fingerprint `a99e3e0c…c319` | `audit.load_runs`, `audit.validation_results` |
 | Data rules | 5,000 global + 35 tech; 2,511 global headcounts NULL, 0 zeros; 0 duplicate keys; 0 tech rows in global views | SQL checks, tests |
 | SQL analytics | **19/19** queries ran; 16 reconciled with pandas, **979 cells, 0 mismatches** | `reports/phase4/sql_reconciliation.csv`, `QUERY_CATALOG.md` |
-| Tests | **214 passed, 0 failed, 0 skipped** with the database (25 Oct); 191 passed + 23 database tests skipped without it | `LAYOFFS_ENABLE_DB_TESTS=1 python -m pytest -q tests` |
+| Tests | **267 passed, 0 failed, 0 skipped** with the database (25 Oct, clean copy of the committed code); 244 passed + 23 database tests skipped without it | `LAYOFFS_ENABLE_DB_TESTS=1 python -m pytest -q tests` |
 | Statistics | Notebook 05 executed, 12/12 cells, 0 errors | `notebooks/05_*.ipynb`, `reports/stats/` |
 | Dashboard numbers | 14/14 headline numbers: SQL = pandas, and Power BI's displayed values = SQL | `powerbi/headline_reconciliation.csv`, `reports/POWERBI_VALIDATION.md` |
 | Dashboard behaviour | Page 4 "Group by" (region) matches SQL and filters only its chart; interval charts plot estimate + bounds correctly; page 2 now shows the top 5 known industries as a line chart (pie and its selector removed, 25 Oct) | `reports/POWERBI_VALIDATION.md`, `deliverables/validation/`, `tests/test_phase5_pbip.py` |
@@ -27,8 +27,8 @@ Environment: Windows 11, Python 3.14.6, PostgreSQL 18.6 (UTF8), psycopg2 2.9.13,
 
 | Step | What to do |
 |---|---|
-| `.pbix` file | In Power BI: File → Save as → Power BI file (.pbix) → `deliverables\LayoffsDashboard.pbix` |
-| PDF | In Power BI: File → Export → Export to PDF → `deliverables\` |
+| `.pbix` file | Done 25 Oct: `deliverables\LayoffsDashboard.pbix` (local only; it embeds the tech rows, so it is not published) |
+| PDF | Skipped by decision (25 Oct) |
 | GitHub | Approve and run the push of the `public-release` branch (see `PUBLIC_RELEASE.md`). Nothing has been pushed. The repository `https://github.com/akshaya3790/Global-Layoffs-Intelligence` is public and empty |
 
 ## Public-release decision

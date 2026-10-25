@@ -46,7 +46,7 @@ CREATE DATABASE layoffs_db ENCODING 'UTF8' TEMPLATE template0;
 ```powershell
 python -m pytest -q tests
 ```
-**[tested]** Full local data: **191 passed, 23 skipped** (the 23 are the database tests). Public copy: **135 passed, 79 skipped**.
+**[tested]** Full local data: **244 passed, 23 skipped** (the 23 are the database tests). Public copy: **188 passed, 79 skipped**.
 
 ## 6. Load the database and run the SQL
 
@@ -65,7 +65,7 @@ python src/phase5_export_bi.py
 ```powershell
 $env:LAYOFFS_ENABLE_DB_TESTS = "1"; python -m pytest -q tests
 ```
-**[tested]** **214 passed.** These tests create and drop their own `layoffs_test_<random>` databases; they never touch `layoffs_db`. The PostgreSQL user needs the CREATEDB privilege.
+**[tested]** **267 passed.** These tests create and drop their own `layoffs_test_<random>` databases; they never touch `layoffs_db`. The PostgreSQL user needs the CREATEDB privilege.
 
 ## 8. Notebooks
 

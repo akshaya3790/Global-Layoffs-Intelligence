@@ -2,7 +2,7 @@
 
 **Business problem.** Workforce-strategy and talent teams need to know how often layoffs happen, where they concentrate, how large they are, and which employers cut repeatedly, without over-reading news-based data. This project answers those questions from a 26% sample of news-reported layoff events (January 2019 – 14 June 2026) and states, for every number, how far it can be trusted.
 
-**What it shows:** a hash-verified Python audit and cleaning pipeline, an audited PostgreSQL load with 142 integrity checks, 19 analytical SQL queries reconciled with pandas, a statistics notebook (sample benchmark, company-cluster bootstrap, Kaplan–Meier), and a 4-page Power BI dashboard built on SQL views. 214 automated tests.
+**What it shows:** a hash-verified Python audit and cleaning pipeline, an audited PostgreSQL load with 142 integrity checks, 19 analytical SQL queries reconciled with pandas, a statistics notebook (sample benchmark, company-cluster bootstrap, Kaplan–Meier), and a 4-page Power BI dashboard built on SQL views. 267 automated tests.
 
 ## Executive summary
 
@@ -92,7 +92,7 @@ python src/phase4_analytics.py
 $env:LAYOFFS_ENABLE_DB_TESTS = "1"; python -m pytest -q tests
 ```
 
-Full steps, which commands were tested, and Power BI refresh: [docs/setup_windows.md](docs/setup_windows.md). The public repository omits the tech file and the processed data built from it ([PUBLIC_RELEASE.md](PUBLIC_RELEASE.md)), so a public clone runs 135 tests and skips the 79 that need PostgreSQL or the excluded data.
+Full steps, which commands were tested, and Power BI refresh: [docs/setup_windows.md](docs/setup_windows.md). The public repository omits the tech file and the processed data built from it ([PUBLIC_RELEASE.md](PUBLIC_RELEASE.md)), so a public clone runs 188 tests and skips the 79 that need PostgreSQL or the excluded data.
 
 ## Validation evidence (Windows, 24–25 Oct 2026)
 
@@ -101,7 +101,7 @@ Full steps, which commands were tested, and Power BI refresh: [docs/setup_window
 | Raw data | SHA-256 unchanged |
 | Loads | 3 consecutive runs: 5,035 events, 142/142 checks each, identical content |
 | SQL | 19/19 queries; 979 cells reconciled, 0 mismatches |
-| Tests | 214 passed with PostgreSQL; 191 passed + 23 skipped without |
+| Tests | 267 passed with PostgreSQL; 244 passed + 23 skipped without |
 | Dashboard | 14/14 headline numbers match SQL; selectors tested against SQL |
 
 Current status: [STATUS.md](STATUS.md).
