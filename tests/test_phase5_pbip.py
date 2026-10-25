@@ -49,36 +49,67 @@ def _fields(obj):
             yield from _fields(v)
 
 
+# A TMDL object name is either quoted ('Share of all events in year %', with '' for a literal quote) or a bare
+# identifier (Events). Power BI Desktop rewrites names without quotes when it saves, so accept both forms.
+_TMDL_NAME = r"('(?:[^']|'')*'|[^\s=']+)"
+
+
+def _tmdl_name(token):
+    return token[1:-1].replace("''", "'") if token.startswith("'") else token
+
+
+def _parse_tmdl(text):
+    """(table, column names, measure names) from one TMDL table file."""
+    table = _tmdl_name(re.search(rf"^table {_TMDL_NAME}", text, re.M).group(1))
+    cols = {_tmdl_name(m) for m in re.findall(rf"^\tcolumn {_TMDL_NAME}", text, re.M)}
+    measures = {_tmdl_name(m) for m in re.findall(rf"^\tmeasure {_TMDL_NAME}", text, re.M)}
+    return table, cols, measures
+
+
 def _model():
     cols, measures = {}, {}
     for f in (MODEL / "tables").glob("*.tmdl"):
-        text = f.read_text(encoding="utf-8")
-        table = re.search(r"^table (\S+)", text, re.M).group(1)
-        cols[table] = set(re.findall(r"^\tcolumn '([^']+)'", text, re.M))
-        measures[table] = set(re.findall(r"^\tmeasure '([^']+)'", text, re.M))
+        table, c, m = _parse_tmdl(f.read_text(encoding="utf-8"))
+        cols[table], measures[table] = c, m
     return cols, measures
 
 
-def test_report_files_match_microsoft_schemas():
+def _missing_fields(visuals, cols, measures):
+    return [(k, t, n) for v in visuals for k, t, n in _fields(v)
+            if n not in (measures if k == "Measure" else cols).get(t, set())]
+
+
+def _schema_available(uri):
+    return (CACHE / uri.split("/definition/", 1)[1].replace("/", "__")).exists()
+
+
+def test_report_has_enough_files_to_validate():
+    assert len(_files()) >= 40
+
+
+@pytest.mark.parametrize("path", [str(f.relative_to(DEFINITION)) for f in _files()] if DEFINITION.exists() else [])
+def test_report_file_matches_microsoft_schema(path):
+    """Each report file is validated against the schema version it declares. A version that is not in the
+    offline cache (for example visualContainer 2.14.0, which Power BI Desktop writes when it saves but Microsoft
+    has not published) is reported as SKIPPED: unverified, not passed."""
     jsonschema = pytest.importorskip("jsonschema")
     referencing = pytest.importorskip("referencing")
     from referencing.jsonschema import DRAFT7
+    doc = json.loads((DEFINITION / path).read_text(encoding="utf-8"))
+    if not _schema_available(doc["$schema"]):
+        pytest.skip(f"unverified: schema {doc['$schema'].split('/definition/', 1)[1]} is not available to the validator")
     registry = referencing.Registry(retrieve=lambda uri: referencing.Resource.from_contents(
         _schema(uri), default_specification=DRAFT7))
-    problems = []
-    for f in _files():
-        doc = json.loads(f.read_text(encoding="utf-8"))
-        schema = _schema(doc["$schema"])
-        validator = jsonschema.validators.validator_for(schema, default=jsonschema.Draft7Validator)(schema, registry=registry)
-        problems += [f"{f.relative_to(DEFINITION)}: {e.message[:120]}" for e in validator.iter_errors(doc)]
-    assert len(_files()) >= 40 and problems == []
+    schema = _schema(doc["$schema"])
+    validator = jsonschema.validators.validator_for(schema, default=jsonschema.Draft7Validator)(schema, registry=registry)
+    assert [e.message[:160] for e in validator.iter_errors(doc)] == []
 
 
 def test_schema_check_rejects_a_broken_visual():
     jsonschema = pytest.importorskip("jsonschema")
     referencing = pytest.importorskip("referencing")
     from referencing.jsonschema import DRAFT7
-    doc = _visuals()[0]
+    doc = next(v for v in _visuals() if _schema_available(v["$schema"]))
     doc = {**doc, "notAProperty": 1}
     schema = _schema(doc["$schema"])
     registry = referencing.Registry(retrieve=lambda uri: referencing.Resource.from_contents(
@@ -99,9 +130,35 @@ def test_four_pages_each_with_coverage_banner():
 
 def test_every_bound_field_exists_in_the_model():
     cols, measures = _model()
-    missing = [(k, t, n) for v in _visuals() for k, t, n in _fields(v)
-               if n not in (measures if k == "Measure" else cols).get(t, set())]
-    assert missing == []
+    assert sum(len(c) for c in cols.values()) > 50 and sum(len(m) for m in measures.values()) >= 15
+    assert _missing_fields(_visuals(), cols, measures) == []
+
+
+def test_tmdl_parser_reads_quoted_and_unquoted_names():
+    text = ("table v_bi_events\n\n"
+            "\tmeasure Events = COUNTROWS(v_bi_events)\n"
+            "\tmeasure 'Share of all events in year %' = DIVIDE(1, 2)\n"
+            "\tmeasure 'It''s quoted' = 1\n"
+            "\tcolumn event_year\n"
+            "\tcolumn 'industry_group'\n"
+            "\tcolumn months = km_curve[t] / 30.44\n")
+    table, cols, measures = _parse_tmdl(text)
+    assert table == "v_bi_events"
+    assert cols == {"event_year", "industry_group", "months"}
+    assert measures == {"Events", "Share of all events in year %", "It's quoted"}
+    assert _parse_tmdl("table 'My table'\n")[0] == "My table"
+
+
+def test_missing_field_is_still_detected():
+    """A visual that points at a column, measure or table the model does not have must fail the binding check."""
+    cols, measures = _model()
+    ref = lambda kind, table, name: {"field": {kind: {"Expression": {"SourceRef": {"Entity": table}}, "Property": name}}}
+    broken = {"visual": {"query": {"queryState": {"Values": {"projections": [
+        ref("Column", "v_bi_events", "no_such_column"), ref("Measure", "v_bi_events", "No such measure"),
+        ref("Column", "no_such_table", "event_year"), ref("Column", "v_bi_events", "event_year")]}}}}}
+    assert _missing_fields([broken], cols, measures) == [("Column", "v_bi_events", "no_such_column"),
+                                                         ("Measure", "v_bi_events", "No such measure"),
+                                                         ("Column", "no_such_table", "event_year")]
 
 
 def test_tech_table_only_in_its_own_panel():
